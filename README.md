@@ -1,2 +1,2 @@
-Grupo 4 - Jueves Turno Mañana - Diseño de Sistemas - UTN
-========================================================
+Grupo 4 - Jueves Turno Mañana - Diseño de Sistemas
+==================================================
