@@ -1,7 +1,6 @@
 package ar.edu.frba.utn.dds.entrega_2;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import ar.edu.frba.utn.dds.entrega_1.ConversionException;
@@ -10,41 +9,33 @@ import com.lanchita.AerolineaLanchita;
 
 public class Lanchita implements Aerolinea{
 	private AerolineaLanchita lanchita = AerolineaLanchita.getInstance();
-	private List<Asiento> asientos = new ArrayList<Asiento>();
 	private static float impuesto = 15;
 	
-	public Lanchita() throws ConversionException{
-		List<String[]> stringsAsientos = Arrays.asList(this.getLanchita().asientosDisponibles(null, null, null, null, null, null));
-		for(String[] unAsiento : stringsAsientos){
-			this.asientos.add(new Asiento(unAsiento[8], unAsiento[9], unAsiento[0], unAsiento[1], unAsiento[2], unAsiento[3], unAsiento[4], unAsiento[10], unAsiento[6], unAsiento[11], unAsiento[7]));
-		}
-	}
-	
-	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino, String unaFecha, String unHorario) throws ConversionException{
+	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino, String unaFecha, String unHorario, Usuario unUsuario) throws ConversionException{
 		List<Asiento> asientosDisponibles = new ArrayList<Asiento>();
-		for(Asiento unAsiento : this.getAsientos()){
+		for(  String[] unStringAsiento : this.getLanchita().asientosDisponibles(unOrigen, unDestino, null, null, null, null)  ){
+			Asiento unAsiento = new Asiento(unStringAsiento[8], unStringAsiento[9], unStringAsiento[0], this.calcularPrecio(unStringAsiento[1], unUsuario), unStringAsiento[2], unStringAsiento[3], unStringAsiento[4], unStringAsiento[10], unStringAsiento[6], unStringAsiento[11], unStringAsiento[7]);
 			if( unAsiento.tieneFechasEntre(unaFecha, unHorario) ){
 				asientosDisponibles.add(unAsiento);
+				if( unAsiento.esSuperOferta() && !(unUsuario.getTipo() instanceof Vip) ){
+					asientosDisponibles.remove(unAsiento);
+				}
 			}
 		}
 		return asientosDisponibles;
 	}
-	
+
+	private float calcularPrecio(String precio, Usuario unUsuario) {
+		float precioOriginal = new Float(precio);
+		return precioOriginal + precioOriginal*this.getImpuesto() + unUsuario.getTipo().getRecargo(); 
+	}
+
 	public AerolineaLanchita getLanchita() {
 		return lanchita;
 	}
 
 	public void setLanchita(AerolineaLanchita lanchita) {
 		this.lanchita = lanchita;
-	}
-	
-	
-	public List<Asiento> getAsientos() {
-		return asientos;
-	}
-
-	public void setAsientos(List<Asiento> asientos) {
-		this.asientos = asientos;
 	}
 	
 	@Override
@@ -59,7 +50,6 @@ public class Lanchita implements Aerolinea{
 	@Override
 	public void comprar(Asiento unAsiento) {
 		this.getLanchita().comprar(unAsiento.getAsiento());
-		this.getAsientos().remove(unAsiento);
 	}
 
 }

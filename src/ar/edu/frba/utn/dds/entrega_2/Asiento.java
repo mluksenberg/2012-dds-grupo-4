@@ -1,5 +1,7 @@
 package ar.edu.frba.utn.dds.entrega_2;
 
+import java.math.BigDecimal;
+
 import ar.edu.frba.utn.dds.entrega_1.ConversionException;
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
 import ar.edu.frba.utn.dds.entrega_1.Parser;
@@ -8,7 +10,7 @@ public class Asiento {
 	private String origen;
 	private String destino;
 	private String asiento;
-	private float precio;
+	private BigDecimal precio;;
 	private String clase;
 	private String ubicacion;
 	private Boolean estaReservado;
@@ -16,14 +18,14 @@ public class Asiento {
 	private Fecha fechaLlegada;
 	private Parser parser = new Parser();
 	
-	public Asiento(String unOrigen, String unDestino, String unAsiento, String unPrecio, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada) throws ConversionException{
+	public Asiento(String unOrigen, String unDestino, String unAsiento, float unPrecio, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada) throws ConversionException{
 		this.parser.agregarFormato("yyyy-MM-dd HH:mm");
 		this.parser.agregarFormato("MM-dd-yyyy HH:mm");
 		this.parser.agregarFormato("dd/MM/yyyy HH:mm");
 		this.origen = unOrigen;
 		this.destino = unDestino;
 		this.asiento = unAsiento;
-		this.precio = new Float(unPrecio);
+		this.precio = (new BigDecimal(Float.toString(unPrecio)));
 		this.clase = unaClase;
 		this.ubicacion = unaUbicacion;
 		if(unEstado.equals("D")) this.estaReservado = false;
@@ -43,14 +45,6 @@ public class Asiento {
 		this.asiento = asiento;
 	}
 	
-	public float getPrecio() {
-		return precio;
-	}
-	
-	public void setPrecio(float precio) {
-		this.precio = precio;
-	}
-	
 	public String getClase() {
 		return clase;
 	}
@@ -65,6 +59,14 @@ public class Asiento {
 	
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
+	}
+	
+	public BigDecimal getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(BigDecimal precio) {
+		this.precio = precio;
 	}
 	
 	public Parser getParser() {
@@ -116,8 +118,13 @@ public class Asiento {
 	}
 
 	public boolean tieneFechasEntre(String unaFecha, String unHorario) throws ConversionException {
+		if(unaFecha == null && unHorario == null) return true;
 		Fecha otraFecha = this.getParser().parsear(unaFecha + " " + unHorario);
 		return ( otraFecha.esPosteriorA(this.getFechaSalida()) && this.getFechaLlegada().esPosteriorA(otraFecha) ) || this.getFechaSalida().esLaMismaFechaQue(otraFecha) || this.getFechaLlegada().esLaMismaFechaQue(otraFecha);
+	}
+
+	public boolean esSuperOferta() {
+		return (this.getClase().equals("P") && this.getPrecio().floatValue() <= 8000) || (this.getClase().equals("E") && this.getPrecio().floatValue() <= 4000);
 	}
 
 }
