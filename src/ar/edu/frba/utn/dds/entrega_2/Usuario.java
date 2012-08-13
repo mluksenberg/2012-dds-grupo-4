@@ -10,7 +10,7 @@ public class Usuario {
 	private String apellido;
 	private String dni;
 	private List<Busqueda> busqueda = new ArrayList<Busqueda>();
-	private String tipo;
+	private TipoUsuario tipo;
 	
 	public Usuario(String unNombre, String unApellido, String unDni){
 		this.nombre = unNombre;
@@ -42,10 +42,10 @@ public class Usuario {
 	public void setBusqueda(List<Busqueda> busqueda) {
 		this.busqueda = busqueda;
 	}
-	public String getTipo() {
+	public TipoUsuario getTipo() {
 		return tipo;
 	}
-	public void setTipo(String tipo) {
+	public void setTipo(TipoUsuario tipo) {
 		this.tipo = tipo;
 	}
 	
