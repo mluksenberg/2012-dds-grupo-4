@@ -1,7 +1,5 @@
 package ar.edu.frba.utn.dds.entrega_2;
 
-import java.math.BigDecimal;
-
 import ar.edu.frba.utn.dds.entrega_1.ConversionException;
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
 import ar.edu.frba.utn.dds.entrega_1.Parser;
@@ -10,7 +8,7 @@ public class Asiento {
 	private String origen;
 	private String destino;
 	private String asiento;
-	private BigDecimal precio;
+	private float precio;
 	private String clase;
 	private String ubicacion;
 	private Boolean estaReservado;
@@ -25,7 +23,7 @@ public class Asiento {
 		this.origen = unOrigen;
 		this.destino = unDestino;
 		this.asiento = unAsiento;
-		this.precio = new BigDecimal(unPrecio);
+		this.precio = new Float(unPrecio);
 		this.clase = unaClase;
 		this.ubicacion = unaUbicacion;
 		if(unEstado.equals("D")) this.estaReservado = false;
@@ -34,6 +32,9 @@ public class Asiento {
 		this.fechaLlegada = this.parser.parsear(unaFechaLlegada + " " + unaHoraLlegada);
 	}
 	
+	public String toString(){
+		return this.getAsiento() + " " + this.getOrigen() + " " + this.getDestino() + " " + this.getFechaSalida() + " " + this.getFechaLlegada() + " " + this.getClase() + " " + this.getUbicacion() + " " + this.getPrecio() + " " + this.getEstaReservado();  
+	}
 	public String getAsiento() {
 		return asiento;
 	}
@@ -42,11 +43,11 @@ public class Asiento {
 		this.asiento = asiento;
 	}
 	
-	public BigDecimal getPrecio() {
+	public float getPrecio() {
 		return precio;
 	}
 	
-	public void setPrecio(BigDecimal precio) {
+	public void setPrecio(float precio) {
 		this.precio = precio;
 	}
 	
@@ -118,4 +119,5 @@ public class Asiento {
 		Fecha otraFecha = this.getParser().parsear(unaFecha + " " + unHorario);
 		return ( otraFecha.esPosteriorA(this.getFechaSalida()) && this.getFechaLlegada().esPosteriorA(otraFecha) ) || this.getFechaSalida().esLaMismaFechaQue(otraFecha) || this.getFechaLlegada().esLaMismaFechaQue(otraFecha);
 	}
+
 }

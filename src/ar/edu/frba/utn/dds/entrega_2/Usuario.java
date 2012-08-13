@@ -12,10 +12,11 @@ public class Usuario {
 	private List<Busqueda> busqueda = new ArrayList<Busqueda>();
 	private TipoUsuario tipo;
 	
-	public Usuario(String unNombre, String unApellido, String unDni){
+	public Usuario(String unNombre, String unApellido, String unDni, TipoUsuario unTipo){
 		this.nombre = unNombre;
 		this.apellido = unApellido;
 		this.dni = unDni;
+		this.tipo = unTipo;
 	}
 	
 	public String getNombre() {
@@ -51,7 +52,7 @@ public class Usuario {
 	
 	/**
 	 * Busca asientos disponibles en una determinada aerolinea y 
-	 * añade la busqueda realizada al perfil del usuario
+	 * añade la busqueda realizada al perfil del usuario.
 	 * 
 	 * @param unOrigen
 	 * @param unDestino
@@ -63,9 +64,54 @@ public class Usuario {
 	 */
 	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, String unaFecha,String unHorario, Aerolinea unaAerolinea) throws ConversionException{
 		this.getBusqueda().add(new Busqueda(unOrigen, unDestino, unaFecha, unHorario));
-		return unaAerolinea.asientosDisponibles(unOrigen, unDestino, unaFecha, unHorario);
+		List<Asiento> asientosEncontrados = unaAerolinea.asientosDisponibles(unOrigen, unDestino, unaFecha, unHorario);
+		return this.distinguirSuperOfertas(this.calcularPrecio(asientosEncontrados, unaAerolinea));
+		
+	}
+
+	/**
+	 * Recalcula los precios de los asientos en base a los impuestos
+	 * y recargos correspondientes por las aerolineas y tipos de usuarios
+	 * respectivamente
+	 * 
+	 * @param asientosEncontrados
+	 * @param unaAerolinea
+	 * @return
+	 */
+	private List<Asiento> calcularPrecio(List<Asiento> asientosEncontrados, Aerolinea unaAerolinea) {
+		for( Asiento unAsiento : asientosEncontrados ){
+			unAsiento.setPrecio( unAsiento.getPrecio()*unaAerolinea.getImpuesto() + this.getTipo().getRecargo() + unAsiento.getPrecio() );
+		}
+		return asientosEncontrados;
+	}
+
+	/**
+	 * Elimina los asientos que son superofertas en caso que el usuario
+	 * que este buscando dichos asientos no sea Vip
+	 * 
+	 * @param asientosEncontrados
+	 * @return
+	 */
+	private List<Asiento> distinguirSuperOfertas(List<Asiento> asientosEncontrados) {
+		for( Asiento unAsiento : asientosEncontrados ){
+			if(this.unAsientoEsSuperOferta(unAsiento) && !(this.getTipo() instanceof Vip)){
+				asientosEncontrados.remove(unAsiento);
+			}
+		}
+		return asientosEncontrados;
 	}
 	
+	/**
+	 * Determina si un asiento es o no superoferta
+	 * 
+	 * @param unAsiento
+	 * @return
+	 */
+	private boolean unAsientoEsSuperOferta(Asiento unAsiento) {
+		if(  (unAsiento.getClase().equals("P") && unAsiento.getPrecio() < 8000) || (unAsiento.getClase().equals("E") && unAsiento.getPrecio() < 4000) ) return true;
+		return false;
+	}
+
 	/**
 	 * Busca asientos disponibles en una determinada aerolinea 
 	 * filtrando también según clase y ubicacion. 
@@ -94,4 +140,7 @@ public class Usuario {
 		return asientosFiltrados;
 	}
 	
+	public void comprarAsiento(Asiento unAsiento, Aerolinea unaAerolinea){
+		unaAerolinea.comprar(unAsiento);
+	}
 }

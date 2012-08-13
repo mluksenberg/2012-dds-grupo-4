@@ -11,10 +11,10 @@ import com.lanchita.AerolineaLanchita;
 public class Lanchita implements Aerolinea{
 	private AerolineaLanchita lanchita = AerolineaLanchita.getInstance();
 	private List<Asiento> asientos = new ArrayList<Asiento>();
-	private static float porcentaje;
+	private static float impuesto = 15;
 	
 	public Lanchita() throws ConversionException{
-		List<String[]> stringsAsientos = Arrays.asList(lanchita.asientosDisponibles(null, null, null, null, null, null));
+		List<String[]> stringsAsientos = Arrays.asList(this.getLanchita().asientosDisponibles(null, null, null, null, null, null));
 		for(String[] unAsiento : stringsAsientos){
 			this.asientos.add(new Asiento(unAsiento[8], unAsiento[9], unAsiento[0], unAsiento[1], unAsiento[2], unAsiento[3], unAsiento[4], unAsiento[10], unAsiento[6], unAsiento[11], unAsiento[7]));
 		}
@@ -30,6 +30,15 @@ public class Lanchita implements Aerolinea{
 		return asientosDisponibles;
 	}
 	
+	public AerolineaLanchita getLanchita() {
+		return lanchita;
+	}
+
+	public void setLanchita(AerolineaLanchita lanchita) {
+		this.lanchita = lanchita;
+	}
+	
+	
 	public List<Asiento> getAsientos() {
 		return asientos;
 	}
@@ -37,12 +46,20 @@ public class Lanchita implements Aerolinea{
 	public void setAsientos(List<Asiento> asientos) {
 		this.asientos = asientos;
 	}
-
-	public static float getPorcentaje() {
-		return porcentaje;
+	
+	@Override
+	public float getImpuesto() {
+		return Lanchita.impuesto;
 	}
 
-	public static void setPorcentaje(float porcentaje) {
-		Lanchita.porcentaje = porcentaje;
+	public static void setImpuesto(float impuesto) {
+		Lanchita.impuesto = impuesto;
 	}
+
+	@Override
+	public void comprar(Asiento unAsiento) {
+		this.getLanchita().comprar(unAsiento.getAsiento());
+		this.getAsientos().remove(unAsiento);
+	}
+
 }

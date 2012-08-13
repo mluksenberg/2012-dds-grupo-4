@@ -17,5 +17,7 @@ public interface Aerolinea {
 	 * @throws ConversionException
 	 */
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino, String unaFecha, String unHorario) throws ConversionException;
+	public float getImpuesto();
+	public void comprar(Asiento unAsiento);
 	
 }
