@@ -17,20 +17,22 @@ import ar.edu.frba.utn.dds.entrega_2.Vip;
 
 public class TestEntrega2 {
 	Lanchita lanchita;
-	Usuario usuarioFederico;
-	Usuario usuarioMarcelo;
-	Usuario usuarioAndres;
+	Usuario usuarioVip;
+	Usuario usuarioEstandar;
+	Usuario usuarioNoPago;
+	Asiento unAsiento;
 	@Before
 	public void setUp() throws Exception {
 		lanchita = new Lanchita();
-		usuarioFederico = new Usuario("Federico Gabriel", "Lopez Luksenberg", "36747013", new Vip());
-		usuarioMarcelo = new Usuario("Marcelo Javier", "Lopez Luksenberg", "36747012", new Estandar());
-		usuarioAndres = new Usuario("Andres Francisco", "Lopez Luksenberg", "33783548", new NoPaga());
+		usuarioVip = new Usuario("Federico Gabriel", "Lopez Luksenberg", "36747013", new Vip());
+		usuarioEstandar = new Usuario("Marcelo Javier", "Lopez Luksenberg", "36747012", new Estandar());
+		usuarioNoPago = new Usuario("Andres Francisco", "Lopez Luksenberg", "33783548", new NoPaga());
+		unAsiento = lanchita.asientosDisponibles(null, null, null, null, usuarioNoPago).get(0);
 	}
 
 	@Test
 	public void testParsearAsientosDeLanchita() throws ConversionException{
-		for(Asiento unAsiento : lanchita.asientosDisponibles(null, null, null, null, usuarioFederico)){
+		for(Asiento unAsiento : lanchita.asientosDisponibles(null, null, null, null, usuarioVip)){
 			if(!(unAsiento instanceof Asiento)){
 				Assert.assertTrue(false);
 			}
@@ -40,19 +42,16 @@ public class TestEntrega2 {
 	
 	@Test
 	public void testUnaFechaEstaEntreDosFechas() throws ConversionException{
-		Asiento unAsiento = lanchita.asientosDisponibles(null,null,null,null,usuarioAndres).get(0);
 		Assert.assertTrue(unAsiento.tieneFechasEntre("20/12/2012", "12:00"));
 	}
 	
 	@Test
 	public void testUnaFechaEsLaMismaQueOtraFecha() throws ConversionException{
-		Asiento unAsiento = lanchita.asientosDisponibles(null,null,null,null,usuarioAndres).get(0);
 		Assert.assertTrue(unAsiento.tieneFechasEntre("20/12/2012", "14:00"));
 	}
 	
 	@Test
 	public void testUnaFechaNoEstaEntreLasDosFechasDadas() throws ConversionException{
-		Asiento unAsiento = lanchita.asientosDisponibles(null,null,null,null,usuarioAndres).get(0);
 		Assert.assertFalse(unAsiento.tieneFechasEntre("20/12/2012", "14:01"));
 	}
 	
@@ -62,17 +61,25 @@ public class TestEntrega2 {
 	}
 	
 	@Test
-	public void testComprarUnAsientoVistoDesdeUnaAerolinea() throws ConversionException{
-		Asiento unAsiento = lanchita.asientosDisponibles(null,null,null,null,usuarioAndres).get(0);
-		int cantidadAsientos = lanchita.asientosDisponibles(null,null,null,null,usuarioAndres).size();
+	public void testComprarUnAsientoVistoDesdeUnaAerolineaParaUnUsuarioNoPago() throws ConversionException{
+		int cantidadAsientos = lanchita.asientosDisponibles(null,null,null,null,usuarioNoPago).size();
 		lanchita.comprar(unAsiento);
-		Assert.assertTrue(lanchita.asientosDisponibles(null,null,null,null,usuarioAndres).size() < cantidadAsientos);
+		Assert.assertTrue(lanchita.asientosDisponibles(null,null,null,null,usuarioNoPago).size() < cantidadAsientos);
 	}
 	
 	@Test
-	public void testAsientosDisponiblesVistoDesdeUnaAerolineaConTodosLosParametrosEnNull() throws ConversionException{
-		List<Asiento> asientos = lanchita.asientosDisponibles(null, null, null, null, usuarioFederico);
+	public void testAsientosDisponiblesVistoDesdeUnaAerolineaConTodosLosParametrosEnNullParaUnUsuarioVip() throws ConversionException{
+		List<Asiento> asientos = lanchita.asientosDisponibles(null, null, null, null, usuarioVip);
 		Assert.assertTrue(asientos.size() == 9);
+	}
+	
+	@Test
+	public void testAsientosDisponiblesVistoDesdeUnaAerolineaConFechaYHoraNull() throws ConversionException{
+		List<Asiento> asientos = lanchita.asientosDisponibles("EZE", "USA", null, null, usuarioVip);
+		for(Asiento unAsiento : asientos){
+			System.out.println(unAsiento);
+		}
+		Assert.assertEquals(asientos.size(), 3);
 	}
 
 }
