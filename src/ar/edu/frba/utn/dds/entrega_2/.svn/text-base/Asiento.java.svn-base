@@ -6,7 +6,7 @@ import ar.edu.frba.utn.dds.entrega_1.ConversionException;
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
 import ar.edu.frba.utn.dds.entrega_1.Parser;
 
-public class Asiento implements Cloneable{
+public class Asiento {
 	private String origen;
 	private String destino;
 	private String asiento;
@@ -17,9 +17,8 @@ public class Asiento implements Cloneable{
 	private Fecha fechaSalida;
 	private Fecha fechaLlegada;
 	private Parser parser = new Parser();
-	private Integer popularidad;
 	
-	public Asiento(String unOrigen, String unDestino, String unAsiento, float unPrecio, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada,Integer popularidad) throws ConversionException{
+	public Asiento(String unOrigen, String unDestino, String unAsiento, float unPrecio, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada) throws ConversionException{
 		this.parser.agregarFormato("yyyy-MM-dd HH:mm");
 		this.parser.agregarFormato("MM-dd-yyyy HH:mm");
 		this.parser.agregarFormato("dd/MM/yyyy HH:mm");
@@ -33,7 +32,6 @@ public class Asiento implements Cloneable{
 		else this.estaReservado = true;
 		this.fechaSalida = this.parser.parsear(unaFechaSalida + " " + unaHoraSalida);
 		this.fechaLlegada = this.parser.parsear(unaFechaLlegada + " " + unaHoraLlegada);
-		this.popularidad=popularidad;
 	}
 	
 	public String toString(){
@@ -128,16 +126,5 @@ public class Asiento implements Cloneable{
 	public boolean esSuperOferta() {
 		return (this.getClase().equals("P") && this.getPrecio().floatValue() <= 8000) || (this.getClase().equals("E") && this.getPrecio().floatValue() <= 4000);
 	}
-	//FIXME contemplar el tiempo de conexion si corresponde
-	public Long obtenerDuracion(){
-		return (this.getFechaLlegada().getFecha().getTime() - this.fechaSalida.getFecha().getTime());
-	}
 
-	public Integer getPopularidad() {
-		return popularidad;
-	}
-
-	public void setPopularidad(Integer popularidad) {
-		this.popularidad = popularidad;
-	}
 }

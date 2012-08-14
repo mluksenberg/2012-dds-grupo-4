@@ -1,0 +1,63 @@
+10
+
+dir
+0
+https://nuxlic@github.com/flopezluksenberg/2012-dds-grupo-4.git/trunk/src/ar/edu/frba/utn/dds/entrega_3
+https://nuxlic@github.com/flopezluksenberg/2012-dds-grupo-4.git
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+ba959f83-2706-f729-9d09-ce57b7db7bff
+
+Criterio.java
+file
+
+
+
+add
+
+CriterioPopularidad.java
+file
+
+
+
+add
+
+CriterioPrecioAscendente.java
+file
+
+
+
+add
+
+CriterioPrecioDescendente.java
+file
+
+
+
+add
+
+CriterioTiempoVuelo.java
+file
+
+
+
+add
+
