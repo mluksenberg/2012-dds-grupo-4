@@ -1,5 +1,9 @@
 package ar.edu.utn.frba.dss.test;
 
+
+
+
+
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -64,5 +68,12 @@ public class TestEntrega2 {
 		lanchita.comprar(unAsiento);
 		Assert.assertTrue(lanchita.getLanchita().asientosDisponibles(null, null, null, null, null, null).length < cantidadAsientos);
 	}
+	@Test
+	public void testUnAsientoEsSuperOferta() throws ConversionException{
+		Asiento asiento = usuarioVip.buscarAsientoDispobibles("EZE","USA", null, null,"E","P", lanchita).get(0);
+		Assert.assertTrue(asiento.esSuperOferta() && asiento.getPrecio().floatValue() <= 4000);
+	}
+	
+	
 
 }
