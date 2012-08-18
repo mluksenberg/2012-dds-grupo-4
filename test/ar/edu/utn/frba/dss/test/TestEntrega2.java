@@ -4,6 +4,8 @@ package ar.edu.utn.frba.dss.test;
 
 
 
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -23,6 +25,7 @@ public class TestEntrega2 {
 	Usuario usuarioEstandar;
 	Usuario usuarioNoPago;
 	Asiento unAsiento;
+	
 	@Before
 	public void setUp() throws Exception {
 		lanchita = new Lanchita();
@@ -63,15 +66,31 @@ public class TestEntrega2 {
 	}
 	
 	@Test
+	public void testUnAsientoEsSuperOferta() throws ConversionException{
+		Asiento asiento = usuarioVip.buscarAsientoDispobibles("EZE","USA", null, null,"E","P", lanchita).get(0);
+		Assert.assertTrue(asiento.esSuperOferta() && asiento.getPrecio().floatValue() <= 4000);
+	}
+	
+	@Test
+	public void testBuscarAsientosDisponiblesParaElVip() throws ConversionException{
+		List<Asiento> asientosDisponibles=usuarioVip.buscarAsientoDispobibles("AEO", "USH", null, null, lanchita);
+		Assert.assertTrue(asientosDisponibles.size()==1);
+	}
+	@Test
+	public void testBuscarAsientosDisponiblesParaElEstandar() throws ConversionException{
+		List<Asiento> asientosDisponibles=usuarioEstandar.buscarAsientoDispobibles("PER", "USA",null,null, lanchita);
+		Assert.assertTrue(asientosDisponibles.size()==3);
+	}
+	@Test
+	public void testBuscarAsientosDisponiblesParaElQueNoGarpa() throws ConversionException{
+		List<Asiento> asientosDisponibles=usuarioNoPago.buscarAsientoDispobibles("PER", "USA", null, null, lanchita);
+		Assert.assertTrue(asientosDisponibles.size()==3);
+	}
+	@Test
 	public void testComprarUnAsientoVistoDesdeUnaAerolineaParaUnUsuarioNoPago() throws ConversionException{
 		int cantidadAsientos = lanchita.getLanchita().asientosDisponibles(null, null, null, null, null, null).length;
 		lanchita.comprar(unAsiento);
 		Assert.assertTrue(lanchita.getLanchita().asientosDisponibles(null, null, null, null, null, null).length < cantidadAsientos);
-	}
-	@Test
-	public void testUnAsientoEsSuperOferta() throws ConversionException{
-		Asiento asiento = usuarioVip.buscarAsientoDispobibles("EZE","USA", null, null,"E","P", lanchita).get(0);
-		Assert.assertTrue(asiento.esSuperOferta() && asiento.getPrecio().floatValue() <= 4000);
 	}
 	
 	
