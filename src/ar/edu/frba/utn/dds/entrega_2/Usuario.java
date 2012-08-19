@@ -3,7 +3,7 @@ package ar.edu.frba.utn.dds.entrega_2;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.frba.utn.dds.entrega_1.ConversionException;
+
 
 public class Usuario {
 	private String nombre;
@@ -60,9 +60,11 @@ public class Usuario {
 	 * @param unHorario
 	 * @param unaAerolinea
 	 * @return List<Asiento> - Devuelve una lista de asientos
-	 * @throws ConversionException
 	 */
-	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, String unaFecha,String unHorario, Aerolinea unaAerolinea) throws ConversionException{
+	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, String unaFecha,String unHorario, Aerolinea unaAerolinea){
+		if(unOrigen==null||unDestino==null){
+			throw new ParametrosErroneosExeption();
+		}
 		this.getBusqueda().add(new Busqueda(unOrigen, unDestino, unaFecha, unHorario));
 		return unaAerolinea.asientosDisponibles(unOrigen, unDestino, unaFecha, unHorario, this);
 	}
@@ -79,9 +81,9 @@ public class Usuario {
 	 * @param unaUbicacion
 	 * @param unaAerolinea
 	 * @return List
-	 * @throws ConversionException
+	 * 
 	 */
-	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, String unaFecha,String unHorario, String unaClase, String unaUbicacion, Aerolinea unaAerolinea) throws ConversionException{
+	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, String unaFecha,String unHorario, String unaClase, String unaUbicacion, Aerolinea unaAerolinea){
 		List<Asiento> asientosDisponibles = this.buscarAsientoDispobibles(unOrigen, unDestino, unaFecha, unHorario, unaAerolinea);
 		this.getBusqueda().get(this.getBusqueda().size()-1).setUbicacion(unaUbicacion);
 		this.getBusqueda().get(this.getBusqueda().size() -1).setClase(unaClase);

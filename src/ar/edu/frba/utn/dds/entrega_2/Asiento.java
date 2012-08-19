@@ -119,7 +119,7 @@ public class Asiento implements Cloneable{
 		this.origen = origen;
 	}
 
-	public boolean tieneFechasEntre(String unaFecha, String unHorario) throws ConversionException {
+	public boolean tieneFechasEntre(String unaFecha, String unHorario) {
 		if(unaFecha == null && unHorario == null) return true;
 		Fecha otraFecha = this.getParser().parsear(unaFecha + " " + unHorario);
 		return ( otraFecha.esPosteriorA(this.getFechaSalida()) && this.getFechaLlegada().esPosteriorA(otraFecha) ) || this.getFechaSalida().esLaMismaFechaQue(otraFecha) || this.getFechaLlegada().esLaMismaFechaQue(otraFecha);

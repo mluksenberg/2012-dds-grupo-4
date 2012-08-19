@@ -1,6 +1,6 @@
 package ar.edu.frba.utn.dds.entrega_1;
 
-public class ConversionException extends Exception {
+public class ConversionException extends RuntimeException {
 
 	/**
 	 * 

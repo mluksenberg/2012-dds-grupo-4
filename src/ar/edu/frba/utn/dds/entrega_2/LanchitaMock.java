@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import com.lanchita.AerolineaLanchita;
 
-public class Lanchita implements Aerolinea {
-	private AerolineaLanchita lanchita = AerolineaLanchita.getInstance();
+
+
+import ar.edu.frba.utn.dds.entrega_2.AerolineaLanchitaMock;
+
+public class LanchitaMock implements Aerolinea{
+	private AerolineaLanchitaMock lanchita = new AerolineaLanchitaMock();
 	private static float impuesto = 15;
 	private String[][] asientos;
 
-	public Lanchita() {
+	public LanchitaMock() {
 
 		this.setAllAsientos(this.getLanchita().asientosDisponibles(null, null,
 				null, null, null, null));
@@ -19,7 +22,8 @@ public class Lanchita implements Aerolinea {
 	}
 
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino,
-			String unaFecha, String unHorario, Usuario unUsuario){
+			String unaFecha, String unHorario, Usuario unUsuario) {
+		
 		List<Asiento> asientosDisponibles = new ArrayList<Asiento>();
 		for (String[] unStringAsiento : this.getLanchita().asientosDisponibles(
 				unOrigen, unDestino, null, null, null, null)) {
@@ -53,21 +57,21 @@ public class Lanchita implements Aerolinea {
 				+ unUsuario.getTipo().getRecargo();
 	}
 
-	public AerolineaLanchita getLanchita() {
+	public AerolineaLanchitaMock getLanchita() {
 		return lanchita;
 	}
 
-	public void setLanchita(AerolineaLanchita lanchita) {
+	public void setLanchita(AerolineaLanchitaMock lanchita) {
 		this.lanchita = lanchita;
 	}
 
 	@Override
 	public float getImpuesto() {
-		return Lanchita.impuesto;
+		return LanchitaMock.impuesto;
 	}
 
 	public static void setImpuesto(float impuesto) {
-		Lanchita.impuesto = impuesto;
+		LanchitaMock.impuesto = impuesto;
 	}
 
 	@Override
