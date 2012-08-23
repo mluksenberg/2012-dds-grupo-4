@@ -18,6 +18,7 @@ public class Asiento implements Cloneable{
 	private Fecha fechaLlegada;
 	private Parser parser = new Parser();
 	private Integer popularidad;
+	private String estado;
 	
 	public Asiento(String unOrigen, String unDestino, String unAsiento, float unPrecio, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada,Integer popularidad) throws ConversionException{
 		this.parser.agregarFormato("yyyy-MM-dd HH:mm");
@@ -29,6 +30,7 @@ public class Asiento implements Cloneable{
 		this.precio = (new BigDecimal(Float.toString(unPrecio)));
 		this.clase = unaClase;
 		this.ubicacion = unaUbicacion;
+		this.setEstado(unEstado);
 		if(unEstado.equals("D")) this.estaReservado = false;
 		else this.estaReservado = true;
 		this.fechaSalida = this.parser.parsear(unaFechaSalida + " " + unaHoraSalida);
@@ -139,5 +141,13 @@ public class Asiento implements Cloneable{
 
 	public void setPopularidad(Integer popularidad) {
 		this.popularidad = popularidad;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 }

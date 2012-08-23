@@ -11,11 +11,15 @@ public class Lanchita implements Aerolinea {
 	private static float impuesto = 15;
 	private String[][] asientos;
 
-	public Lanchita() {
+	public Lanchita(String[][] asientos2) {
 
+		if(asientos2==null){
 		this.setAllAsientos(this.getLanchita().asientosDisponibles(null, null,
 				null, null, null, null));
-
+		}else{
+			this.setAllAsientos(asientos2);
+		}
+		
 	}
 
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino,
