@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import ar.edu.frba.utn.dds.entrega_1.Fecha;
+
 import com.lanchita.AerolineaLanchita;
 
 public class Lanchita implements Aerolinea {
@@ -22,8 +24,7 @@ public class Lanchita implements Aerolinea {
 		
 	}
 
-	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino,
-			String unaFecha, String unHorario, Usuario unUsuario){
+	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino,Fecha fecha, Usuario unUsuario){
 		List<Asiento> asientosDisponibles = new ArrayList<Asiento>();
 		for (String[] unStringAsiento : this.getLanchita().asientosDisponibles(
 				unOrigen, unDestino, null, null, null, null)) {
@@ -36,9 +37,8 @@ public class Lanchita implements Aerolinea {
 						unStringAsiento[4], unStringAsiento[10],
 						unStringAsiento[6], unStringAsiento[11],
 						unStringAsiento[7], this.popularidadDeUnVuelo(unOrigen,
-								unDestino, unStringAsiento[10],
-								unStringAsiento[11]));
-				if (unAsiento.tieneFechasEntre(unaFecha, unHorario)) {
+								unDestino, fecha),this);
+				if (unAsiento.tieneFechasEntre(fecha)) {
 					asientosDisponibles.add(unAsiento);
 					if (unAsiento.esSuperOferta()
 							&& !(unUsuario.getTipo() instanceof Vip)) {
@@ -80,7 +80,7 @@ public class Lanchita implements Aerolinea {
 	}
 
 	public List<Asiento> obtenerAsientosComprados(String unOrigen,
-			String unDestino, String unaFechaDeSalida, String unaFechaDeLlegada){
+			String unDestino, Fecha unaFecha){
 		List<Asiento> asientosComprados = new ArrayList<Asiento>();
 		for (String[] unStringAsiento : this.getAllAsientos()) {
 			if (unStringAsiento[4] == "C" && unStringAsiento[8] == unOrigen
@@ -90,9 +90,8 @@ public class Lanchita implements Aerolinea {
 						unStringAsiento[2], unStringAsiento[3],
 						unStringAsiento[4], unStringAsiento[10],
 						unStringAsiento[6], unStringAsiento[11],
-						unStringAsiento[7], 0);
-				if (unStringAsiento[10] == unaFechaDeSalida
-						&& unStringAsiento[11] == unaFechaDeLlegada) {
+						unStringAsiento[7], 0,this);
+				if (unAsiento.tieneFechasEntre(unaFecha)) {
 					asientosComprados.add(unAsiento);
 				}
 
@@ -100,12 +99,12 @@ public class Lanchita implements Aerolinea {
 		}
 		return asientosComprados;
 	}
-
+//TODO ¿va aca o en otra clase.. en el futuro?
 	@Override
 	public Integer popularidadDeUnVuelo(String unOrigen, String unDestino,
-			String unaFecha, String unHorario){
+			Fecha unaFecha){
 		List<Asiento> asientosCompradosDelVuelo = obtenerAsientosComprados(
-				unOrigen, unDestino, unaFecha, unHorario);
+				unOrigen, unDestino, unaFecha);
 		return asientosCompradosDelVuelo.size();
 	}
 

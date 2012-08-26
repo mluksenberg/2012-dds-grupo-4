@@ -1,18 +1,18 @@
 package ar.edu.frba.utn.dds.entrega_2;
 
+import ar.edu.frba.utn.dds.entrega_1.Fecha;
+
 public class Busqueda {
 	private String origen;
 	private String destino;
-	private String fecha;
-	private String horario;
+	private Fecha fecha;
 	private String clase;
 	private String ubicacion;
 
-	public Busqueda(String unOrigen, String unDestino, String unaFecha, String unHorario){
+	public Busqueda(String unOrigen, String unDestino, Fecha unaFecha){
 		this.origen = unOrigen;
 		this.destino = unDestino;
 		this.setFecha(unaFecha);
-		this.setHorario(unHorario);
 		this.clase = null;
 		this.ubicacion = null;
 	}
@@ -40,16 +40,11 @@ public class Busqueda {
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
 	}
-	public String getFecha() {
+	public Fecha getFecha() {
 		return fecha;
 	}
-	public void setFecha(String fecha) {
+	public void setFecha(Fecha fecha) {
 		this.fecha = fecha;
 	}
-	public String getHorario() {
-		return horario;
-	}
-	public void setHorario(String horario) {
-		this.horario = horario;
-	}
+	
 }

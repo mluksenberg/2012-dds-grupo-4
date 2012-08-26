@@ -3,6 +3,8 @@ package ar.edu.frba.utn.dds.entrega_2;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.frba.utn.dds.entrega_1.Fecha;
+
 
 
 public class Usuario {
@@ -11,12 +13,14 @@ public class Usuario {
 	private String dni;
 	private List<Busqueda> busqueda = new ArrayList<Busqueda>();
 	private TipoUsuario tipo;
+	private Aterrizar aterrizar;
 	
-	public Usuario(String unNombre, String unApellido, String unDni, TipoUsuario unTipo){
+	public Usuario(String unNombre, String unApellido, String unDni, TipoUsuario unTipo, Aterrizar aterrizar){
 		this.nombre = unNombre;
 		this.apellido = unApellido;
 		this.dni = unDni;
 		this.tipo = unTipo;
+		this.aterrizar=aterrizar;
 	}
 	
 	public String getNombre() {
@@ -61,12 +65,9 @@ public class Usuario {
 	 * @param unaAerolinea
 	 * @return List<Asiento> - Devuelve una lista de asientos
 	 */
-	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, String unaFecha,String unHorario, Aerolinea unaAerolinea){
-		if(unOrigen==null||unDestino==null){
-			throw new ParametrosErroneosExeption();
-		}
-		this.getBusqueda().add(new Busqueda(unOrigen, unDestino, unaFecha, unHorario));
-		return unaAerolinea.asientosDisponibles(unOrigen, unDestino, unaFecha, unHorario, this);
+	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha){
+		this.getBusqueda().add(new Busqueda(unOrigen, unDestino,unaFecha));
+		return this.getAterrizar().asientosDisponibles(unOrigen, unDestino, unaFecha, this);
 	}
 
 	/**
@@ -83,8 +84,8 @@ public class Usuario {
 	 * @return List
 	 * 
 	 */
-	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, String unaFecha,String unHorario, String unaClase, String unaUbicacion, Aerolinea unaAerolinea){
-		List<Asiento> asientosDisponibles = this.buscarAsientoDispobibles(unOrigen, unDestino, unaFecha, unHorario, unaAerolinea);
+	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha,String unaClase, String unaUbicacion){
+		List<Asiento> asientosDisponibles = this.buscarAsientoDispobibles(unOrigen, unDestino, unaFecha);
 		this.getBusqueda().get(this.getBusqueda().size()-1).setUbicacion(unaUbicacion);
 		this.getBusqueda().get(this.getBusqueda().size() -1).setClase(unaClase);
 		List<Asiento> asientosFiltrados = new ArrayList<Asiento>();
@@ -96,7 +97,15 @@ public class Usuario {
 		return asientosFiltrados;
 	}
 	
-	public void comprarAsiento(Asiento unAsiento, Aerolinea unaAerolinea){
-		unaAerolinea.comprar(unAsiento);
+	public void comprarAsiento(Asiento unAsiento){
+		this.getAterrizar().comprar(unAsiento);
+	}
+
+	public Aterrizar getAterrizar() {
+		return aterrizar;
+	}
+
+	public void setAterrizar(Aterrizar aterrizar) {
+		this.aterrizar = aterrizar;
 	}
 }

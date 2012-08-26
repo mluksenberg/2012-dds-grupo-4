@@ -2,7 +2,6 @@ package ar.edu.frba.utn.dds.entrega_2;
 
 import java.math.BigDecimal;
 
-import ar.edu.frba.utn.dds.entrega_1.ConversionException;
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
 import ar.edu.frba.utn.dds.entrega_1.Parser;
 
@@ -19,8 +18,10 @@ public class Asiento implements Cloneable{
 	private Parser parser = new Parser();
 	private Integer popularidad;
 	private String estado;
+	private Aerolinea aerolinea;
 	
-	public Asiento(String unOrigen, String unDestino, String unAsiento, float unPrecio, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada,Integer popularidad) throws ConversionException{
+	
+	public Asiento(String unOrigen, String unDestino, String unAsiento, float unPrecio, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada,Integer popularidad, Aerolinea unaAerolinea){
 		this.parser.agregarFormato("yyyy-MM-dd HH:mm");
 		this.parser.agregarFormato("MM-dd-yyyy HH:mm");
 		this.parser.agregarFormato("dd/MM/yyyy HH:mm");
@@ -36,6 +37,7 @@ public class Asiento implements Cloneable{
 		this.fechaSalida = this.parser.parsear(unaFechaSalida + " " + unaHoraSalida);
 		this.fechaLlegada = this.parser.parsear(unaFechaLlegada + " " + unaHoraLlegada);
 		this.popularidad=popularidad;
+		this.setAerolinea(unaAerolinea);
 	}
 	
 	public String toString(){
@@ -121,9 +123,10 @@ public class Asiento implements Cloneable{
 		this.origen = origen;
 	}
 
-	public boolean tieneFechasEntre(String unaFecha, String unHorario) {
-		if(unaFecha == null && unHorario == null) return true;
-		Fecha otraFecha = this.getParser().parsear(unaFecha + " " + unHorario);
+	public boolean tieneFechasEntre(Fecha otraFecha) {
+		//if(unaFecha == null && unHorario == null) return true;
+		if(otraFecha==null) return true;
+		//Fecha otraFecha = this.getParser().parsear(unaFecha + " " + unHorario);
 		return ( otraFecha.esPosteriorA(this.getFechaSalida()) && this.getFechaLlegada().esPosteriorA(otraFecha) ) || this.getFechaSalida().esLaMismaFechaQue(otraFecha) || this.getFechaLlegada().esLaMismaFechaQue(otraFecha);
 	}
 
@@ -149,5 +152,13 @@ public class Asiento implements Cloneable{
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	public Aerolinea getAerolinea() {
+		return aerolinea;
+	}
+
+	public void setAerolinea(Aerolinea aerolinea) {
+		this.aerolinea = aerolinea;
 	}
 }
