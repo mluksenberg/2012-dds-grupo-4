@@ -3,7 +3,12 @@ package ar.edu.frba.utn.dds.entrega_2;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
+import ar.edu.frba.utn.dds.entrega_3.LaReservaNoCorrespondeAlUsuarioExeption;
+import ar.edu.frba.utn.dds.entrega_3.NoAdmiteReservaExeption;
+import ar.edu.frba.utn.dds.entrega_3.Reserva;
+import ar.edu.frba.utn.dds.entrega_3.UsuarioInvalidoParaReservaExeption;
 
 public class Aterrizar {
 
@@ -49,9 +54,41 @@ public class Aterrizar {
 		}
 		return asientos;
 	}
-
-	public void comprar(Asiento unAsiento) {
+	
+	/*
+	 * Metodo privado que se encarga de la validacion de la primera reserva. 
+	 */
+	protected boolean esElUsuarioQueReservoOriginalmente(Asiento unAsiento,Usuario unUsuario) {
+		return unAsiento.getReservaPosta().getDni().equals(unUsuario.getDni());
+	}
+	
+	public void comprar(Asiento unAsiento,Usuario user) {
+		if(unAsiento.getEstado().equals("R") && !this.esElUsuarioQueReservoOriginalmente(unAsiento, user)){
+			throw new LaReservaNoCorrespondeAlUsuarioExeption();
+		}
 		unAsiento.getAerolinea().comprar(unAsiento);
+		unAsiento.getReservas().clear();
+	}
+	
+	/*
+	 * Este metodo reserva un asiento que se le pasa por parametro, si no tiene reservas le avisa a la aerolinea que
+	 * lo reserve, de lo contrario registra una nueva sobrereserva
+	 * En el asiento guardamos dichas reservas y la del index 0 corresponde a la reserva posta (la oriyinal)
+	 */
+	
+	public void reservar(Asiento unAsiento,Usuario usuario){
+		if(!(usuario.getTipo() instanceof Estandar)){
+			throw new UsuarioInvalidoParaReservaExeption();
+		}
+		if(!unAsiento.getAerolinea().admiteReserva()){
+			throw new NoAdmiteReservaExeption();
+		}
+		//discutimos 2 opciones de diseño.. 1.Usando exepcion que tira el metodo reserva de lanchitaPosta
+		//2. usando este if
+		if(!(unAsiento.getEstado().equals("R"))){
+			unAsiento.getAerolinea().reservarAsiento(unAsiento, usuario);
+		}
+		unAsiento.guardarReserva(new Reserva(unAsiento,usuario.getDni()));
 	}
 
 	private float calcularPrecioDeUnAsiento(String precio, Usuario unUsuario,

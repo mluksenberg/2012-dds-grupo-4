@@ -1,19 +1,16 @@
 package ar.edu.utn.frba.dss.test;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.lanchita.AerolineaLanchita;
-
-import static org.mockito.Mockito.*;
 
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
 import ar.edu.frba.utn.dds.entrega_1.Parser;
@@ -23,19 +20,25 @@ import ar.edu.frba.utn.dds.entrega_2.Aterrizar;
 import ar.edu.frba.utn.dds.entrega_2.Estandar;
 import ar.edu.frba.utn.dds.entrega_2.Lanchita;
 import ar.edu.frba.utn.dds.entrega_2.NoPaga;
-import ar.edu.frba.utn.dds.entrega_2.ParametrosErroneosExeption;
 import ar.edu.frba.utn.dds.entrega_2.Usuario;
 import ar.edu.frba.utn.dds.entrega_2.Vip;
+import ar.edu.frba.utn.dds.entrega_3.LaReservaNoCorrespondeAlUsuarioExeption;
+import ar.edu.frba.utn.dds.entrega_3.NoAdmiteReservaExeption;
+import ar.edu.frba.utn.dds.entrega_3.UsuarioInvalidoParaReservaExeption;
 
-public class TestEntrega2 {
+import com.lanchita.AerolineaLanchita;
+
+public class TestEntrega3 {
 	Lanchita lanchita;
 	AerolineaLanchita lanchitaPostaMock;
 	Usuario usuarioVip;
 	Usuario usuarioEstandar;
 	Usuario usuarioNoPago;
+	Usuario otroUsuarioEstandar;
 	Asiento unAsiento;
 	Parser parser;
 	Aterrizar aterrizar;
+
 	@Before
 	public void setUp() throws Exception {
 		////////////////////////////////////////////////////This is mock baby?////////////////////
@@ -72,99 +75,35 @@ public class TestEntrega2 {
 		
 		usuarioVip = new Usuario("Federico Gabriel", "Lopez Luksenberg", "36747013", new Vip(),aterrizar);
 		usuarioEstandar = new Usuario("Marcelo Javier", "Lopez Luksenberg", "36747012", new Estandar(),aterrizar);
+		otroUsuarioEstandar = new Usuario("Eugenio", "Lopez Luksenberg", "28543567", new Estandar(), aterrizar);
 		usuarioNoPago = new Usuario("Andres Francisco", "Lopez Luksenberg", "33783548", new NoPaga(),aterrizar);
 		Fecha unaFecha= parser.parsear("20/12/2012" + " " + "15:20");
 		unAsiento = lanchita.asientosDisponibles("EZE", "USA",unaFecha).get(0);
-	}
-
-
-	
-	@Test (expected = ParametrosErroneosExeption.class)
-	public void testValidacionDeParametrosObligatoriosEnLaBusqueda(){
-		@SuppressWarnings("unused")
-		Asiento asiento = usuarioVip.buscarAsientoDispobibles(null,null, null, null,"E", false).get(0);
-
+		lanchita.setMaximaDuracionDeReserva(10);
 	}
 	
-	@Test
-	public void testUnaFechaEstaEntreDosFechas(){
-		Fecha otraFecha=parser.parsear("20/12/2012"+ " " +"20:00");
-		Assert.assertTrue(unAsiento.tieneFechasEntre(otraFecha));
+	@Test (expected=UsuarioInvalidoParaReservaExeption.class)
+	public void testReservarConUnUsuarioVIP(){
+		usuarioVip.reservarAsiento(unAsiento);
 	}
 	
-	@Test
-	public void testUnaFechaEsLaMismaQueOtraFecha(){
-		Fecha otraFecha=parser.parsear("20/12/2012"+ " " +"14:00");
-		Assert.assertTrue(unAsiento.tieneFechasEntre(otraFecha));
+//	@Test (expected = NoAdmiteReservaExeption.class)
+//	public void testAerolineaNoAdmiteReserva(){
+//		//TODO Probar con OCEANICS
+//	}
+	
+	@Test (expected = LaReservaNoCorrespondeAlUsuarioExeption.class)
+	public void testUsuarioCompreUnAsientoYaReservadoPorOtro(){
+		usuarioEstandar.reservarAsiento(unAsiento);
+		otroUsuarioEstandar.comprarAsiento(unAsiento);
 	}
 	
 	@Test
-	public void testUnaFechaNoEstaEntreLasDosFechasDadas(){
-		Fecha otraFecha=parser.parsear("20/12/2012"+ " " +"13:59");
-		Assert.assertFalse(unAsiento.tieneFechasEntre(otraFecha));
+	public void testUsuarioQueReservoPuedeComprarAsientoYLasSobreReservasSeEliminan(){
+		usuarioEstandar.reservarAsiento(unAsiento);
+		otroUsuarioEstandar.reservarAsiento(unAsiento);
+		usuarioEstandar.comprarAsiento(unAsiento);
+		Assert.assertEquals(unAsiento.getReservas().size(), 0);
 	}
 	
-	@Test
-	public void testObtenerImpuestoDeUnaAerolinea(){
-		Assert.assertTrue(lanchita.getImpuesto() == 15);
-	}
-	
-	/*
-	 * el usuario compra y yo verifico que se haya invocado comprar en el lanchita
-	 * posta con el codigo de asiento que compre.. si da verde compro bien
-	 * pues no tiro exeption alguna
-	 * el veryfy funciona de assert segun la especificacion
-	 */
-	@Test
-	public void testComprarUnAsiento(){
-		usuarioVip.comprarAsiento(unAsiento);
-		verify(lanchitaPostaMock).comprar(unAsiento.getAsiento());
-	}
-	
-	@Test
-	public void testUnAsientoEsSuperOferta(){
-		Asiento asiento = usuarioVip.buscarAsientoDispobibles("EZE","USA", null,"E","P", false).get(0);
-		Assert.assertTrue(asiento.esSuperOferta() && asiento.getPrecio().floatValue() <= 4000);
-	}
-	
-	@Test
-	public void testBuscarAsientosDisponiblesParaElVip(){
-		List<Asiento> asientosDisponibles=usuarioVip.buscarAsientoDispobibles("EZE", "USA", null, false);
-		Assert.assertEquals(asientosDisponibles.size(),3);
-	}
-	@Test
-	public void testBuscarAsientosDisponiblesParaElEstandar(){
-		List<Asiento> asientosDisponibles=usuarioEstandar.buscarAsientoDispobibles("PER", "USA",null, false);
-		Assert.assertEquals(asientosDisponibles.size(),3);
-	}
-	@Test
-	public void testBuscarAsientosDisponiblesParaElQueNoGarpa(){
-		List<Asiento> asientosDisponibles=usuarioNoPago.buscarAsientoDispobibles("PER", "USA", null, false);
-		Assert.assertEquals(asientosDisponibles.size(),3);
-	}
-	
-	@Test
-	public void testAsientosDisponiblesConTodosLosParametrosEnNull(){
-		List<Asiento> asientos=lanchita.asientosDisponibles(null, null, null);
-		Assert.assertTrue(asientos.size()==10);
-	}
-	
-	@Test
-	public void testAsientosDisponilesSoloConDestinoNull(){
-		List<Asiento> asientos=lanchita.asientosDisponibles("EZE", null, null);
-		Assert.assertTrue(asientos.size()==6);
-	}
-	
-	@Test
-	public void testAsientosDisponiblesSoloConOrigenNull(){
-		List<Asiento> asientos=lanchita.asientosDisponibles(null, "PER", null);
-		Assert.assertTrue(asientos.size()==3);
-	}
-	
-	@Test
-	public void testetowadjvajverdu(){
-		DateFormat dateF=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		Date date=new Date();
-		System.out.println(dateF.format(date));
-	}
 }

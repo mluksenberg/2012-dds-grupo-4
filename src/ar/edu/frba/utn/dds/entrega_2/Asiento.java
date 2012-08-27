@@ -1,11 +1,14 @@
 package ar.edu.frba.utn.dds.entrega_2;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
 import ar.edu.frba.utn.dds.entrega_1.Parser;
+import ar.edu.frba.utn.dds.entrega_3.Reserva;
 
-public class Asiento implements Cloneable{
+public class Asiento{
 	private String origen;
 	private String destino;
 	private String asiento;
@@ -20,7 +23,7 @@ public class Asiento implements Cloneable{
 	private Integer popularidad;
 	private String estado;
 	private Aerolinea aerolinea;
-	
+	private List<Reserva> reservas=new ArrayList<Reserva>();
 	
 	public Asiento(String unOrigen, String unDestino, String unAsiento, String precioOriginal, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada,Integer popularidad, Aerolinea unaAerolinea){
 		this.parser.agregarFormato("yyyy-MM-dd HH:mm");
@@ -125,9 +128,9 @@ public class Asiento implements Cloneable{
 	}
 
 	public boolean tieneFechasEntre(Fecha otraFecha) {
-		//if(unaFecha == null && unHorario == null) return true;
+		
 		if(otraFecha==null) return true;
-		//Fecha otraFecha = this.getParser().parsear(unaFecha + " " + unHorario);
+		
 		return ( otraFecha.esPosteriorA(this.getFechaSalida()) && this.getFechaLlegada().esPosteriorA(otraFecha) ) || this.getFechaSalida().esLaMismaFechaQue(otraFecha) || this.getFechaLlegada().esLaMismaFechaQue(otraFecha);
 	}
 
@@ -169,5 +172,22 @@ public class Asiento implements Cloneable{
 
 	public void setPrecioOriginal(String precioOriginal) {
 		this.precioOriginal = precioOriginal;
+	}
+
+	public void guardarReserva(Reserva reserva) {
+		this.getReservas().add(reserva);
+	}
+
+	public List<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(List<Reserva> reservas) {
+		this.reservas = reservas;
+	}
+	
+	public Reserva getReservaPosta() {
+		return this.getReservas().get(0);
+		
 	}
 }

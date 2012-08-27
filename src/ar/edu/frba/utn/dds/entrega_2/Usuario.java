@@ -98,9 +98,13 @@ public class Usuario {
 	}
 	
 	public void comprarAsiento(Asiento unAsiento){
-		this.getAterrizar().comprar(unAsiento);
+		this.getAterrizar().comprar(unAsiento,this);
 	}
-
+	
+	public void reservarAsiento(Asiento unAsiento){
+		this.getAterrizar().reservar(unAsiento, this);
+	}
+	
 	public Aterrizar getAterrizar() {
 		return aterrizar;
 	}

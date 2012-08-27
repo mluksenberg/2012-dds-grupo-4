@@ -9,9 +9,11 @@ import ar.edu.frba.utn.dds.entrega_1.Fecha;
 import com.lanchita.AerolineaLanchita;
 
 public class Lanchita implements Aerolinea {
+	private static final boolean admiteReserva = true;
 	private AerolineaLanchita lanchita = AerolineaLanchita.getInstance();
 	private static float impuesto = 15;
 	private String[][] asientos;
+	private Integer maximaDuracionDeReserva;
 
 	public Lanchita(String[][] asientos2) {
 
@@ -67,10 +69,25 @@ public class Lanchita implements Aerolinea {
 		Lanchita.impuesto = impuesto;
 	}
 
+	//TODO a modificar para meter lo de las reservas
 	@Override
 	public void comprar(Asiento unAsiento) {
 		this.getLanchita().comprar(unAsiento.getAsiento());
+		unAsiento.setEstado("C");
 	}
+	
+	public void reservarAsiento(Asiento unAsiento, Usuario unUsuario){
+		this.getLanchita().reservar(unAsiento.getAsiento(), unUsuario.getDni());
+		unAsiento.setEstado("R");
+		//TODO ¿que es esto? ¿lo puedo romper?
+		unAsiento.setEstaReservado(true);
+		
+	}
+	
+	public boolean admiteReserva(){
+		return Lanchita.admiteReserva;
+	}
+	
 
 	//FIXME Esto va aca?
 	public List<Asiento> obtenerAsientosComprados(String unOrigen,
@@ -109,5 +126,13 @@ public class Lanchita implements Aerolinea {
 
 	public void setAllAsientos(String[][] asientos) {
 		this.asientos = asientos;
+	}
+
+	public Integer getMaximaDuracionDeReserva() {
+		return maximaDuracionDeReserva;
+	}
+
+	public void setMaximaDuracionDeReserva(Integer maximaDuracionDeReserva) {
+		this.maximaDuracionDeReserva = maximaDuracionDeReserva;
 	}
 }

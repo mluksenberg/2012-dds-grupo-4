@@ -21,5 +21,7 @@ public interface Aerolinea {
 	public float getImpuesto();
 	public void comprar(Asiento unAsiento);
 	public Integer popularidadDeUnVuelo(String unOrigen, String unDestino,Fecha unaFecha);
-	
+	public void reservarAsiento(Asiento asiento,Usuario usuario);
+	public Integer getMaximaDuracionDeReserva();
+	public boolean admiteReserva();
 }
