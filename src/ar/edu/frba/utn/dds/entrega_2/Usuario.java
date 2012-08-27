@@ -65,7 +65,7 @@ public class Usuario {
 	 * @param unaAerolinea
 	 * @return List<Asiento> - Devuelve una lista de asientos
 	 */
-	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha){
+	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha, boolean conEscalas){
 		this.getBusqueda().add(new Busqueda(unOrigen, unDestino,unaFecha));
 		return this.getAterrizar().asientosDisponibles(unOrigen, unDestino, unaFecha, this);
 	}
@@ -84,8 +84,8 @@ public class Usuario {
 	 * @return List
 	 * 
 	 */
-	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha,String unaClase, String unaUbicacion){
-		List<Asiento> asientosDisponibles = this.buscarAsientoDispobibles(unOrigen, unDestino, unaFecha);
+	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha,String unaClase, String unaUbicacion, boolean conEscalas){
+		List<Asiento> asientosDisponibles = this.buscarAsientoDispobibles(unOrigen, unDestino, unaFecha, conEscalas);
 		this.getBusqueda().get(this.getBusqueda().size()-1).setUbicacion(unaUbicacion);
 		this.getBusqueda().get(this.getBusqueda().size() -1).setClase(unaClase);
 		List<Asiento> asientosFiltrados = new ArrayList<Asiento>();

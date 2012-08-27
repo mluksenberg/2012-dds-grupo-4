@@ -28,8 +28,11 @@ public class Lanchita implements Aerolinea {
 		List<Asiento> asientosDisponibles = new ArrayList<Asiento>();
 		for (String[] unStringAsiento : this.getLanchita().asientosDisponibles(
 				unOrigen, unDestino, null, null, null, null)) {
-			if (unStringAsiento[8] == unOrigen
-					&& unStringAsiento[9] == unDestino) {
+			//FIXME ¿como hacer este if mas feliz?
+			if ((unStringAsiento[8] == unOrigen
+					&& unStringAsiento[9] == unDestino) || (unOrigen==null && unDestino==null)
+					|| (unStringAsiento[8] == unOrigen && unDestino == null)
+					|| (unStringAsiento[9] == unDestino && unOrigen == null)) {
 				Asiento unAsiento = new Asiento(unStringAsiento[8],
 						unStringAsiento[9], unStringAsiento[0],
 						unStringAsiento[1], 
@@ -45,12 +48,6 @@ public class Lanchita implements Aerolinea {
 		}
 
 		return asientosDisponibles;
-	}
-
-	private float calcularPrecio(String precio, Usuario unUsuario) {
-		float precioOriginal = new Float(precio);
-		return precioOriginal + precioOriginal * this.getImpuesto()
-				+ unUsuario.getTipo().getRecargo();
 	}
 
 	public AerolineaLanchita getLanchita() {

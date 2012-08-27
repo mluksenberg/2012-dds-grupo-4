@@ -50,4 +50,8 @@ public class Aterrizar {
 		return precioOriginal + precioOriginal * unaAerolinea.getImpuesto()
 				+ unUsuario.getTipo().getRecargo();
 	}
+	
+//	public List<Itinerario> obtenerItinerariosDeViaje(String unOrigen, String unDestino, Fecha fecha,Usuario user, Aerolinea unaAerolinea){
+//		
+//	}
 }

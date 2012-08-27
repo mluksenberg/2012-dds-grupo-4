@@ -79,7 +79,7 @@ public class TestEntrega2 {
 	@Test (expected = ParametrosErroneosExeption.class)
 	public void testValidacionDeParametrosObligatoriosEnLaBusqueda(){
 		@SuppressWarnings("unused")
-		Asiento asiento = usuarioVip.buscarAsientoDispobibles(null,null, null, null,"E").get(0);
+		Asiento asiento = usuarioVip.buscarAsientoDispobibles(null,null, null, null,"E", false).get(0);
 
 	}
 	
@@ -120,26 +120,41 @@ public class TestEntrega2 {
 	
 	@Test
 	public void testUnAsientoEsSuperOferta(){
-		Asiento asiento = usuarioVip.buscarAsientoDispobibles("EZE","USA", null,"E","P").get(0);
+		Asiento asiento = usuarioVip.buscarAsientoDispobibles("EZE","USA", null,"E","P", false).get(0);
 		Assert.assertTrue(asiento.esSuperOferta() && asiento.getPrecio().floatValue() <= 4000);
 	}
 	
 	@Test
 	public void testBuscarAsientosDisponiblesParaElVip(){
-		List<Asiento> asientosDisponibles=usuarioVip.buscarAsientoDispobibles("EZE", "USA", null);
+		List<Asiento> asientosDisponibles=usuarioVip.buscarAsientoDispobibles("EZE", "USA", null, false);
 		Assert.assertEquals(asientosDisponibles.size(),3);
 	}
 	@Test
 	public void testBuscarAsientosDisponiblesParaElEstandar(){
-		List<Asiento> asientosDisponibles=usuarioEstandar.buscarAsientoDispobibles("PER", "USA",null);
+		List<Asiento> asientosDisponibles=usuarioEstandar.buscarAsientoDispobibles("PER", "USA",null, false);
 		Assert.assertEquals(asientosDisponibles.size(),3);
 	}
 	@Test
 	public void testBuscarAsientosDisponiblesParaElQueNoGarpa(){
-		List<Asiento> asientosDisponibles=usuarioNoPago.buscarAsientoDispobibles("PER", "USA", null);
+		List<Asiento> asientosDisponibles=usuarioNoPago.buscarAsientoDispobibles("PER", "USA", null, false);
 		Assert.assertEquals(asientosDisponibles.size(),3);
 	}
 	
+	@Test
+	public void testAsientosDisponiblesConTodosLosParametrosEnNull(){
+		List<Asiento> asientos=lanchita.asientosDisponibles(null, null, null);
+		Assert.assertTrue(asientos.size()==10);
+	}
 	
-
+	@Test
+	public void testAsientosDisponilesSoloConDestinoNull(){
+		List<Asiento> asientos=lanchita.asientosDisponibles("EZE", null, null);
+		Assert.assertTrue(asientos.size()==6);
+	}
+	
+	@Test
+	public void testAsientosDisponiblesSoloConOrigenNull(){
+		List<Asiento> asientos=lanchita.asientosDisponibles(null, "PER", null);
+		Assert.assertTrue(asientos.size()==3);
+	}
 }
