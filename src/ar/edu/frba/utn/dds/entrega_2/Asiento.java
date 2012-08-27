@@ -9,7 +9,8 @@ public class Asiento implements Cloneable{
 	private String origen;
 	private String destino;
 	private String asiento;
-	private BigDecimal precio;;
+	private String precioOriginal;
+	private BigDecimal precio;
 	private String clase;
 	private String ubicacion;
 	private Boolean estaReservado;
@@ -21,14 +22,14 @@ public class Asiento implements Cloneable{
 	private Aerolinea aerolinea;
 	
 	
-	public Asiento(String unOrigen, String unDestino, String unAsiento, float unPrecio, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada,Integer popularidad, Aerolinea unaAerolinea){
+	public Asiento(String unOrigen, String unDestino, String unAsiento, String precioOriginal, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada,Integer popularidad, Aerolinea unaAerolinea){
 		this.parser.agregarFormato("yyyy-MM-dd HH:mm");
 		this.parser.agregarFormato("MM-dd-yyyy HH:mm");
 		this.parser.agregarFormato("dd/MM/yyyy HH:mm");
 		this.origen = unOrigen;
 		this.destino = unDestino;
 		this.asiento = unAsiento;
-		this.precio = (new BigDecimal(Float.toString(unPrecio)));
+		this.precioOriginal = precioOriginal;
 		this.clase = unaClase;
 		this.ubicacion = unaUbicacion;
 		this.setEstado(unEstado);
@@ -71,8 +72,8 @@ public class Asiento implements Cloneable{
 		return precio;
 	}
 
-	public void setPrecio(BigDecimal precio) {
-		this.precio = precio;
+	public void setPrecio(float unPrecio) {
+		this.precio = (new BigDecimal(Float.toString(unPrecio)));
 	}
 	
 	public Parser getParser() {
@@ -160,5 +161,13 @@ public class Asiento implements Cloneable{
 
 	public void setAerolinea(Aerolinea aerolinea) {
 		this.aerolinea = aerolinea;
+	}
+
+	public String getPrecioOriginal() {
+		return precioOriginal;
+	}
+
+	public void setPrecioOriginal(String precioOriginal) {
+		this.precioOriginal = precioOriginal;
 	}
 }

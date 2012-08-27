@@ -29,7 +29,14 @@ public class Aterrizar {
 		}
 		List<Asiento> asientos=new ArrayList<Asiento>();
 		for(Aerolinea aerolinea: this.getAerolineas()){
-			asientos.addAll(aerolinea.asientosDisponibles(unOrigen, unDestino,fecha, user));
+			asientos.addAll(aerolinea.asientosDisponibles(unOrigen, unDestino,fecha));
+		}
+		for(Asiento unAsiento: asientos){
+			unAsiento.setPrecio(this.calcularPrecioDeUnAsiento(unAsiento.getPrecioOriginal(), user, unAsiento.getAerolinea()));
+			if (unAsiento.esSuperOferta()
+					&& !(user.getTipo() instanceof Vip)) {
+				asientos.remove(unAsiento);
+			}
 		}
 		return asientos;
 	}
@@ -37,5 +44,10 @@ public class Aterrizar {
 	public void comprar(Asiento unAsiento){
 		unAsiento.getAerolinea().comprar(unAsiento);
 	}
-
+	
+	private float calcularPrecioDeUnAsiento(String precio, Usuario unUsuario, Aerolinea unaAerolinea) {
+		float precioOriginal = new Float(precio);
+		return precioOriginal + precioOriginal * unaAerolinea.getImpuesto()
+				+ unUsuario.getTipo().getRecargo();
+	}
 }

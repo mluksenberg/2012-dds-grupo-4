@@ -17,7 +17,7 @@ public interface Aerolinea {
 	 * @return Devuelve una lista de asientos
 	 * @throws ConversionException
 	 */
-	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino,Fecha fecha, Usuario unUsuario);
+	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino,Fecha fecha);
 	public float getImpuesto();
 	public void comprar(Asiento unAsiento);
 	public Integer popularidadDeUnVuelo(String unOrigen, String unDestino,Fecha unaFecha);

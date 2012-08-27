@@ -71,7 +71,7 @@ public class TestEntrega2 {
 		usuarioEstandar = new Usuario("Marcelo Javier", "Lopez Luksenberg", "36747012", new Estandar(),aterrizar);
 		usuarioNoPago = new Usuario("Andres Francisco", "Lopez Luksenberg", "33783548", new NoPaga(),aterrizar);
 		Fecha unaFecha= parser.parsear("20/12/2012" + " " + "15:20");
-		unAsiento = lanchita.asientosDisponibles("EZE", "USA",unaFecha, usuarioVip).get(0);
+		unAsiento = lanchita.asientosDisponibles("EZE", "USA",unaFecha).get(0);
 	}
 
 

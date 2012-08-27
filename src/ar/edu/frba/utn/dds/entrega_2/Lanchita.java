@@ -24,7 +24,7 @@ public class Lanchita implements Aerolinea {
 		
 	}
 
-	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino,Fecha fecha, Usuario unUsuario){
+	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino,Fecha fecha){
 		List<Asiento> asientosDisponibles = new ArrayList<Asiento>();
 		for (String[] unStringAsiento : this.getLanchita().asientosDisponibles(
 				unOrigen, unDestino, null, null, null, null)) {
@@ -32,7 +32,7 @@ public class Lanchita implements Aerolinea {
 					&& unStringAsiento[9] == unDestino) {
 				Asiento unAsiento = new Asiento(unStringAsiento[8],
 						unStringAsiento[9], unStringAsiento[0],
-						this.calcularPrecio(unStringAsiento[1], unUsuario),
+						unStringAsiento[1], 
 						unStringAsiento[2], unStringAsiento[3],
 						unStringAsiento[4], unStringAsiento[10],
 						unStringAsiento[6], unStringAsiento[11],
@@ -40,10 +40,6 @@ public class Lanchita implements Aerolinea {
 								unDestino, fecha),this);
 				if (unAsiento.tieneFechasEntre(fecha)) {
 					asientosDisponibles.add(unAsiento);
-					if (unAsiento.esSuperOferta()
-							&& !(unUsuario.getTipo() instanceof Vip)) {
-						asientosDisponibles.remove(unAsiento);
-					}
 				}
 			}
 		}
@@ -79,6 +75,7 @@ public class Lanchita implements Aerolinea {
 		this.getLanchita().comprar(unAsiento.getAsiento());
 	}
 
+	//FIXME Esto va aca?
 	public List<Asiento> obtenerAsientosComprados(String unOrigen,
 			String unDestino, Fecha unaFecha){
 		List<Asiento> asientosComprados = new ArrayList<Asiento>();
@@ -86,7 +83,8 @@ public class Lanchita implements Aerolinea {
 			if (unStringAsiento[4] == "C" && unStringAsiento[8] == unOrigen
 					&& unStringAsiento[9] == unDestino) {
 				Asiento unAsiento = new Asiento(unStringAsiento[8],
-						unStringAsiento[9], unStringAsiento[0], (float) 0,
+						unStringAsiento[9], unStringAsiento[0],
+						unStringAsiento[1],
 						unStringAsiento[2], unStringAsiento[3],
 						unStringAsiento[4], unStringAsiento[10],
 						unStringAsiento[6], unStringAsiento[11],
