@@ -27,7 +27,7 @@ public class Oceanic implements Aerolinea {
 		}
 		List<Asiento> asientosDisponibles=new ArrayList<Asiento>();
 		for(AsientoDTO unAsientoDTO: asientosDTO){
-			Asiento unAsiento=new Asiento(unAsientoDTO.getOrigen(),unAsientoDTO.getDestino(),unAsientoDTO.getCodigoDeVuelo(),unAsientoDTO.getPrecio().toString(),unAsientoDTO.getClase(),unAsientoDTO.getUbicacion(),"D", unAsientoDTO.getFechaDeSalida(), unAsientoDTO.getHoraDeSalida(), unAsientoDTO.getFechaDeLlegada(), unAsientoDTO.getHoraDeLlegada(),0,this);
+			Asiento unAsiento=new Asiento(unAsientoDTO.getOrigen(),unAsientoDTO.getDestino(),unAsientoDTO.getCodigoDeVuelo(),unAsientoDTO.getPrecio().toString(),unAsientoDTO.getClase(),unAsientoDTO.getUbicacion(),"D", unAsientoDTO.getFechaDeSalida(), unAsientoDTO.getHoraDeSalida(), unAsientoDTO.getFechaDeLlegada(), unAsientoDTO.getHoraDeLlegada(),this);
 			unAsiento.setNumeroDeAsiento(unAsientoDTO.getNumeroDeAsiento());
 			asientosDisponibles.add(unAsiento);
 		}
@@ -45,12 +45,6 @@ public class Oceanic implements Aerolinea {
 		this.getOceanicPosta().comprarSiHayDisponibilidad(unDni, unAsiento.getAsiento(), unAsiento.getNumeroDeAsiento());		
 	}
 
-	@Override
-	public Integer popularidadDeUnVuelo(String unOrigen, String unDestino,
-			Fecha unaFecha) {
-		// TODO Esta al pedo.. tiene que ser de los itinerarios
-		return null;
-	}
 
 	@Override
 	public void reservarAsiento(Asiento asiento, Usuario usuario) {

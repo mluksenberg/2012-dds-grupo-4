@@ -62,7 +62,7 @@ public class TestEntrega2 {
 		
 		///////////////////////////////////////////////////////////////////
 		
-		lanchita = new Lanchita(asientos);
+		lanchita = new Lanchita();
 		lanchita.setLanchita(lanchitaPostaMock);
 		
 		parser=new Parser();

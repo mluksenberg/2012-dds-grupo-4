@@ -21,12 +21,11 @@ public class Asiento{
 	private Fecha fechaSalida;
 	private Fecha fechaLlegada;
 	private Parser parser = new Parser();
-	private Integer popularidad;
 	private String estado;
 	private Aerolinea aerolinea;
 	private List<Reserva> reservas=new ArrayList<Reserva>();
 	
-	public Asiento(String unOrigen, String unDestino, String unAsiento, String precioOriginal, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada,Integer popularidad, Aerolinea unaAerolinea){
+	public Asiento(String unOrigen, String unDestino, String unAsiento, String precioOriginal, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada, Aerolinea unaAerolinea){
 		this.parser.agregarFormato("yyyy-MM-dd HH:mm");
 		this.parser.agregarFormato("MM-dd-yyyy HH:mm");
 		this.parser.agregarFormato("dd/MM/yyyy HH:mm");
@@ -41,7 +40,6 @@ public class Asiento{
 		else this.estaReservado = true;
 		this.fechaSalida = this.parser.parsear(unaFechaSalida + " " + unaHoraSalida);
 		this.fechaLlegada = this.parser.parsear(unaFechaLlegada + " " + unaHoraLlegada);
-		this.popularidad=popularidad;
 		this.setAerolinea(unaAerolinea);
 	}
 	
@@ -143,13 +141,7 @@ public class Asiento{
 		return (this.getFechaLlegada().getFecha().getTime() - this.fechaSalida.getFecha().getTime());
 	}
 
-	public Integer getPopularidad() {
-		return popularidad;
-	}
-
-	public void setPopularidad(Integer popularidad) {
-		this.popularidad = popularidad;
-	}
+	
 
 	public String getEstado() {
 		return estado;
