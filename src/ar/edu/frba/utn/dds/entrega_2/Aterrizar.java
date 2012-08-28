@@ -1,5 +1,6 @@
 package ar.edu.frba.utn.dds.entrega_2;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,17 @@ public class Aterrizar {
 	public void setAerolineas(List<Aerolinea> aerolineas) {
 		this.aerolineas = aerolineas;
 	}
-
+	
+	public List<Itinerario> itinerariosDisponibles(String unOrigen, String unDestino, Fecha unaFecha, Usuario unUsuario){
+		List<Itinerario> itinerarios = new ArrayList<Itinerario>();
+		for(Aerolinea unaAerolinea : this.getAerolineas()){
+			itinerarios.addAll(this.obtenerItinerarios(unOrigen, unDestino, unaFecha, unUsuario, unaAerolinea));
+		}
+		
+		return itinerarios;
+	}
+	
+	
 	public List<Asiento> asientosDisponiblesDeUnaAerolinea(String unOrigen,
 			String unDestino, Fecha fecha, Usuario user, Aerolinea unaAerolinea) {
 		List<Asiento> asientos = new ArrayList<Asiento>();
@@ -103,7 +114,7 @@ public class Aterrizar {
 	}
 
 	
-	public List<Itinerario> obtenerItinerariosQueSatisfaganUnViajeDeUnaEscala(
+	private List<Itinerario> obtenerItinerariosQueSatisfaganUnViajeDeUnaEscala(
 			String unOrigen, String unDestino, Fecha fecha, Usuario user,
 			Aerolinea unaAerolinea) {
 		List<Itinerario> itinerarios = new ArrayList<Itinerario>();
@@ -132,7 +143,7 @@ public class Aterrizar {
 
 	}
 
-	public List<Itinerario> obtenerItinerariosQueSatisfaganUnViajeDeDosEscalas(
+	private List<Itinerario> obtenerItinerariosQueSatisfaganUnViajeDeDosEscalas(
 			String unOrigen, String unDestino, Fecha fecha, Usuario user,
 			Aerolinea unaAerolinea) {
 		List<Itinerario> itinerarios = new ArrayList<Itinerario>();
@@ -166,7 +177,7 @@ public class Aterrizar {
 
 	}
 	
-	public List<Itinerario> obtenerItinerariosDirectos(String unOrigen,
+	private List<Itinerario> obtenerItinerariosDirectos(String unOrigen,
 			String unDestino, Fecha fecha, Usuario user, Aerolinea unaAerolinea){
 		List<Itinerario> itinerariosToReturn = new ArrayList<Itinerario>();
 		List<Asiento> asientosDirectos = this

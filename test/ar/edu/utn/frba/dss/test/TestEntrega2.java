@@ -82,7 +82,7 @@ public class TestEntrega2 {
 	@Test (expected = ParametrosErroneosExeption.class)
 	public void testValidacionDeParametrosObligatoriosEnLaBusqueda(){
 		@SuppressWarnings("unused")
-		Asiento asiento = usuarioVip.buscarAsientoDispobibles(null,null, null, null,"E", false).get(0);
+		Asiento asiento = usuarioVip.buscarAsientoDispobibles(null,null, null, null,"E").get(0);
 
 	}
 	
@@ -123,23 +123,23 @@ public class TestEntrega2 {
 	
 	@Test
 	public void testUnAsientoEsSuperOferta(){
-		Asiento asiento = usuarioVip.buscarAsientoDispobibles("EZE","USA", null,"E","P", false).get(0);
+		Asiento asiento = usuarioVip.buscarAsientoDispobibles("EZE","USA", null,"E","P").get(0);
 		Assert.assertTrue(asiento.esSuperOferta() && asiento.getPrecio().floatValue() <= 4000);
 	}
 	
 	@Test
 	public void testBuscarAsientosDisponiblesParaElVip(){
-		List<Asiento> asientosDisponibles=usuarioVip.buscarAsientoDispobibles("EZE", "USA", null, false);
+		List<Asiento> asientosDisponibles=usuarioVip.buscarAsientoDispobibles("EZE", "USA", null);
 		Assert.assertEquals(asientosDisponibles.size(),3);
 	}
 	@Test
 	public void testBuscarAsientosDisponiblesParaElEstandar(){
-		List<Asiento> asientosDisponibles=usuarioEstandar.buscarAsientoDispobibles("PER", "USA",null, false);
+		List<Asiento> asientosDisponibles=usuarioEstandar.buscarAsientoDispobibles("PER", "USA",null);
 		Assert.assertEquals(asientosDisponibles.size(),3);
 	}
 	@Test
 	public void testBuscarAsientosDisponiblesParaElQueNoGarpa(){
-		List<Asiento> asientosDisponibles=usuarioNoPago.buscarAsientoDispobibles("PER", "USA", null, false);
+		List<Asiento> asientosDisponibles=usuarioNoPago.buscarAsientoDispobibles("PER", "USA", null);
 		Assert.assertEquals(asientosDisponibles.size(),3);
 	}
 	

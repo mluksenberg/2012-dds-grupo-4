@@ -54,6 +54,10 @@ public class Usuario {
 		this.tipo = tipo;
 	}
 	
+	public List<Itinerario> buscarItinerarios(String unOrigen, String unDestino, Fecha unaFecha){
+		return this.getAterrizar().itinerariosDisponibles(unOrigen, unDestino, unaFecha, this);
+	}
+	
 	/**
 	 * Busca asientos disponibles en una determinada aerolinea y 
 	 * añade la busqueda realizada al perfil del usuario.
@@ -65,7 +69,7 @@ public class Usuario {
 	 * @param unaAerolinea
 	 * @return List<Asiento> - Devuelve una lista de asientos
 	 */
-	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha, boolean conEscalas){
+	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha){
 		this.getBusqueda().add(new Busqueda(unOrigen, unDestino,unaFecha));
 		return this.getAterrizar().asientosDisponibles(unOrigen, unDestino, unaFecha, this);
 	}
@@ -84,8 +88,8 @@ public class Usuario {
 	 * @return List
 	 * 
 	 */
-	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha,String unaClase, String unaUbicacion, boolean conEscalas){
-		List<Asiento> asientosDisponibles = this.buscarAsientoDispobibles(unOrigen, unDestino, unaFecha, conEscalas);
+	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha,String unaClase, String unaUbicacion){
+		List<Asiento> asientosDisponibles = this.buscarAsientoDispobibles(unOrigen, unDestino, unaFecha);
 		this.getBusqueda().get(this.getBusqueda().size()-1).setUbicacion(unaUbicacion);
 		this.getBusqueda().get(this.getBusqueda().size() -1).setClase(unaClase);
 		List<Asiento> asientosFiltrados = new ArrayList<Asiento>();
