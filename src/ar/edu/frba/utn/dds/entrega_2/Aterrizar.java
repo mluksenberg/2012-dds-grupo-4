@@ -98,32 +98,78 @@ public class Aterrizar {
 				+ unUsuario.getTipo().getRecargo();
 	}
 
-	public void obtenerItinerariosDeViaje(String unOrigen, String unDestino, Fecha fecha, Usuario user, Aerolinea unaAerolinea) {
-		// Tengo que obtener todos los asientos disponibles con ese origen y
-		// destino null
-		// Tengo que obtener todos los asientos disponibles con ese destino y
-		// origen null
-		// tengo que fijarme por cada asiento de los origenes y por cada asiento
-		// de los destinos si son o no iguales
-		// en caso que sean iguales tengo que meterlos en el itinerario (no se
-		// como hacerlos)
-		// en caso quie NO sean iguales tengo que volver a llamar el metodo pero
-		// con los destinos de los origenes y los origenes de los destinos.
-		// por ahora pensamos en terminarlo con un contador. Sin embargo hay que
-		// pensar como devolver la lista de itinerarios
+//	public void obtenerItinerariosDeViaje(String unOrigen, String unDestino, Fecha fecha, Usuario user, Aerolinea unaAerolinea) {
+//		// Tengo que obtener todos los asientos disponibles con ese origen y
+//		// destino null
+//		// Tengo que obtener todos los asientos disponibles con ese destino y
+//		// origen null
+//		// tengo que fijarme por cada asiento de los origenes y por cada asiento
+//		// de los destinos si son o no iguales
+//		// en caso que sean iguales tengo que meterlos en el itinerario (no se
+//		// como hacerlos)
+//		// en caso quie NO sean iguales tengo que volver a llamar el metodo pero
+//		// con los destinos de los origenes y los origenes de los destinos.
+//		// por ahora pensamos en terminarlo con un contador. Sin embargo hay que
+//		// pensar como devolver la lista de itinerarios
+//		List<Asiento> asientosOrigenes = this.asientosDisponiblesDeUnaAerolinea(unOrigen,null, fecha, user, unaAerolinea);
+//		List<Asiento> asientosDestinos = this.asientosDisponiblesDeUnaAerolinea(null, unDestino, fecha, user, unaAerolinea);
+//		Itinerario unItinerario = new Itinerario();
+//		
+//		for(Asiento unAsientoOrigen: asientosOrigenes){
+//			for(Asiento unAsientoDestino: asientosDestinos){
+//				if(unAsientoOrigen.getDestino() != unAsientoDestino.getOrigen()){
+//					obtenerItinerariosDeViaje(unAsientoOrigen.getDestino(), unAsientoDestino.getOrigen(), fecha, user, unaAerolinea,asientosResultado);
+//				}
+//				unItinerario.getAsientos().add(unAsientoOrigen);
+//				unItinerario.getAsientos().add(unAsientoDestino);
+//			}
+//			//Aca tengo que cargar la lista de itinerarios.
+//		}
+//	}
+	
+	public List<Itinerario> obtenerItinerariosQueSatisfaganUnViajeDeUnaEscala(String unOrigen, String unDestino, Fecha fecha, Usuario user, Aerolinea unaAerolinea){
+		List<Itinerario> itinerarios=new ArrayList<Itinerario>();
+		
 		List<Asiento> asientosOrigenes = this.asientosDisponiblesDeUnaAerolinea(unOrigen,null, fecha, user, unaAerolinea);
 		List<Asiento> asientosDestinos = this.asientosDisponiblesDeUnaAerolinea(null, unDestino, fecha, user, unaAerolinea);
-		Itinerario unItinerario = new Itinerario();
 		
 		for(Asiento unAsientoOrigen: asientosOrigenes){
 			for(Asiento unAsientoDestino: asientosDestinos){
-				if(unAsientoOrigen.getDestino() != unAsientoDestino.getOrigen()){
-					obtenerItinerariosDeViaje(unAsientoOrigen.getDestino(), unAsientoDestino.getOrigen(), fecha, user, unaAerolinea);
+				if(unAsientoOrigen.getDestino().equals(unAsientoDestino.getOrigen())){
+					Itinerario unItinerario=new Itinerario();
+					unItinerario.getAsientos().add(unAsientoOrigen);
+					unItinerario.getAsientos().add(unAsientoDestino);
+					itinerarios.add(unItinerario);
 				}
-				unItinerario.getAsientos().add(unAsientoOrigen);
-				unItinerario.getAsientos().add(unAsientoDestino);
 			}
-			//Aca tengo que cargar la lista de itinerarios.
 		}
+		return itinerarios;
+		
 	}
+	
+	public List<Itinerario> obtenerItinerariosQueSatisfaganUnViajeDeDosEscalas(String unOrigen, String unDestino, Fecha fecha, Usuario user, Aerolinea unaAerolinea){
+		List<Itinerario> itinerarios=new ArrayList<Itinerario>();
+		
+		List<Asiento> asientosOrigenes = this.asientosDisponiblesDeUnaAerolinea(unOrigen,null, fecha, user, unaAerolinea);
+		List<Asiento> asientosDestinos = this.asientosDisponiblesDeUnaAerolinea(null, unDestino, fecha, user, unaAerolinea);
+
+		//FIXME ¿3 for anidados? Dale que va!
+		for(Asiento unAsientoOrigen: asientosOrigenes){
+			for(Asiento unAsientoDestino: asientosDestinos){
+				List<Itinerario> itinerariosIntermedios = obtenerItinerariosQueSatisfaganUnViajeDeUnaEscala(unAsientoOrigen.getOrigen(), unAsientoDestino.getOrigen(), fecha, user, unaAerolinea);
+				for(Itinerario unItinerarioIntermedio: itinerariosIntermedios){
+					if(unItinerarioIntermedio.getAsientos().get(1).getDestino().equals(unAsientoDestino.getOrigen())){
+						Itinerario unItinerario=new Itinerario();
+						unItinerario.getAsientos().addAll(unItinerarioIntermedio.getAsientos());
+						unItinerario.getAsientos().add(unAsientoDestino);
+						itinerarios.add(unItinerario);
+					}
+				}
+			}
+		}
+		return itinerarios;
+		
+	}
+	
+	
 }
