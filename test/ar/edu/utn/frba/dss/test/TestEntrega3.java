@@ -4,6 +4,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,8 @@ import ar.edu.frba.utn.dds.entrega_2.Aerolinea;
 import ar.edu.frba.utn.dds.entrega_2.Asiento;
 import ar.edu.frba.utn.dds.entrega_2.Aterrizar;
 import ar.edu.frba.utn.dds.entrega_2.Estandar;
+import ar.edu.frba.utn.dds.entrega_2.FiltroAsientosReservados;
+import ar.edu.frba.utn.dds.entrega_2.FiltroPrecio;
 import ar.edu.frba.utn.dds.entrega_2.Lanchita;
 import ar.edu.frba.utn.dds.entrega_2.NoPaga;
 import ar.edu.frba.utn.dds.entrega_2.Usuario;
@@ -38,7 +41,12 @@ public class TestEntrega3 {
 	Asiento unAsiento;
 	Parser parser;
 	Aterrizar aterrizar;
-
+	List<Asiento> asientosDisponibles;
+	FiltroPrecio filtroPrecioDe2000A5000;
+	FiltroPrecio filtroPrecioDe3000A3700;
+	FiltroAsientosReservados filtroConReservados;
+	FiltroAsientosReservados filtroSinReservados;
+	
 	@Before
 	public void setUp() throws Exception {
 		////////////////////////////////////////////////////This is mock baby?////////////////////
@@ -79,7 +87,14 @@ public class TestEntrega3 {
 		usuarioNoPago = new Usuario("Andres Francisco", "Lopez Luksenberg", "33783548", new NoPaga(),aterrizar);
 		Fecha unaFecha= parser.parsear("20/12/2012" + " " + "15:20");
 		unAsiento = lanchita.asientosDisponibles("EZE", "USA",unaFecha).get(0);
+		
 		lanchita.setMaximaDuracionDeReserva(10);
+		
+		asientosDisponibles = usuarioVip.buscarAsientoDispobibles("EZE", "USA", unaFecha, false);
+		filtroPrecioDe2000A5000 = new FiltroPrecio(new BigDecimal(2000), new BigDecimal(5000));
+		filtroPrecioDe3000A3700 = new FiltroPrecio(new BigDecimal(3000), new BigDecimal(3700));
+		filtroConReservados = new FiltroAsientosReservados(true);
+		filtroSinReservados = new FiltroAsientosReservados(false);
 	}
 	
 	@Test (expected=UsuarioInvalidoParaReservaExeption.class)
@@ -106,4 +121,15 @@ public class TestEntrega3 {
 		Assert.assertEquals(unAsiento.getReservas().size(), 0);
 	}
 	
+	@Test
+	public void testFiltroDePrecioDe2000A5000(){
+		Assert.assertEquals(filtroPrecioDe2000A5000.filtrarAsientos(asientosDisponibles).size(), 3);
+	}
+	
+	@Test
+	public void testFiltroDePrecioDe3000A3700(){
+		Assert.assertEquals(filtroPrecioDe3000A3700.filtrarAsientos(asientosDisponibles).size(), 1);
+	}
+
 }
+

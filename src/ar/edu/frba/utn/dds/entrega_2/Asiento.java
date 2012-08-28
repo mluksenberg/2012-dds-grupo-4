@@ -16,7 +16,7 @@ public class Asiento{
 	private BigDecimal precio;
 	private String clase;
 	private String ubicacion;
-	private Boolean estaReservado;
+//	private Boolean estaReservado;
 	private Fecha fechaSalida;
 	private Fecha fechaLlegada;
 	private Parser parser = new Parser();
@@ -36,8 +36,8 @@ public class Asiento{
 		this.clase = unaClase;
 		this.ubicacion = unaUbicacion;
 		this.setEstado(unEstado);
-		if(unEstado.equals("D")) this.estaReservado = false;
-		else this.estaReservado = true;
+//		if(unEstado.equals("D")) this.estaReservado = false;
+//		else this.estaReservado = true;
 		this.fechaSalida = this.parser.parsear(unaFechaSalida + " " + unaHoraSalida);
 		this.fechaLlegada = this.parser.parsear(unaFechaLlegada + " " + unaHoraLlegada);
 		this.popularidad=popularidad;
@@ -104,12 +104,13 @@ public class Asiento{
 	}
 
 	public Boolean getEstaReservado() {
-		return estaReservado;
+		if(this.getEstado() == "R") return true;
+		else return false;
 	}
 
-	public void setEstaReservado(Boolean estaReservado) {
-		this.estaReservado = estaReservado;
-	}
+//	public void setEstaReservado(Boolean estaReservado) {
+//		this.estaReservado = estaReservado;
+//	}
 
 	public String getDestino() {
 		return destino;

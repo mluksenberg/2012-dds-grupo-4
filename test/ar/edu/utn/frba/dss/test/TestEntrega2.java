@@ -161,10 +161,10 @@ public class TestEntrega2 {
 		Assert.assertTrue(asientos.size()==3);
 	}
 	
-	@Test
-	public void testetowadjvajverdu(){
-		DateFormat dateF=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		Date date=new Date();
-		System.out.println(dateF.format(date));
-	}
+//	@Test
+//	public void testQueDeciaCualquierCosaYPorEsoComenteFEDE(){
+//		DateFormat dateF=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+//		Date date=new Date();
+//		System.out.println(dateF.format(date));
+//	}
 }
