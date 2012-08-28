@@ -19,7 +19,7 @@ public interface Aerolinea {
 	 */
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino,Fecha fecha);
 	public float getImpuesto();
-	public void comprar(Asiento unAsiento);
+	public void comprar(Asiento unAsiento, String unDni);
 	public Integer popularidadDeUnVuelo(String unOrigen, String unDestino,Fecha unaFecha);
 	public void reservarAsiento(Asiento asiento,Usuario usuario);
 	public Integer getMaximaDuracionDeReserva();

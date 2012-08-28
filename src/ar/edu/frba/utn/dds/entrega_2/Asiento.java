@@ -12,6 +12,7 @@ public class Asiento{
 	private String origen;
 	private String destino;
 	private String asiento;
+	private Integer numeroDeAsiento;
 	private String precioOriginal;
 	private BigDecimal precio;
 	private String clase;
@@ -189,5 +190,13 @@ public class Asiento{
 	public Reserva getReservaPosta() {
 		return this.getReservas().get(0);
 		
+	}
+
+	public int getNumeroDeAsiento() {
+		return numeroDeAsiento;
+	}
+
+	public void setNumeroDeAsiento(int numeroDeAsiento) {
+		this.numeroDeAsiento = numeroDeAsiento;
 	}
 }

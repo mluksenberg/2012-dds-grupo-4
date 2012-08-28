@@ -55,7 +55,7 @@ public class Aterrizar {
 
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino,
 			Fecha fecha, Usuario user) {
-		if (unOrigen == null || unDestino == null) {
+		if (unOrigen == null || unDestino == null || fecha==null) {
 			throw new ParametrosErroneosExeption();
 		}
 		List<Asiento> asientos = new ArrayList<Asiento>();
@@ -79,7 +79,7 @@ public class Aterrizar {
 				&& !this.esElUsuarioQueReservoOriginalmente(unAsiento, user)) {
 			throw new LaReservaNoCorrespondeAlUsuarioExeption();
 		}
-		unAsiento.getAerolinea().comprar(unAsiento);
+		unAsiento.getAerolinea().comprar(unAsiento, user.getDni());
 		unAsiento.getReservas().clear();
 	}
 

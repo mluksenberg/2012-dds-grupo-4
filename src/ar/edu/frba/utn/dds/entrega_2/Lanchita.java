@@ -71,7 +71,7 @@ public class Lanchita implements Aerolinea {
 
 	//TODO a modificar para meter lo de las reservas
 	@Override
-	public void comprar(Asiento unAsiento) {
+	public void comprar(Asiento unAsiento, String unDni) {
 		this.getLanchita().comprar(unAsiento.getAsiento());
 		unAsiento.setEstado("C");
 	}
