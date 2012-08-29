@@ -4,6 +4,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import ar.edu.frba.utn.dds.entrega_2.NoPaga;
 import ar.edu.frba.utn.dds.entrega_2.Usuario;
 import ar.edu.frba.utn.dds.entrega_2.Vip;
 import ar.edu.frba.utn.dds.entrega_3.FiltroClase;
+import ar.edu.frba.utn.dds.entrega_3.FiltroPrecioDecorator;
 import ar.edu.frba.utn.dds.entrega_3.FiltroUbicacionDecorator;
 import ar.edu.frba.utn.dds.entrega_3.LaReservaNoCorrespondeAlUsuarioExeption;
 import ar.edu.frba.utn.dds.entrega_3.NoAdmiteReservaExeption;
@@ -140,11 +142,17 @@ public class TestEntrega3 {
 		Assert.assertEquals(usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroUbicacion).size(), 1);
 	}
 	
-//	@Test
-//	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSHfiltrandoPorPrecio(){
-//		FiltroUbicacionDecorator filtroUbicacion = new FiltroUbicacionDecorator("V");
-//	
-//	}
+	@Test
+	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSHfiltrandoPorPrecioDe10000A11500(){
+		FiltroPrecioDecorator filtroPrecioDe10000A11500 = new FiltroPrecioDecorator(new BigDecimal(10000), new BigDecimal(11500) );
+		Assert.assertEquals(usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroPrecioDe10000A11500).size(), 2);
+	}
+	
+	@Test
+	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSHfiltrandoPorPrecioDe11000A11500(){
+		FiltroPrecioDecorator filtroPrecioDe11000A11500 = new FiltroPrecioDecorator(new BigDecimal(11000), new BigDecimal(11500) );
+		Assert.assertEquals(usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroPrecioDe11000A11500).size(), 1);
+	}
 	
 	@Test
 	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSHfiltrandoPorUbicacionEnVentanaYPrimeraClase(){
