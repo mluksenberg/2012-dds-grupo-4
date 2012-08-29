@@ -29,9 +29,9 @@ public class Oceanic implements Aerolinea {
 		 */
 		try {
 			if(unDestino!=null){
-				asientosDTO=this.getOceanicPosta().asientosDisponiblesParaOrigenYDestino(unOrigen, unDestino, fecha.getFecha().toString());
+				asientosDTO=this.getOceanicPosta().asientosDisponiblesParaOrigenYDestino(unOrigen, unDestino, fecha.getFechaString());
 			}else{
-				asientosDTO=this.getOceanicPosta().asientosDisponiblesParaOrigen(unOrigen, fecha.getFecha().toString());
+				asientosDTO=this.getOceanicPosta().asientosDisponiblesParaOrigen(unOrigen, fecha.getFechaString());
 			}
 			List<Asiento> asientosDisponibles=new ArrayList<Asiento>();
 			for(AsientoDTO unAsientoDTO: asientosDTO){

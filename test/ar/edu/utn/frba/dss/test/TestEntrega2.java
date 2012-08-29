@@ -1,9 +1,6 @@
 package ar.edu.utn.frba.dss.test;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -169,10 +166,5 @@ public class TestEntrega2 {
 		Assert.assertTrue(asientos.size()==3);
 	}
 	
-	@Test
-	public void testetowadjvajverdu(){
-		DateFormat dateF=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		Date date=new Date();
-		System.out.println(dateF.format(date));
-	}
+	
 }

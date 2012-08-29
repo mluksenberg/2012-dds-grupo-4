@@ -7,7 +7,7 @@ import java.util.Date;
 public class Fecha {
 	private Date fecha;
 	final int MILISEC_PER_DAYS= 1000*60*60*24;
-
+	private String fechaString;
 	@Override
 	public String toString(){
 		return new SimpleDateFormat().format(this.getFecha());
@@ -49,6 +49,14 @@ public class Fecha {
 	 */
 	public boolean esLaMismaFechaQue(Fecha otraFecha){
 		return (this.getFecha().getTime() - otraFecha.getFecha().getTime() == 0);
+	}
+
+	public String getFechaString() {
+		return fechaString;
+	}
+
+	public void setFechaString(String fechaString) {
+		this.fechaString = fechaString;
 	}
 	
 }

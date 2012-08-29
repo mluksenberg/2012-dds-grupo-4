@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dss.test;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
@@ -32,24 +33,37 @@ import ar.edu.frba.utn.dds.entrega_3.Oceanic;
 import ar.edu.frba.utn.dds.entrega_3.UsuarioInvalidoParaReservaExeption;
 
 import com.lanchita.AerolineaLanchita;
+import com.oceanic.AerolineaOceanic;
+import com.oceanic.AsientoDTO;
 
 public class TestEntrega3 {
 	Lanchita lanchita;
 	AerolineaLanchita lanchitaPostaMock;
+	AerolineaOceanic oceanicPosta;
 	Usuario usuarioVip;
 	Usuario usuarioEstandar;
 	Usuario usuarioNoPago;
 	Usuario otroUsuarioEstandar;
 	Asiento unAsiento;
+	Asiento otroAsientoOceanic;
 	Parser parser;
 	Aterrizar aterrizar;
 	Fecha unaFecha;
+	Fecha otraFechaParaOceanic;
 	Oceanic oceanic;
 	@Before
 	public void setUp() throws Exception {
+		parser=new Parser();
+		parser.agregarFormato("yyyy-MM-dd HH:mm");
+		parser.agregarFormato("MM-dd-yyyy HH:mm");
+		parser.agregarFormato("dd/MM/yyyy HH:mm");
+		parser.agregarFormato("dd/MM/yyyy");
+
+		
+		otraFechaParaOceanic=parser.parsear("15/08/2012");
 		////////////////////////////////////////////////////This is mock baby?////////////////////
 		lanchitaPostaMock = mock(AerolineaLanchita.class);
-		
+		oceanicPosta= mock(AerolineaOceanic.class);
 		String[][] asientos ={
 				{ "01202022220202-3", "159.90", "P", "V", "D", "", "14:00","02:25","EZE","USA","20/12/2012","21/12/2012" },
 				{ "01202022220123-3", "205.10", "E", "P", "D", "", "14:00","02:25","EZE","USA","20/12/2012","21/12/2012" },
@@ -62,22 +76,13 @@ public class TestEntrega3 {
 				{ "01202022323423-5", "431.28", "T", "C", "D", "", "20:00","08:00","PER","UDA","20/12/2012","21/12/2012" },
 				{ "01202022220298-2", "528.81", "P", "V", "D", "", "07:00","08:00","USA","USH","20/12/2012","21/12/2012"} };
 		
-		when(lanchitaPostaMock.asientosDisponibles(anyString(),anyString(),anyString(),anyString(),anyString(), anyString())).thenReturn(asientos);
 		
 		///////////////////////////////////////////////////////////////////
 		
 		lanchita = new Lanchita();
 		lanchita.setLanchita(lanchitaPostaMock);
-		oceanic = new Oceanic();
-		
-		parser=new Parser();
-		parser.agregarFormato("yyyy-MM-dd HH:mm");
-		parser.agregarFormato("MM-dd-yyyy HH:mm");
-		parser.agregarFormato("dd/MM/yyyy HH:mm");
 		
 		List<Aerolinea> aerolineas=new ArrayList<Aerolinea>();
-		aerolineas.add(lanchita);
-		aerolineas.add(oceanic);
 		
 		aterrizar=new Aterrizar(aerolineas);
 		
@@ -86,8 +91,22 @@ public class TestEntrega3 {
 		otroUsuarioEstandar = new Usuario("Eugenio", "Lopez Luksenberg", "28543567", new Estandar(), aterrizar);
 		usuarioNoPago = new Usuario("Andres Francisco", "Lopez Luksenberg", "33783548", new NoPaga(),aterrizar);
 		unaFecha= parser.parsear("20/12/2012" + " " + "15:20");
-		unAsiento = lanchita.asientosDisponibles("EZE", "USA",unaFecha).get(0);
 		lanchita.setMaximaDuracionDeReserva(10);
+		
+		when(lanchitaPostaMock.asientosDisponibles(anyString(),anyString(),anyString(),anyString(),anyString(), anyString())).thenReturn(asientos);
+		oceanic = new Oceanic();
+		oceanic.setOceanicPosta(oceanicPosta);
+		aerolineas.add(lanchita);
+		aerolineas.add(oceanic);
+		List<AsientoDTO> asientosDTO=new ArrayList<AsientoDTO>();
+		asientosDTO.add(new AsientoDTO("OC100",10,"15/08/2012","17/08/2012","10:35","05:35",new BigDecimal("3150.98"),"Ejecutiva","Pasillo",false,"_BS","SLA"));
+		asientosDTO.add(new AsientoDTO("OC100",11,"15/08/2012","17/08/2012","10:35","05:35",new BigDecimal("3150.98"),"Ejecutiva","Centro",false,"_BS","SLA"));		
+		asientosDTO.add(new AsientoDTO("OC100",12,"15/08/2012","17/08/2012","10:35","05:35",new BigDecimal("3150.98"),"Ejecutiva","Ventana",false,"_BS","SLA"));		
+		asientosDTO.add(new AsientoDTO("OC100",30,"15/08/2012","17/08/2012","10:35","05:35",new BigDecimal("6150.98"),"Primera","Pasillo",true,"_BS","SLA"));
+		when(oceanicPosta.asientosDisponiblesParaOrigenYDestino("_BS", "SLA", "15/08/2012")).thenReturn(asientosDTO);
+		unAsiento = lanchita.asientosDisponibles("EZE", "USA",unaFecha).get(0);
+		otroAsientoOceanic=usuarioVip.buscarAsientoDispobibles("_BS", "SLA", otraFechaParaOceanic).get(0);
+		when(oceanicPosta.comprarSiHayDisponibilidad(usuarioVip.getDni(), otroAsientoOceanic.getAsiento(), otroAsientoOceanic.getNumeroDeAsiento())).thenReturn(true);
 	}
 	
 	@Test (expected=UsuarioInvalidoParaReservaExeption.class)
@@ -160,4 +179,15 @@ public class TestEntrega3 {
 		filtroUbicacionYClase.setFiltro(filtroClase);
 		Assert.assertEquals(usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroUbicacionYClase).size(), 1);		
 	}
+	
+	@Test
+	public void testComprarUnAsientoDeOceanic(){
+		usuarioVip.comprarAsiento(otroAsientoOceanic);
+		verify(oceanicPosta).comprarSiHayDisponibilidad(usuarioVip.getDni(), otroAsientoOceanic.getAsiento(), otroAsientoOceanic.getNumeroDeAsiento());
+	}
+	
+//	@Test
+//	public void testReservarUnAsientoDeOceanic(){
+//		
+//	}
 }

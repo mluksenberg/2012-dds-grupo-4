@@ -45,6 +45,7 @@ public class Parser{
 				if(!formatoFecha.format(unaFecha.getFecha()).equals(unString)){
 					continue;
 				}
+				unaFecha.setFechaString(unString);
 				return unaFecha;
 			}
 			catch(ParseException exception){
