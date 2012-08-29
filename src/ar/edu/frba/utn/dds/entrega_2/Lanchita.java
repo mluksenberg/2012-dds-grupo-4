@@ -2,9 +2,11 @@ package ar.edu.frba.utn.dds.entrega_2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
+import ar.edu.frba.utn.dds.entrega_3.Vuelo;
 
 import com.lanchita.AerolineaLanchita;
 
@@ -12,8 +14,8 @@ public class Lanchita implements Aerolinea {
 	private static final boolean admiteReserva = true;
 	private AerolineaLanchita lanchita = AerolineaLanchita.getInstance();
 	private static float impuesto = 15;
-	private String[][] asientos;
 	private Integer maximaDuracionDeReserva;
+	private TreeSet<Vuelo> vuelos = new TreeSet<Vuelo>();
 
 	public Lanchita() {
 
@@ -67,6 +69,11 @@ public class Lanchita implements Aerolinea {
 	public void comprar(Asiento unAsiento, String unDni) {
 		this.getLanchita().comprar(unAsiento.getAsiento());
 		unAsiento.setEstado("C");
+		//TODO hacer una funcion de add or replace
+		Vuelo vuelo=new Vuelo();
+		vuelo.setNroDeVuelo(unAsiento.getAsiento().split("-")[0]);
+		vuelo.setPopularidad(vuelo.getPopularidad()+1);
+		this.getVuelos().add(vuelo);
 	}
 	
 	public void reservarAsiento(Asiento unAsiento, Usuario unUsuario){
@@ -88,5 +95,19 @@ public class Lanchita implements Aerolinea {
 
 	public void setMaximaDuracionDeReserva(Integer maximaDuracionDeReserva) {
 		this.maximaDuracionDeReserva = maximaDuracionDeReserva;
+	}
+
+	@Override
+	public Integer popularidadDeUnVuelo(String codigoAsientoDeUnVuelo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public TreeSet<Vuelo> getVuelos() {
+		return vuelos;
+	}
+
+	public void setVuelos(TreeSet<Vuelo> vuelos) {
+		this.vuelos = vuelos;
 	}
 }

@@ -2,6 +2,8 @@ package ar.edu.frba.utn.dds.entrega_3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.oceanic.AerolineaOceanic;
 import com.oceanic.AsientoDTO;
@@ -16,6 +18,7 @@ public class Oceanic implements Aerolinea {
 	private AerolineaOceanic oceanicPosta= AerolineaOceanic.getInstance();
 	private Boolean admiteReserva;
 	private Integer maximaDuracionDeReserva;
+	private TreeSet<Vuelo> vuelos=new TreeSet<Vuelo>();
 	
 	@Override
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino, Fecha fecha) {
@@ -42,7 +45,17 @@ public class Oceanic implements Aerolinea {
 
 	@Override
 	public void comprar(Asiento unAsiento, String unDni) {
-		this.getOceanicPosta().comprarSiHayDisponibilidad(unDni, unAsiento.getAsiento(), unAsiento.getNumeroDeAsiento());		
+		Boolean resultado=this.getOceanicPosta().comprarSiHayDisponibilidad(unDni, unAsiento.getAsiento(), unAsiento.getNumeroDeAsiento());
+		if(resultado){
+			//TODO esto esta mal.. hacer una funcion de add or replace
+			Vuelo vuelo = new Vuelo();
+			vuelo.setNroDeVuelo(unAsiento.getAsiento());
+			Integer popularidaNueva=vuelo.getPopularidad()+1;
+			vuelo.setPopularidad(popularidaNueva);
+			this.getVuelos().add(vuelo);
+		}else{
+			throw new NoSePudoComprarExeption();
+		}
 	}
 
 
@@ -79,6 +92,20 @@ public class Oceanic implements Aerolinea {
 
 	public void setMaximaDuracionDeReserva(Integer maximaDuracionDeReserva) {
 		this.maximaDuracionDeReserva = maximaDuracionDeReserva;
+	}
+
+	@Override
+	public Integer popularidadDeUnVuelo(String codigoAsientoDeUnVuelo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public TreeSet<Vuelo> getVuelos() {
+		return vuelos;
+	}
+
+	public void setVuelos(TreeSet<Vuelo> vuelos) {
+		this.vuelos = vuelos;
 	}
 
 }
