@@ -140,6 +140,12 @@ public class TestEntrega3 {
 		Assert.assertEquals(usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroUbicacion).size(), 1);
 	}
 	
+//	@Test
+//	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSHfiltrandoPorPrecio(){
+//		FiltroUbicacionDecorator filtroUbicacion = new FiltroUbicacionDecorator("V");
+//	
+//	}
+	
 	@Test
 	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSHfiltrandoPorUbicacionEnVentanaYPrimeraClase(){
 		FiltroClase filtroClase = new FiltroClase("P");

@@ -18,7 +18,7 @@ public class Itinerario {
 	public BigDecimal precioTotal(){
 		BigDecimal precioTotal=new BigDecimal(0);
 		for(Asiento unAsiento: this.getAsientos()){
-			precioTotal.add(unAsiento.getPrecio());
+			precioTotal = precioTotal.add(unAsiento.getPrecio());
 		}
 		return precioTotal;
 	}
