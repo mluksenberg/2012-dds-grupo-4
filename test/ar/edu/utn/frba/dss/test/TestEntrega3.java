@@ -45,7 +45,11 @@ public class TestEntrega3 {
 	Usuario usuarioNoPago;
 	Usuario otroUsuarioEstandar;
 	Asiento unAsiento;
+	Asiento otroAsiento;
+	Asiento otroAsientoMas;
 	Asiento otroAsientoOceanic;
+	Asiento otroAsientoOceanicMas;
+	Asiento unAsientoOceanic;
 	Parser parser;
 	Aterrizar aterrizar;
 	Fecha unaFecha;
@@ -66,8 +70,8 @@ public class TestEntrega3 {
 		oceanicPosta= mock(AerolineaOceanic.class);
 		String[][] asientos ={
 				{ "01202022220202-3", "159.90", "P", "V", "D", "", "14:00","02:25","EZE","USA","20/12/2012","21/12/2012" },
-				{ "01202022220123-3", "205.10", "E", "P", "D", "", "14:00","02:25","EZE","USA","20/12/2012","21/12/2012" },
-				{ "01202012315523-8", "154.08", "E", "P", "D", "", "14:00","02:25","EZE","USA","20/12/2012","21/12/2012" },
+				{ "01202022220202-3", "205.10", "E", "P", "D", "", "14:00","02:25","EZE","USA","20/12/2012","21/12/2012" },
+				{ "01202022220202-8", "154.08", "E", "P", "D", "", "14:00","02:25","EZE","USA","20/12/2012","21/12/2012" },
 				{ "01202022267867-7", "255.98", "E", "P", "D", "", "05:20","14:00","EZE","PER","20/12/2012","20/12/2012" },
 				{ "01202022227897-3", "236.10", "P", "C", "D", "", "05:20","14:00","EZE","PER","20/12/2012","20/12/2012" },
 				{ "01202022998988-6", "148.23", "P", "V", "D", "", "05:20","14:00","EZE","PER","20/12/2012","20/12/2012" },
@@ -96,6 +100,7 @@ public class TestEntrega3 {
 		when(lanchitaPostaMock.asientosDisponibles(anyString(),anyString(),anyString(),anyString(),anyString(), anyString())).thenReturn(asientos);
 		oceanic = new Oceanic();
 		oceanic.setOceanicPosta(oceanicPosta);
+		oceanic.setMaximaDuracionDeReserva(10);
 		aerolineas.add(lanchita);
 		aerolineas.add(oceanic);
 		List<AsientoDTO> asientosDTO=new ArrayList<AsientoDTO>();
@@ -105,8 +110,16 @@ public class TestEntrega3 {
 		asientosDTO.add(new AsientoDTO("OC100",30,"15/08/2012","17/08/2012","10:35","05:35",new BigDecimal("6150.98"),"Primera","Pasillo",true,"_BS","SLA"));
 		when(oceanicPosta.asientosDisponiblesParaOrigenYDestino("_BS", "SLA", "15/08/2012")).thenReturn(asientosDTO);
 		unAsiento = lanchita.asientosDisponibles("EZE", "USA",unaFecha).get(0);
+		otroAsiento = lanchita.asientosDisponibles("EZE", "USA",unaFecha).get(1);
+		otroAsientoMas = lanchita.asientosDisponibles("EZE", "USA",unaFecha).get(2);
+		otroAsientoOceanicMas=usuarioVip.buscarAsientoDispobibles("_BS", "SLA", otraFechaParaOceanic).get(2);
+		unAsientoOceanic=usuarioVip.buscarAsientoDispobibles("_BS", "SLA", otraFechaParaOceanic).get(1);
+
 		otroAsientoOceanic=usuarioVip.buscarAsientoDispobibles("_BS", "SLA", otraFechaParaOceanic).get(0);
 		when(oceanicPosta.comprarSiHayDisponibilidad(usuarioVip.getDni(), otroAsientoOceanic.getAsiento(), otroAsientoOceanic.getNumeroDeAsiento())).thenReturn(true);
+		when(oceanicPosta.comprarSiHayDisponibilidad(usuarioVip.getDni(), unAsientoOceanic.getAsiento(), unAsientoOceanic.getNumeroDeAsiento())).thenReturn(true);
+		when(oceanicPosta.comprarSiHayDisponibilidad(usuarioVip.getDni(), otroAsientoOceanicMas.getAsiento(), otroAsientoOceanicMas.getNumeroDeAsiento())).thenReturn(true);
+
 	}
 	
 	@Test (expected=UsuarioInvalidoParaReservaExeption.class)
@@ -186,8 +199,42 @@ public class TestEntrega3 {
 		verify(oceanicPosta).comprarSiHayDisponibilidad(usuarioVip.getDni(), otroAsientoOceanic.getAsiento(), otroAsientoOceanic.getNumeroDeAsiento());
 	}
 	
-//	@Test
-//	public void testReservarUnAsientoDeOceanic(){
-//		
-//	}
+	@Test
+	public void testReservarUnAsientoDeOceanic(){
+		usuarioEstandar.reservarAsiento(otroAsientoOceanic);
+		verify(oceanicPosta).reservar(usuarioEstandar.getDni(), otroAsientoOceanic.getAsiento(),otroAsientoOceanic.getNumeroDeAsiento());
+	}
+	
+	@Test
+	public void testSobreReservaEnLanchita(){
+		usuarioEstandar.reservarAsiento(unAsiento);
+		otroUsuarioEstandar.reservarAsiento(unAsiento);
+		Assert.assertEquals(unAsiento.getReservas().size(), 2);
+	}
+	
+	@Test
+	public void testSobreReservaEnOceanic(){
+		usuarioEstandar.reservarAsiento(otroAsientoOceanic);
+		otroUsuarioEstandar.reservarAsiento(otroAsientoOceanic);
+		Assert.assertEquals(otroAsientoOceanic.getReservas().size(), 2);
+	}
+	
+	@Test
+	public void testPopularidadDeUnVueloDeLanchita(){
+		usuarioVip.comprarAsiento(unAsiento);
+		usuarioVip.comprarAsiento(otroAsiento);
+		usuarioVip.comprarAsiento(otroAsientoMas);
+		Assert.assertTrue(lanchita.popularidadDeUnVuelo(unAsiento.getAsiento()).equals(3));
+	}
+	
+	@Test
+	public void testPopularidadDeUnVueloDeOceanic(){
+		usuarioVip.comprarAsiento(unAsientoOceanic);
+		usuarioVip.comprarAsiento(otroAsientoOceanic);
+		usuarioVip.comprarAsiento(otroAsientoOceanicMas);
+		Assert.assertTrue(oceanic.popularidadDeUnVuelo(unAsientoOceanic.getAsiento()).equals(3));
+	}
+	
+	
+	
 }

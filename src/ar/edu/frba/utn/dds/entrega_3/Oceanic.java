@@ -14,7 +14,7 @@ import ar.edu.frba.utn.dds.entrega_2.Usuario;
 public class Oceanic implements Aerolinea {
 
 	private AerolineaOceanic oceanicPosta= AerolineaOceanic.getInstance();
-	private Boolean admiteReserva;
+	private Boolean admiteReserva = true;
 	private Integer maximaDuracionDeReserva;
 	private List<Vuelo> vuelos=new ArrayList<Vuelo>();
 	
