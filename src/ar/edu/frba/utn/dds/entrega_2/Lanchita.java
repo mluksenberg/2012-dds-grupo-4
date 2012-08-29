@@ -37,9 +37,9 @@ public class Lanchita implements Aerolinea {
 						unStringAsiento[4], unStringAsiento[10],
 						unStringAsiento[6], unStringAsiento[11],
 						unStringAsiento[7],this);
-				if (unAsiento.tieneFechasEntre(fecha)) {
+//				if (unAsiento.tieneFechasEntre(fecha)) {
 					asientosDisponibles.add(unAsiento);
-				}
+//				}
 			}
 		}
 

@@ -142,7 +142,7 @@ public class Aterrizar {
 		for (Asiento unAsientoOrigen : asientosOrigenes) {
 			for (Asiento unAsientoDestino : asientosDestinos) {
 				if (unAsientoOrigen.getDestino().equals(
-						unAsientoDestino.getOrigen())) {
+						unAsientoDestino.getOrigen())&& unAsientoDestino.getFechaSalida().esPosteriorA(unAsientoOrigen.getFechaLlegada())) {
 					Itinerario unItinerario = new Itinerario();
 					unItinerario.getAsientos().add(unAsientoOrigen);
 					unItinerario.getAsientos().add(unAsientoDestino);
@@ -176,7 +176,7 @@ public class Aterrizar {
 						unAsientoDestino.getOrigen(), fecha, user, unaAerolinea);
 				for (Itinerario unItinerarioIntermedio : itinerariosIntermedios) {
 					if (unItinerarioIntermedio.getAsientos().get(1)
-							.getDestino().equals(unAsientoDestino.getOrigen())) {
+							.getDestino().equals(unAsientoDestino.getOrigen())&& unAsientoDestino.getFechaSalida().esPosteriorA(unItinerarioIntermedio.getAsientos().get(1).getFechaLlegada())) {
 						Itinerario unItinerario = new Itinerario();
 						unItinerario.getAsientos().addAll(
 								unItinerarioIntermedio.getAsientos());

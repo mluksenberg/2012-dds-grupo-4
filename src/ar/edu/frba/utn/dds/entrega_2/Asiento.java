@@ -8,7 +8,7 @@ import ar.edu.frba.utn.dds.entrega_1.Fecha;
 import ar.edu.frba.utn.dds.entrega_1.Parser;
 import ar.edu.frba.utn.dds.entrega_3.Reserva;
 
-public class Asiento{
+public class Asiento {
 	private String origen;
 	private String destino;
 	private String asiento;
@@ -23,9 +23,13 @@ public class Asiento{
 	private Parser parser = new Parser();
 	private String estado;
 	private Aerolinea aerolinea;
-	private List<Reserva> reservas=new ArrayList<Reserva>();
-	
-	public Asiento(String unOrigen, String unDestino, String unAsiento, String precioOriginal, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada, Aerolinea unaAerolinea){
+	private List<Reserva> reservas = new ArrayList<Reserva>();
+
+	public Asiento(String unOrigen, String unDestino, String unAsiento,
+			String precioOriginal, String unaClase, String unaUbicacion,
+			String unEstado, String unaFechaSalida, String unaHoraSalida,
+			String unaFechaLlegada, String unaHoraLlegada,
+			Aerolinea unaAerolinea) {
 		this.parser.agregarFormato("yyyy-MM-dd HH:mm");
 		this.parser.agregarFormato("MM-dd-yyyy HH:mm");
 		this.parser.agregarFormato("dd/MM/yyyy HH:mm");
@@ -36,40 +40,49 @@ public class Asiento{
 		this.clase = unaClase;
 		this.ubicacion = unaUbicacion;
 		this.setEstado(unEstado);
-		if(unEstado.equals("D")) this.estaReservado = false;
-		else this.estaReservado = true;
-		this.fechaSalida = this.parser.parsear(unaFechaSalida + " " + unaHoraSalida);
-		this.fechaLlegada = this.parser.parsear(unaFechaLlegada + " " + unaHoraLlegada);
+		if (unEstado.equals("D"))
+			this.estaReservado = false;
+		else
+			this.estaReservado = true;
+		this.fechaSalida = this.parser.parsear(unaFechaSalida + " "
+				+ unaHoraSalida);
+		this.fechaLlegada = this.parser.parsear(unaFechaLlegada + " "
+				+ unaHoraLlegada);
 		this.setAerolinea(unaAerolinea);
 	}
-	
-	public String toString(){
-		return this.getAsiento() + " " + this.getOrigen() + " " + this.getDestino() + " " + this.getFechaSalida() + " " + this.getFechaLlegada() + " " + this.getClase() + " " + this.getUbicacion() + " " + this.getPrecio() + " " + this.getEstaReservado();  
+
+	public String toString() {
+		return this.getAsiento() + " " + this.getOrigen() + " "
+				+ this.getDestino() + " " + this.getFechaSalida() + " "
+				+ this.getFechaLlegada() + " " + this.getClase() + " "
+				+ this.getUbicacion() + " " + this.getPrecio() + " "
+				+ this.getEstaReservado();
 	}
+
 	public String getAsiento() {
 		return asiento;
 	}
-	
+
 	public void setAsiento(String asiento) {
 		this.asiento = asiento;
 	}
-	
+
 	public String getClase() {
 		return clase;
 	}
-	
+
 	public void setClase(String clase) {
 		this.clase = clase;
 	}
-	
+
 	public String getUbicacion() {
 		return ubicacion;
 	}
-	
+
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
 	}
-	
+
 	public BigDecimal getPrecio() {
 		return precio;
 	}
@@ -77,7 +90,7 @@ public class Asiento{
 	public void setPrecio(float unPrecio) {
 		this.precio = (new BigDecimal(Float.toString(unPrecio)));
 	}
-	
+
 	public Parser getParser() {
 		return parser;
 	}
@@ -127,21 +140,27 @@ public class Asiento{
 	}
 
 	public boolean tieneFechasEntre(Fecha otraFecha) {
-		
-		if(otraFecha==null) return true;
-		
-		return ( otraFecha.esPosteriorA(this.getFechaSalida()) && this.getFechaLlegada().esPosteriorA(otraFecha) ) || this.getFechaSalida().esLaMismaFechaQue(otraFecha) || this.getFechaLlegada().esLaMismaFechaQue(otraFecha);
+
+		if (otraFecha == null)
+			return true;
+
+		return (otraFecha.esPosteriorA(this.getFechaSalida()) && this
+				.getFechaLlegada().esPosteriorA(otraFecha))
+				|| this.getFechaSalida().esLaMismaFechaQue(otraFecha)
+				|| this.getFechaLlegada().esLaMismaFechaQue(otraFecha);
 	}
 
 	public boolean esSuperOferta() {
-		return (this.getClase().equals("P") && this.getPrecio().floatValue() <= 8000) || (this.getClase().equals("E") && this.getPrecio().floatValue() <= 4000);
+		return (this.getClase().equals("P") && this.getPrecio().floatValue() <= 8000)
+				|| (this.getClase().equals("E") && this.getPrecio()
+						.floatValue() <= 4000);
 	}
-// FIXME1 contemplar el tiempo de conexion si corresponde
-//	public Long obtenerDuracion(){
-//		return (this.getFechaLlegada().getFecha().getTime() - this.fechaSalida.getFecha().getTime());
-//	}
 
-	
+	// FIXME1 contemplar el tiempo de conexion si corresponde
+	// public Long obtenerDuracion(){
+	// return (this.getFechaLlegada().getFecha().getTime() -
+	// this.fechaSalida.getFecha().getTime());
+	// }
 
 	public String getEstado() {
 		return estado;
@@ -178,10 +197,10 @@ public class Asiento{
 	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
-	
+
 	public Reserva getReservaPosta() {
 		return this.getReservas().get(0);
-		
+
 	}
 
 	public int getNumeroDeAsiento() {
@@ -191,8 +210,8 @@ public class Asiento{
 	public void setNumeroDeAsiento(int numeroDeAsiento) {
 		this.numeroDeAsiento = numeroDeAsiento;
 	}
-	
-	public Integer obtenerPopularidadDelVuelo(){
+
+	public Integer obtenerPopularidadDelVuelo() {
 		return this.getAerolinea().popularidadDeUnVuelo(this.getAsiento());
 	}
 }

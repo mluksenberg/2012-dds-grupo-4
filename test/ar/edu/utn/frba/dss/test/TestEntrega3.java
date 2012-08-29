@@ -20,10 +20,14 @@ import ar.edu.frba.utn.dds.entrega_2.Aerolinea;
 import ar.edu.frba.utn.dds.entrega_2.Asiento;
 import ar.edu.frba.utn.dds.entrega_2.Aterrizar;
 import ar.edu.frba.utn.dds.entrega_2.Estandar;
+import ar.edu.frba.utn.dds.entrega_2.Itinerario;
 import ar.edu.frba.utn.dds.entrega_2.Lanchita;
 import ar.edu.frba.utn.dds.entrega_2.NoPaga;
 import ar.edu.frba.utn.dds.entrega_2.Usuario;
 import ar.edu.frba.utn.dds.entrega_2.Vip;
+import ar.edu.frba.utn.dds.entrega_3.CriterioPrecioAscendente;
+import ar.edu.frba.utn.dds.entrega_3.CriterioPrecioDescendente;
+import ar.edu.frba.utn.dds.entrega_3.CriterioTiempoVuelo;
 import ar.edu.frba.utn.dds.entrega_3.FiltroClase;
 import ar.edu.frba.utn.dds.entrega_3.FiltroPrecioDecorator;
 import ar.edu.frba.utn.dds.entrega_3.FiltroUbicacionDecorator;
@@ -55,6 +59,7 @@ public class TestEntrega3 {
 	Fecha unaFecha;
 	Fecha otraFechaParaOceanic;
 	Oceanic oceanic;
+	Fecha otraFecha;
 	@Before
 	public void setUp() throws Exception {
 		parser=new Parser();
@@ -69,16 +74,16 @@ public class TestEntrega3 {
 		lanchitaPostaMock = mock(AerolineaLanchita.class);
 		oceanicPosta= mock(AerolineaOceanic.class);
 		String[][] asientos ={
-				{ "01202022220202-3", "159.90", "P", "V", "D", "", "14:00","02:25","EZE","USA","20/12/2012","21/12/2012" },
+				{ "01202022220202-3", "159.90", "P", "V", "D", "", "14:00","03:00","EZE","USA","20/12/2012","21/12/2012" },
 				{ "01202022220202-3", "205.10", "E", "P", "D", "", "14:00","02:25","EZE","USA","20/12/2012","21/12/2012" },
-				{ "01202022220202-8", "154.08", "E", "P", "D", "", "14:00","02:25","EZE","USA","20/12/2012","21/12/2012" },
+				{ "01202022220202-8", "154.08", "E", "P", "D", "", "14:00","06:25","EZE","USA","20/12/2012","21/12/2012" },
 				{ "01202022267867-7", "255.98", "E", "P", "D", "", "05:20","14:00","EZE","PER","20/12/2012","20/12/2012" },
 				{ "01202022227897-3", "236.10", "P", "C", "D", "", "05:20","14:00","EZE","PER","20/12/2012","20/12/2012" },
 				{ "01202022998988-6", "148.23", "P", "V", "D", "", "05:20","14:00","EZE","PER","20/12/2012","20/12/2012" },
 				{ "01202022220008-3", "383.22", "T", "V", "D", "", "20:00","08:00","PER","UDA","20/12/2012","21/12/2012" },
 				{ "01202022256565-3", "282.19", "T", "C", "D", "", "20:00","08:00","PER","UDA","20/12/2012","21/12/2012" },
 				{ "01202022323423-5", "431.28", "T", "C", "D", "", "20:00","08:00","PER","UDA","20/12/2012","21/12/2012" },
-				{ "01202022220298-2", "528.81", "P", "V", "D", "", "07:00","08:00","USA","USH","20/12/2012","21/12/2012"} };
+				{ "01202022220298-2", "528.81", "P", "V", "D", "", "07:00","08:00","USA","USH","21/12/2012","21/12/2012"} };
 		
 		
 		///////////////////////////////////////////////////////////////////
@@ -95,6 +100,9 @@ public class TestEntrega3 {
 		otroUsuarioEstandar = new Usuario("Eugenio", "Lopez Luksenberg", "28543567", new Estandar(), aterrizar);
 		usuarioNoPago = new Usuario("Andres Francisco", "Lopez Luksenberg", "33783548", new NoPaga(),aterrizar);
 		unaFecha= parser.parsear("20/12/2012" + " " + "15:20");
+		otraFecha= parser.parsear("21/12/2012" + " " + "07:00");
+		
+
 		lanchita.setMaximaDuracionDeReserva(10);
 		
 		when(lanchitaPostaMock.asientosDisponibles(anyString(),anyString(),anyString(),anyString(),anyString(), anyString())).thenReturn(asientos);
@@ -234,7 +242,38 @@ public class TestEntrega3 {
 		usuarioVip.comprarAsiento(otroAsientoOceanicMas);
 		Assert.assertTrue(oceanic.popularidadDeUnVuelo(unAsientoOceanic.getAsiento()).equals(3));
 	}
+	/*
+	 * PARA FEDE LUKSENBERG: el assert no corta el flujo de ejecucion
+	 */
+	@Test
+	public void testBuscarItinerariosOrdenadosPorPrecioAscendente(){
+		List<Itinerario> itinerarios=usuarioVip.buscarItinerarios("EZE", "USH", unaFecha,new CriterioPrecioAscendente());
+		float precioAnt=0;
+		for(Itinerario unItinerario: itinerarios){
+			Assert.assertTrue(unItinerario.precioTotal().floatValue()>precioAnt);
+			precioAnt=unItinerario.precioTotal().floatValue();
+		}
+	}
 	
+	@Test
+	public void testBuscarItinerariosOrdenadosPorPrecioDescendente(){
+		List<Itinerario> itinerarios=usuarioVip.buscarItinerarios("EZE", "USH", unaFecha,new CriterioPrecioDescendente());
+		float precioAnt=itinerarios.get(0).precioTotal().floatValue()+1;
+		for(Itinerario unItinerario: itinerarios){
+			Assert.assertTrue(unItinerario.precioTotal().floatValue()<precioAnt);
+			precioAnt=unItinerario.precioTotal().floatValue();
+		}
+	}
+	
+	@Test
+	public void testBuscarItinerariosOrdenadosPorTiempoVuelo(){
+		List<Itinerario> itinerarios=usuarioVip.buscarItinerarios("EZE", "USH", otraFecha,new CriterioTiempoVuelo());
+		long tiempoDeVueloAnt=0;
+		for(Itinerario unItinerario: itinerarios){
+			Assert.assertTrue(unItinerario.tiempoDeVuelo()>tiempoDeVueloAnt);
+			tiempoDeVueloAnt=unItinerario.tiempoDeVuelo();
+		}
+	}
 	
 	
 }
