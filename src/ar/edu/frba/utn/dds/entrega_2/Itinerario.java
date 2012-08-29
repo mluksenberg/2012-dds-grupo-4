@@ -34,14 +34,12 @@ public class Itinerario {
 		return tiempo;
 	}
 	
-	//FIXME esto esta mal
 	public Integer popularidad(){
 		Integer popu= new Integer(0);
 			for(Asiento unAsiento: this.getAsientos()){
-				if(unAsiento.getEstado().equals("C")){
-					popu+=1;
+				popu+=unAsiento.obtenerPopularidadDelVuelo();
 			}
-		}
+		
 		return popu;
 	}
 	

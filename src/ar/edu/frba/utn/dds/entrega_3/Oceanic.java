@@ -2,8 +2,6 @@ package ar.edu.frba.utn.dds.entrega_3;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import com.oceanic.AerolineaOceanic;
 import com.oceanic.AsientoDTO;
@@ -18,24 +16,34 @@ public class Oceanic implements Aerolinea {
 	private AerolineaOceanic oceanicPosta= AerolineaOceanic.getInstance();
 	private Boolean admiteReserva;
 	private Integer maximaDuracionDeReserva;
-	private TreeSet<Vuelo> vuelos=new TreeSet<Vuelo>();
+	private List<Vuelo> vuelos=new ArrayList<Vuelo>();
 	
 	@Override
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino, Fecha fecha) {
 		List<AsientoDTO> asientosDTO;
-		if(unDestino!=null){
-			asientosDTO=this.getOceanicPosta().asientosDisponiblesParaOrigenYDestino(unOrigen, unDestino, fecha.getFecha().toString());
-		}else{
-			asientosDTO=this.getOceanicPosta().asientosDisponiblesParaOrigen(unOrigen, fecha.getFecha().toString());
+		//FIXME
+		/*
+		 * si no existe un vuelo con ese origen y destino el jar de oceanic arroja NullPointerExeption
+		 * por ahora la catcheo xq no se me ocurre otra solucion, la idea seria q si el vuelo no existe
+		 * este metodo devuelva una coleccion vacia
+		 */
+		try {
+			if(unDestino!=null){
+				asientosDTO=this.getOceanicPosta().asientosDisponiblesParaOrigenYDestino(unOrigen, unDestino, fecha.getFecha().toString());
+			}else{
+				asientosDTO=this.getOceanicPosta().asientosDisponiblesParaOrigen(unOrigen, fecha.getFecha().toString());
+			}
+			List<Asiento> asientosDisponibles=new ArrayList<Asiento>();
+			for(AsientoDTO unAsientoDTO: asientosDTO){
+				Asiento unAsiento=new Asiento(unAsientoDTO.getOrigen(),unAsientoDTO.getDestino(),unAsientoDTO.getCodigoDeVuelo(),unAsientoDTO.getPrecio().toString(),unAsientoDTO.getClase(),unAsientoDTO.getUbicacion(),"D", unAsientoDTO.getFechaDeSalida(), unAsientoDTO.getHoraDeSalida(), unAsientoDTO.getFechaDeLlegada(), unAsientoDTO.getHoraDeLlegada(),this);
+				unAsiento.setNumeroDeAsiento(unAsientoDTO.getNumeroDeAsiento());
+				asientosDisponibles.add(unAsiento);
+			}
+			return asientosDisponibles;
+		} catch (NullPointerException e) {
+			return new ArrayList<Asiento>();
 		}
-		List<Asiento> asientosDisponibles=new ArrayList<Asiento>();
-		for(AsientoDTO unAsientoDTO: asientosDTO){
-			Asiento unAsiento=new Asiento(unAsientoDTO.getOrigen(),unAsientoDTO.getDestino(),unAsientoDTO.getCodigoDeVuelo(),unAsientoDTO.getPrecio().toString(),unAsientoDTO.getClase(),unAsientoDTO.getUbicacion(),"D", unAsientoDTO.getFechaDeSalida(), unAsientoDTO.getHoraDeSalida(), unAsientoDTO.getFechaDeLlegada(), unAsientoDTO.getHoraDeLlegada(),this);
-			unAsiento.setNumeroDeAsiento(unAsientoDTO.getNumeroDeAsiento());
-			asientosDisponibles.add(unAsiento);
-		}
-		return asientosDisponibles;
-		
+				
 	}
 
 	@Override
@@ -43,16 +51,32 @@ public class Oceanic implements Aerolinea {
 		return 0;
 	}
 
+	private void incremetarPopularidad(String nroVuelo){
+		Vuelo unVuelo = null;
+		for(Vuelo otroVuelo:this.getVuelos()){
+			if(otroVuelo.getNroDeVuelo().equals(nroVuelo)){
+				unVuelo=otroVuelo;
+				break;
+			}
+		}
+		if(unVuelo!=null){
+			unVuelo.setPopularidad(unVuelo.getPopularidad()+1);
+			this.getVuelos().add(unVuelo);
+
+		}else{
+			Vuelo vuelo = new Vuelo();
+			vuelo.setNroDeVuelo(nroVuelo);
+			Integer popularidaNueva=vuelo.getPopularidad()+1;
+			vuelo.setPopularidad(popularidaNueva);
+			this.getVuelos().add(vuelo);
+		}
+	}
+	
 	@Override
 	public void comprar(Asiento unAsiento, String unDni) {
 		Boolean resultado=this.getOceanicPosta().comprarSiHayDisponibilidad(unDni, unAsiento.getAsiento(), unAsiento.getNumeroDeAsiento());
 		if(resultado){
-			//TODO esto esta mal.. hacer una funcion de add or replace
-			Vuelo vuelo = new Vuelo();
-			vuelo.setNroDeVuelo(unAsiento.getAsiento());
-			Integer popularidaNueva=vuelo.getPopularidad()+1;
-			vuelo.setPopularidad(popularidaNueva);
-			this.getVuelos().add(vuelo);
+			this.incremetarPopularidad(unAsiento.getAsiento());
 		}else{
 			throw new NoSePudoComprarExeption();
 		}
@@ -96,15 +120,19 @@ public class Oceanic implements Aerolinea {
 
 	@Override
 	public Integer popularidadDeUnVuelo(String codigoAsientoDeUnVuelo) {
-		// TODO Auto-generated method stub
-		return null;
+		for(Vuelo unVuelo:this.getVuelos()){
+			if(unVuelo.getNroDeVuelo().equals(codigoAsientoDeUnVuelo)){
+				return unVuelo.getPopularidad();
+			}
+		}
+		return 0;
 	}
 
-	public TreeSet<Vuelo> getVuelos() {
+	public List<Vuelo> getVuelos() {
 		return vuelos;
 	}
 
-	public void setVuelos(TreeSet<Vuelo> vuelos) {
+	public void setVuelos(List<Vuelo> vuelos) {
 		this.vuelos = vuelos;
 	}
 

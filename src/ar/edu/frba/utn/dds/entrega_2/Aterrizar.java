@@ -2,9 +2,11 @@ package ar.edu.frba.utn.dds.entrega_2;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
+import ar.edu.frba.utn.dds.entrega_3.Criterio;
 import ar.edu.frba.utn.dds.entrega_3.LaReservaNoCorrespondeAlUsuarioExeption;
 import ar.edu.frba.utn.dds.entrega_3.NoAdmiteReservaExeption;
 import ar.edu.frba.utn.dds.entrega_3.Reserva;
@@ -13,7 +15,8 @@ import ar.edu.frba.utn.dds.entrega_3.UsuarioInvalidoParaReservaExeption;
 public class Aterrizar {
 
 	private List<Aerolinea> aerolineas;
-
+	private Criterio ordenador=new Criterio();
+	
 	public Aterrizar(List<Aerolinea> aerolineas) {
 		this.setAerolineas(aerolineas);
 
@@ -33,6 +36,16 @@ public class Aterrizar {
 			itinerarios.addAll(this.obtenerItinerarios(unOrigen, unDestino, unaFecha, unUsuario, unaAerolinea));
 		}
 		
+		return itinerarios;
+	}
+	
+	public List<Itinerario> itinerariosDisponibles(String unOrigen, String unDestino, Fecha unaFecha, Usuario unUsuario, Comparator<Itinerario> criterio){
+		List<Itinerario> itinerarios = new ArrayList<Itinerario>();
+		for(Aerolinea unaAerolinea : this.getAerolineas()){
+			itinerarios.addAll(this.obtenerItinerarios(unOrigen, unDestino, unaFecha, unUsuario, unaAerolinea));
+		}
+		this.getOrdenador().setComparador(criterio);
+		this.getOrdenador().ordenarSegunCriterio(itinerarios);
 		return itinerarios;
 	}
 	
@@ -208,6 +221,14 @@ public class Aterrizar {
 						unOrigen, unDestino, fecha, user, unaAerolinea));
 
 		return itinerariosToReturn;
+	}
+
+	public Criterio getOrdenador() {
+		return ordenador;
+	}
+
+	public void setOrdenador(Criterio ordenador) {
+		this.ordenador = ordenador;
 	}
 
 }

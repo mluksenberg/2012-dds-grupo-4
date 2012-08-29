@@ -2,7 +2,6 @@ package ar.edu.frba.utn.dds.entrega_2;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 
 
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
@@ -15,7 +14,7 @@ public class Lanchita implements Aerolinea {
 	private AerolineaLanchita lanchita = AerolineaLanchita.getInstance();
 	private static float impuesto = 15;
 	private Integer maximaDuracionDeReserva;
-	private TreeSet<Vuelo> vuelos = new TreeSet<Vuelo>();
+	private List<Vuelo> vuelos = new ArrayList<Vuelo>();
 
 	public Lanchita() {
 
@@ -64,16 +63,34 @@ public class Lanchita implements Aerolinea {
 		Lanchita.impuesto = impuesto;
 	}
 
-	//TODO a modificar para meter lo de las reservas
+	
+	private void incremetarPopularidad(String nroVuelo){
+		nroVuelo=nroVuelo.split("-")[0];
+		Vuelo unVuelo = null;
+		for(Vuelo otroVuelo:this.getVuelos()){
+			if(otroVuelo.getNroDeVuelo().equals(nroVuelo)){
+				unVuelo=otroVuelo;
+				break;
+			}
+		}
+		if(unVuelo!=null){
+			unVuelo.setPopularidad(unVuelo.getPopularidad()+1);
+			this.getVuelos().add(unVuelo);
+
+		}else{
+			Vuelo vuelo = new Vuelo();
+			vuelo.setNroDeVuelo(nroVuelo);
+			Integer popularidaNueva=vuelo.getPopularidad()+1;
+			vuelo.setPopularidad(popularidaNueva);
+			this.getVuelos().add(vuelo);
+		}
+	}
+	
 	@Override
 	public void comprar(Asiento unAsiento, String unDni) {
 		this.getLanchita().comprar(unAsiento.getAsiento());
 		unAsiento.setEstado("C");
-		//TODO hacer una funcion de add or replace
-		Vuelo vuelo=new Vuelo();
-		vuelo.setNroDeVuelo(unAsiento.getAsiento().split("-")[0]);
-		vuelo.setPopularidad(vuelo.getPopularidad()+1);
-		this.getVuelos().add(vuelo);
+		this.incremetarPopularidad(unAsiento.getAsiento());
 	}
 	
 	public void reservarAsiento(Asiento unAsiento, Usuario unUsuario){
@@ -99,15 +116,20 @@ public class Lanchita implements Aerolinea {
 
 	@Override
 	public Integer popularidadDeUnVuelo(String codigoAsientoDeUnVuelo) {
-		// TODO Auto-generated method stub
-		return null;
+		codigoAsientoDeUnVuelo=codigoAsientoDeUnVuelo.split("-")[0];
+		for(Vuelo unVuelo:this.getVuelos()){
+			if(unVuelo.getNroDeVuelo().equals(codigoAsientoDeUnVuelo)){
+				return unVuelo.getPopularidad();
+			}
+		}
+		return 0;
 	}
 
-	public TreeSet<Vuelo> getVuelos() {
+	public List<Vuelo> getVuelos() {
 		return vuelos;
 	}
 
-	public void setVuelos(TreeSet<Vuelo> vuelos) {
+	public void setVuelos(List<Vuelo> vuelos) {
 		this.vuelos = vuelos;
 	}
 }

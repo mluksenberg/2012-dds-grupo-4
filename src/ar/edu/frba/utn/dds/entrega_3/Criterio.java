@@ -10,8 +10,7 @@ public class Criterio {
 	
 	private Comparator<Itinerario> comparador;
 
-	public Criterio(Comparator<Itinerario> unComparador){
-		this.setComparador(unComparador);
+	public Criterio(){
 	}
 	
 

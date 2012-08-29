@@ -136,10 +136,10 @@ public class Asiento{
 	public boolean esSuperOferta() {
 		return (this.getClase().equals("P") && this.getPrecio().floatValue() <= 8000) || (this.getClase().equals("E") && this.getPrecio().floatValue() <= 4000);
 	}
-	//FIXME contemplar el tiempo de conexion si corresponde
-	public Long obtenerDuracion(){
-		return (this.getFechaLlegada().getFecha().getTime() - this.fechaSalida.getFecha().getTime());
-	}
+// FIXME1 contemplar el tiempo de conexion si corresponde
+//	public Long obtenerDuracion(){
+//		return (this.getFechaLlegada().getFecha().getTime() - this.fechaSalida.getFecha().getTime());
+//	}
 
 	
 
@@ -190,5 +190,9 @@ public class Asiento{
 
 	public void setNumeroDeAsiento(int numeroDeAsiento) {
 		this.numeroDeAsiento = numeroDeAsiento;
+	}
+	
+	public Integer obtenerPopularidadDelVuelo(){
+		return this.getAerolinea().popularidadDeUnVuelo(this.getAsiento());
 	}
 }

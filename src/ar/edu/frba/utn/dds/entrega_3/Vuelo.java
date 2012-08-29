@@ -1,5 +1,9 @@
 package ar.edu.frba.utn.dds.entrega_3;
 
+/*
+ * Clase que uso como valueObjet por el tema de la popularidad
+ * 
+ */
 public class Vuelo {
 	private String nroDeVuelo;
 	

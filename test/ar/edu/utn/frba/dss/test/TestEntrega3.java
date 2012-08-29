@@ -19,7 +19,6 @@ import ar.edu.frba.utn.dds.entrega_2.Aerolinea;
 import ar.edu.frba.utn.dds.entrega_2.Asiento;
 import ar.edu.frba.utn.dds.entrega_2.Aterrizar;
 import ar.edu.frba.utn.dds.entrega_2.Estandar;
-import ar.edu.frba.utn.dds.entrega_2.Itinerario;
 import ar.edu.frba.utn.dds.entrega_2.Lanchita;
 import ar.edu.frba.utn.dds.entrega_2.NoPaga;
 import ar.edu.frba.utn.dds.entrega_2.Usuario;
@@ -28,7 +27,8 @@ import ar.edu.frba.utn.dds.entrega_3.FiltroClase;
 import ar.edu.frba.utn.dds.entrega_3.FiltroPrecioDecorator;
 import ar.edu.frba.utn.dds.entrega_3.FiltroUbicacionDecorator;
 import ar.edu.frba.utn.dds.entrega_3.LaReservaNoCorrespondeAlUsuarioExeption;
-import ar.edu.frba.utn.dds.entrega_3.NoAdmiteReservaExeption;
+
+import ar.edu.frba.utn.dds.entrega_3.Oceanic;
 import ar.edu.frba.utn.dds.entrega_3.UsuarioInvalidoParaReservaExeption;
 
 import com.lanchita.AerolineaLanchita;
@@ -44,6 +44,7 @@ public class TestEntrega3 {
 	Parser parser;
 	Aterrizar aterrizar;
 	Fecha unaFecha;
+	Oceanic oceanic;
 	@Before
 	public void setUp() throws Exception {
 		////////////////////////////////////////////////////This is mock baby?////////////////////
@@ -67,6 +68,7 @@ public class TestEntrega3 {
 		
 		lanchita = new Lanchita();
 		lanchita.setLanchita(lanchitaPostaMock);
+		oceanic = new Oceanic();
 		
 		parser=new Parser();
 		parser.agregarFormato("yyyy-MM-dd HH:mm");
@@ -75,6 +77,7 @@ public class TestEntrega3 {
 		
 		List<Aerolinea> aerolineas=new ArrayList<Aerolinea>();
 		aerolineas.add(lanchita);
+		aerolineas.add(oceanic);
 		
 		aterrizar=new Aterrizar(aerolineas);
 		
@@ -92,11 +95,7 @@ public class TestEntrega3 {
 		usuarioVip.reservarAsiento(unAsiento);
 	}
 	
-//	@Test (expected = NoAdmiteReservaExeption.class)
-//	public void testAerolineaNoAdmiteReserva(){
-//		//TODO Probar con OCEANICS
-//	}
-	
+
 	@Test (expected = LaReservaNoCorrespondeAlUsuarioExeption.class)
 	public void testUsuarioCompreUnAsientoYaReservadoPorOtro(){
 		usuarioEstandar.reservarAsiento(unAsiento);

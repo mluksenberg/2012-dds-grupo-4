@@ -1,6 +1,7 @@
 package ar.edu.frba.utn.dds.entrega_2;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
@@ -61,6 +62,17 @@ public class Usuario {
 	
 	public List<Itinerario> buscarItinerarios(String unOrigen, String unDestino, Fecha unaFecha, Filtro unFiltro){
 		return unFiltro.filtrarItinerarios(this.buscarItinerarios(unOrigen, unDestino, unaFecha));
+	}
+	
+	public List<Itinerario> buscarItinerarios(String unOrigen, String unDestino, Fecha unaFecha,Comparator<Itinerario> criterio){
+		return this.getAterrizar().itinerariosDisponibles(unOrigen, unDestino, unaFecha, this,criterio);
+	}
+	
+	public List<Itinerario> buscarItinerarios(String unOrigen, String unDestino, Fecha unaFecha, Filtro unFiltro,Comparator<Itinerario> criterio){
+		List<Itinerario> itinerarios=unFiltro.filtrarItinerarios(this.buscarItinerarios(unOrigen, unDestino, unaFecha));
+		this.getAterrizar().getOrdenador().setComparador(criterio);
+		this.getAterrizar().getOrdenador().ordenarSegunCriterio(itinerarios);
+		return itinerarios;
 	}
 	
 	/**
