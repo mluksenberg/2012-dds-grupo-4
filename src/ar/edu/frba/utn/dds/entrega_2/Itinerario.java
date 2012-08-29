@@ -38,7 +38,6 @@ public class Itinerario {
 			for(Asiento unAsiento: this.getAsientos()){
 				popu+=unAsiento.obtenerPopularidadDelVuelo();
 			}
-		
 		return popu;
 	}
 	

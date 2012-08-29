@@ -76,7 +76,7 @@ public class TestEntrega3 {
 		String[][] asientos ={
 				{ "01202022220202-3", "159.90", "P", "V", "D", "", "14:00","03:00","EZE","USA","20/12/2012","21/12/2012" },
 				{ "01202022220202-3", "205.10", "E", "P", "D", "", "14:00","02:25","EZE","USA","20/12/2012","21/12/2012" },
-				{ "01202022220202-8", "154.08", "E", "P", "D", "", "14:00","06:25","EZE","USA","20/12/2012","21/12/2012" },
+				{ "01202022220203-8", "154.08", "E", "P", "D", "", "14:00","06:25","EZE","USA","20/12/2012","21/12/2012" },
 				{ "01202022267867-7", "255.98", "E", "P", "D", "", "05:20","14:00","EZE","PER","20/12/2012","20/12/2012" },
 				{ "01202022227897-3", "236.10", "P", "C", "D", "", "05:20","14:00","EZE","PER","20/12/2012","20/12/2012" },
 				{ "01202022998988-6", "148.23", "P", "V", "D", "", "05:20","14:00","EZE","PER","20/12/2012","20/12/2012" },
@@ -106,6 +106,8 @@ public class TestEntrega3 {
 		lanchita.setMaximaDuracionDeReserva(10);
 		
 		when(lanchitaPostaMock.asientosDisponibles(anyString(),anyString(),anyString(),anyString(),anyString(), anyString())).thenReturn(asientos);
+		
+
 		oceanic = new Oceanic();
 		oceanic.setOceanicPosta(oceanicPosta);
 		oceanic.setMaximaDuracionDeReserva(10);
@@ -231,8 +233,7 @@ public class TestEntrega3 {
 	public void testPopularidadDeUnVueloDeLanchita(){
 		usuarioVip.comprarAsiento(unAsiento);
 		usuarioVip.comprarAsiento(otroAsiento);
-		usuarioVip.comprarAsiento(otroAsientoMas);
-		Assert.assertTrue(lanchita.popularidadDeUnVuelo(unAsiento.getAsiento()).equals(3));
+		Assert.assertTrue(lanchita.popularidadDeUnVuelo(unAsiento.getAsiento()).equals(2));
 	}
 	
 	@Test
@@ -275,5 +276,17 @@ public class TestEntrega3 {
 		}
 	}
 	
+	@Test
+	public void testBuscarItinerariosOrdenadosPorPopularidad(){
+		usuarioVip.comprarAsiento(unAsiento);
+		usuarioVip.comprarAsiento(otroAsiento);
+		usuarioVip.comprarAsiento(otroAsientoMas);
+		List<Itinerario> itinerarios=usuarioVip.buscarItinerarios("EZE", "USH", unaFecha,new CriterioPrecioDescendente());
+		int popularidadAnt=itinerarios.get(0).popularidad()+1;
+		for(Itinerario unItinerario: itinerarios){
+			Assert.assertTrue(unItinerario.popularidad()<=popularidadAnt);
+			popularidadAnt=unItinerario.popularidad();
+		}
+	}
 	
 }
