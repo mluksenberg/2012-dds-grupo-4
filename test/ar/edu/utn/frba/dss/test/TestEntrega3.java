@@ -121,6 +121,20 @@ public class TestEntrega3 {
 	}
 	
 	@Test
+	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSHfiltradoPorPrimeraClaseYEjecutivo(){
+		FiltroClase filtroClase = new FiltroClase("P");
+		filtroClase.addClase("E");
+		Assert.assertEquals(usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroClase).size(), 3);
+	}
+	
+	@Test
+	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSHfiltradoPorPrimeraClaseYTurista(){
+		FiltroClase filtroClase = new FiltroClase("P");
+		filtroClase.addClase("T");
+		Assert.assertEquals(usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroClase).size(), 1);
+	}
+	
+	@Test
 	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSHfiltrandoPorUbicacionEnVentana(){
 		FiltroUbicacionDecorator filtroUbicacion = new FiltroUbicacionDecorator("V");
 		Assert.assertEquals(usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroUbicacion).size(), 1);

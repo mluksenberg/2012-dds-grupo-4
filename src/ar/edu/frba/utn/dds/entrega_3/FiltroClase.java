@@ -7,34 +7,39 @@ import ar.edu.frba.utn.dds.entrega_2.Asiento;
 import ar.edu.frba.utn.dds.entrega_2.Itinerario;
 
 public class FiltroClase extends Filtro {
-	private String clase;
+	private List<String> clases = new ArrayList<String>();
+	
 	
 	public FiltroClase(String unaClase){
-		this.clase = unaClase;
+		this.clases.add(unaClase);
 	}
 	
 	public List<Itinerario> filtrarItinerarios(List<Itinerario> itinerarios){
 		List<Itinerario> itinerariosFiltrados = new ArrayList<Itinerario>();
 		for(Itinerario unItinerario: itinerarios){
-			if( this.losAsientosSonDeLaClase(this.getClase(), unItinerario ) ){
+			if( this.losAsientosSonDeLaClase(this.getClases(), unItinerario ) ){
 				itinerariosFiltrados.add(unItinerario);
 			}
 		}
 		return itinerariosFiltrados;
 	}
 
-	private boolean losAsientosSonDeLaClase(String unaClase, Itinerario unItinerario) {
+	private boolean losAsientosSonDeLaClase(List<String> clases, Itinerario unItinerario) {
 		for(Asiento unAsiento : unItinerario.getAsientos()){
-			if( unAsiento.getClase() != unaClase ) return false;
+			if( !clases.contains(unAsiento.getClase()) ) return false;
 		}
 		return true;
 	}
 
-	public String getClase() {
-		return clase;
+	public void addClase(String unaClase){
+		this.getClases().add(unaClase);
+	}
+	
+	public List<String> getClases() {
+		return clases;
 	}
 
-	public void setClase(String clase) {
-		this.clase = clase;
+	public void setClases(List<String> clases) {
+		this.clases = clases;
 	}
 }
