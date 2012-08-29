@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
+import ar.edu.frba.utn.dds.entrega_3.Filtro;
 
 
 
@@ -56,6 +57,10 @@ public class Usuario {
 	
 	public List<Itinerario> buscarItinerarios(String unOrigen, String unDestino, Fecha unaFecha){
 		return this.getAterrizar().itinerariosDisponibles(unOrigen, unDestino, unaFecha, this);
+	}
+	
+	public List<Itinerario> buscarItinerarios(String unOrigen, String unDestino, Fecha unaFecha, Filtro unFiltro){
+		return unFiltro.filtrarItinerarios(this.buscarItinerarios(unOrigen, unDestino, unaFecha));
 	}
 	
 	/**

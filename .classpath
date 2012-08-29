@@ -6,6 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry exported="true" kind="lib" path="lib/aerolinea-lanchita-2.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mockito-all-1.9.5-rc1.jar"/>
-	<classpathentry kind="lib" path="/home/viofla/workspace/Aterrizar/lib/aerolinea-oceanic-2.0.jar"/>
+	<classpathentry kind="lib" path="/home/andres/.workspace/Aterrizar/lib/aerolinea-oceanic-2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

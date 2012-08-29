@@ -18,10 +18,13 @@ import ar.edu.frba.utn.dds.entrega_2.Aerolinea;
 import ar.edu.frba.utn.dds.entrega_2.Asiento;
 import ar.edu.frba.utn.dds.entrega_2.Aterrizar;
 import ar.edu.frba.utn.dds.entrega_2.Estandar;
+import ar.edu.frba.utn.dds.entrega_2.Itinerario;
 import ar.edu.frba.utn.dds.entrega_2.Lanchita;
 import ar.edu.frba.utn.dds.entrega_2.NoPaga;
 import ar.edu.frba.utn.dds.entrega_2.Usuario;
 import ar.edu.frba.utn.dds.entrega_2.Vip;
+import ar.edu.frba.utn.dds.entrega_3.FiltroClase;
+import ar.edu.frba.utn.dds.entrega_3.FiltroUbicacionDecorator;
 import ar.edu.frba.utn.dds.entrega_3.LaReservaNoCorrespondeAlUsuarioExeption;
 import ar.edu.frba.utn.dds.entrega_3.NoAdmiteReservaExeption;
 import ar.edu.frba.utn.dds.entrega_3.UsuarioInvalidoParaReservaExeption;
@@ -109,5 +112,25 @@ public class TestEntrega3 {
 	@Test
 	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSH(){
 		Assert.assertEquals(usuarioVip.buscarItinerarios("EZE", "USH", unaFecha).size(), 3);
+	}
+	
+	@Test
+	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSHfiltradoPorPrimeraClase(){
+		FiltroClase filtroClase = new FiltroClase("P");
+		Assert.assertEquals(usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroClase).size(), 1);
+	}
+	
+	@Test
+	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSHfiltrandoPorUbicacionEnVentana(){
+		FiltroUbicacionDecorator filtroUbicacion = new FiltroUbicacionDecorator("V");
+		Assert.assertEquals(usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroUbicacion).size(), 1);
+	}
+	
+	@Test
+	public void testUnUsuarioBuscaUnItinerarioDesdeEZEaUSHfiltrandoPorUbicacionEnVentanaYPrimeraClase(){
+		FiltroClase filtroClase = new FiltroClase("P");
+		FiltroUbicacionDecorator filtroUbicacionYClase = new FiltroUbicacionDecorator("V");
+		filtroUbicacionYClase.setFiltro(filtroClase);
+		Assert.assertEquals(usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroUbicacionYClase).size(), 1);		
 	}
 }
