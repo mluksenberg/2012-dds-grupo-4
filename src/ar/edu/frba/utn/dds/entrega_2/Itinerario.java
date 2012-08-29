@@ -6,22 +6,13 @@ import java.util.List;
 
 public class Itinerario {
 	private List<Asiento> asientos = new ArrayList<Asiento>();
-	private BigDecimal precioTotal=new BigDecimal(0);
-	
+		
 	public List<Asiento> getAsientos() {
 		return asientos;
 	}
 
 	public void setAsientos(List<Asiento> asientos) {
 		this.asientos = asientos;
-	}
-
-	public BigDecimal getPrecioTotal() {
-		return precioTotal;
-	}
-
-	public void setPrecioTotal(BigDecimal precioTotal) {
-		this.precioTotal = precioTotal;
 	}
 	
 	public BigDecimal precioTotal(){
@@ -43,6 +34,7 @@ public class Itinerario {
 		return tiempo;
 	}
 	
+	//FIXME esto esta mal
 	public Integer popularidad(){
 		Integer popu= new Integer(0);
 			for(Asiento unAsiento: this.getAsientos()){
@@ -52,5 +44,5 @@ public class Itinerario {
 		}
 		return popu;
 	}
-
+	
 }
