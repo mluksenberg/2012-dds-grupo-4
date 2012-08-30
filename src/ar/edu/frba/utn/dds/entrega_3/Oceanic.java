@@ -158,7 +158,11 @@ public class Oceanic implements Aerolinea {
 
 	@Override
 	public void chequearExpiracionAsientos() {
-		// TODO Ver de reimplementar la crotada de verificacion de reservas diaras
+		List<Asiento> asientosAEliminar = new ArrayList<Asiento>();
+		for (Asiento unAsiento : this.getAsientosReservados()) {
+			asientosAEliminar.add(unAsiento.actualizarReservas());
+		}
+		this.getAsientosReservados().removeAll(asientosAEliminar);
 	}
 
 }
