@@ -4,12 +4,22 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.frba.utn.dds.entrega_3.Reserva;
+
 public class Itinerario {
 	private List<Asiento> asientos = new ArrayList<Asiento>();
 	public List<Asiento> getAsientos() {
 		return asientos;
 	}
 
+	public List<Reserva> getReservas(){
+		List<Reserva> reservas = new ArrayList<Reserva>();
+		for(Asiento unAsiento : this.getAsientos()){
+			reservas.addAll(unAsiento.getReservas());
+		}
+		return reservas;
+	}
+	
 	public void setAsientos(List<Asiento> asientos) {
 		this.asientos = asientos;
 	}
