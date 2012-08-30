@@ -16,6 +16,7 @@ public class Lanchita implements Aerolinea {
 	private Integer maximaDuracionDeReserva;
 	private List<Vuelo> vuelos = new ArrayList<Vuelo>();
 	private List<Itinerario> itinerariosReservados = new ArrayList<Itinerario>();
+	private List<Asiento> asientosReservados = new ArrayList<Asiento>();
 	
 	public Lanchita() {
 		
@@ -96,6 +97,7 @@ public class Lanchita implements Aerolinea {
 	public void reservarAsiento(Asiento unAsiento, Usuario unUsuario){
 		this.getLanchita().reservar(unAsiento.getAsiento(), unUsuario.getDni());
 		unAsiento.setEstado("R");
+		this.getAsientosReservados().add(unAsiento);
 		//TODO ¿que es esto? ¿lo puedo romper?
 		unAsiento.setEstaReservado(true);
 		
@@ -139,5 +141,23 @@ public class Lanchita implements Aerolinea {
 
 	public void setItinerariosReservados(List<Itinerario> itinerariosReservados) {
 		this.itinerariosReservados = itinerariosReservados;
+	}
+
+	@Override
+	public void chequearExpiracionAsientos() {
+		List<Asiento> asientosAEliminar = new ArrayList<Asiento>();
+		for (Asiento unAsiento : this.getAsientosReservados()) {
+			asientosAEliminar.add(unAsiento.actualizarReservas());
+		}
+		this.getAsientosReservados().removeAll(asientosAEliminar);
+		
+	}
+
+	public List<Asiento> getAsientosReservados() {
+		return asientosReservados;
+	}
+
+	public void setAsientosReservados(List<Asiento> asientosReservados) {
+		this.asientosReservados = asientosReservados;
 	}
 }

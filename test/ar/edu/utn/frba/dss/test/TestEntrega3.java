@@ -56,6 +56,7 @@ public class TestEntrega3 {
 	Asiento otroAsientoOceanic;
 	Asiento otroAsientoOceanicMas;
 	Asiento unAsientoOceanic;
+	Asiento unAsientoReservado;
 	Parser parser;
 	Aterrizar aterrizar;
 	Fecha unaFecha;
@@ -63,7 +64,9 @@ public class TestEntrega3 {
 	Oceanic oceanic;
 	Fecha otraFecha;
 	Fecha unaFechaParaReservarItinerarios;
+	Fecha unaOtraFecha;
 	Itinerario unItinerario;
+	Fecha fechaParaReservar;
 	@Before
 	public void setUp() throws Exception {
 		parser=new Parser();
@@ -98,7 +101,7 @@ public class TestEntrega3 {
 		List<Aerolinea> aerolineas=new ArrayList<Aerolinea>();
 		
 		aterrizar=new Aterrizar(aerolineas);
-		
+	
 		usuarioVip = new Usuario("Federico Gabriel", "Lopez Luksenberg", "36747013", new Vip(),aterrizar);
 		usuarioEstandar = new Usuario("Marcelo Javier", "Lopez Luksenberg", "36747012", new Estandar(),aterrizar);
 		otroUsuarioEstandar = new Usuario("Eugenio", "Lopez Luksenberg", "28543567", new Estandar(), aterrizar);
@@ -106,7 +109,8 @@ public class TestEntrega3 {
 		unaFecha= parser.parsear("20/12/2012" + " " + "15:20");
 		otraFecha= parser.parsear("21/12/2012" + " " + "07:00");
 		unaFechaParaReservarItinerarios = parser.parsear("21/12/2012 07:40");
-
+		unaOtraFecha = parser.parsear("20/12/2012" + " " + "05:40");
+		fechaParaReservar = parser.parsear("20/11/2009 05:40");
 		lanchita.setMaximaDuracionDeReserva(10);
 		
 		when(lanchitaPostaMock.asientosDisponibles(anyString(),anyString(),anyString(),anyString(),anyString(), anyString())).thenReturn(asientos);
@@ -128,7 +132,7 @@ public class TestEntrega3 {
 		otroAsientoMas = lanchita.asientosDisponibles("EZE", "USA",unaFecha).get(2);
 		otroAsientoOceanicMas=usuarioVip.buscarAsientoDispobibles("_BS", "SLA", otraFechaParaOceanic).get(2);
 		unAsientoOceanic=usuarioVip.buscarAsientoDispobibles("_BS", "SLA", otraFechaParaOceanic).get(1);
-
+		
 		otroAsientoOceanic=usuarioVip.buscarAsientoDispobibles("_BS", "SLA", otraFechaParaOceanic).get(0);
 		when(oceanicPosta.comprarSiHayDisponibilidad(usuarioVip.getDni(), otroAsientoOceanic.getAsiento(), otroAsientoOceanic.getNumeroDeAsiento())).thenReturn(true);
 		when(oceanicPosta.comprarSiHayDisponibilidad(usuarioVip.getDni(), unAsientoOceanic.getAsiento(), unAsientoOceanic.getNumeroDeAsiento())).thenReturn(true);
@@ -313,6 +317,18 @@ public class TestEntrega3 {
 		usuarioEstandar.reservarItinerario(unItinerario);
 		int sizeOriginal = usuarioVip.buscarItinerarios("EZE", "USH", unaFecha).size();
 		int sizeDespues = usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroMostrarReservados).size();
+		Assert.assertTrue(sizeOriginal < sizeDespues);
 	}
+	
+	@Test
+	public void testEliminarReservasExpiradas(){
+		usuarioEstandar.reservarAsiento(unAsiento);
+		unAsiento.getReservas().get(0).setFechaDeVencimiento(fechaParaReservar);
+		int asientosReservadosOriginal = lanchita.getAsientosReservados().size();
+		aterrizar.chequearExpiracionReservas();
+		int asientosReservadosPosterior = lanchita.getAsientosReservados().size();
+		Assert.assertTrue(asientosReservadosOriginal>asientosReservadosPosterior);
+	}
+	
 }
 

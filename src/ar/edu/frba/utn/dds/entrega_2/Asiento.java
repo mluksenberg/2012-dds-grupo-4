@@ -2,6 +2,7 @@ package ar.edu.frba.utn.dds.entrega_2;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
@@ -213,5 +214,25 @@ public class Asiento {
 
 	public Integer obtenerPopularidadDelVuelo() {
 		return this.getAerolinea().popularidadDeUnVuelo(this.getAsiento());
+	}
+
+	public Asiento actualizarReservas() {
+		List<Reserva> reservasAEliminar= new ArrayList<Reserva>();
+		Asiento toReturn = null;
+		for(Reserva unaReserva:this.getReservas()){
+			if(this.expiroReserva(unaReserva.getFechaDeVencimiento())){
+				reservasAEliminar.add(unaReserva);
+				toReturn=this;
+			}
+		}
+		this.getReservas().removeAll(reservasAEliminar);
+		return toReturn;
+	}
+	
+	
+	protected boolean expiroReserva(Fecha unaFecha) {
+		Fecha fecha = new Fecha();
+		fecha.setFecha(new Date());
+		return fecha.esPosteriorA(unaFecha);
 	}
 }

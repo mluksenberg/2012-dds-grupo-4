@@ -156,4 +156,9 @@ public class Oceanic implements Aerolinea {
 		this.itinerariosReservados = itinerariosReservados;
 	}
 
+	@Override
+	public void chequearExpiracionAsientos() {
+		// TODO Ver de reimplementar la crotada de verificacion de reservas diaras
+	}
+
 }

@@ -247,5 +247,11 @@ public class Aterrizar {
 	public void setOrdenador(Criterio ordenador) {
 		this.ordenador = ordenador;
 	}
+	
+	public void chequearExpiracionReservas(){
+		for (Aerolinea unaAerolinea : this.getAerolineas()) {
+			unaAerolinea.chequearExpiracionAsientos();
+		}
+	}
 
 }
