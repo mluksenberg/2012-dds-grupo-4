@@ -109,6 +109,8 @@ public class Aterrizar {
 		for( Asiento unAsiento : unItinerario.getAsientos()){
 			this.reservar(unAsiento, unUsuario);
 		}
+		Aerolinea unaAerolinea = unItinerario.getAsientos().get(0).getAerolinea();
+		unaAerolinea.getItinerariosReservados().add(unItinerario);
 	}
 	
 	/*

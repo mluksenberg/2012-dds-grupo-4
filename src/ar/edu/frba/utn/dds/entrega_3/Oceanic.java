@@ -9,6 +9,7 @@ import com.oceanic.AsientoDTO;
 import ar.edu.frba.utn.dds.entrega_1.Fecha;
 import ar.edu.frba.utn.dds.entrega_2.Aerolinea;
 import ar.edu.frba.utn.dds.entrega_2.Asiento;
+import ar.edu.frba.utn.dds.entrega_2.Itinerario;
 import ar.edu.frba.utn.dds.entrega_2.Usuario;
 
 public class Oceanic implements Aerolinea {
@@ -17,6 +18,8 @@ public class Oceanic implements Aerolinea {
 	private Boolean admiteReserva = true;
 	private Integer maximaDuracionDeReserva;
 	private List<Vuelo> vuelos=new ArrayList<Vuelo>();
+	private List<Asiento> asientosReservados = new ArrayList<Asiento>();
+	private List<Itinerario> itinerariosReservados = new ArrayList<Itinerario>();
 	
 	@Override
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino, Fecha fecha) {
@@ -86,6 +89,7 @@ public class Oceanic implements Aerolinea {
 	@Override
 	public void reservarAsiento(Asiento asiento, Usuario usuario) {
 		this.getOceanicPosta().reservar(usuario.getDni(), asiento.getAsiento(), asiento.getNumeroDeAsiento());
+		this.getAsientosReservados().add(asiento);
 	}
 
 	@Override
@@ -134,6 +138,22 @@ public class Oceanic implements Aerolinea {
 
 	public void setVuelos(List<Vuelo> vuelos) {
 		this.vuelos = vuelos;
+	}
+
+	public List<Asiento> getAsientosReservados() {
+		return asientosReservados;
+	}
+
+	public void setAsientosReservados(List<Asiento> asientosReservados) {
+		this.asientosReservados = asientosReservados;
+	}
+
+	public List<Itinerario> getItinerariosReservados() {
+		return itinerariosReservados;
+	}
+
+	public void setItinerariosReservados(List<Itinerario> itinerariosReservados) {
+		this.itinerariosReservados = itinerariosReservados;
 	}
 
 }

@@ -23,5 +23,6 @@ public interface Aerolinea {
 	public void reservarAsiento(Asiento asiento,Usuario usuario);
 	public Integer getMaximaDuracionDeReserva();
 	public boolean admiteReserva();
-	public Integer popularidadDeUnVuelo(String codigoAsientoDeUnVuelo); 
+	public Integer popularidadDeUnVuelo(String codigoAsientoDeUnVuelo);
+	public List<Itinerario> getItinerariosReservados();
 }

@@ -15,9 +15,9 @@ public class Lanchita implements Aerolinea {
 	private static float impuesto = 15;
 	private Integer maximaDuracionDeReserva;
 	private List<Vuelo> vuelos = new ArrayList<Vuelo>();
-
+	private List<Itinerario> itinerariosReservados = new ArrayList<Itinerario>();
+	
 	public Lanchita() {
-
 		
 	}
 
@@ -131,5 +131,13 @@ public class Lanchita implements Aerolinea {
 
 	public void setVuelos(List<Vuelo> vuelos) {
 		this.vuelos = vuelos;
+	}
+
+	public List<Itinerario> getItinerariosReservados() {
+		return itinerariosReservados;
+	}
+
+	public void setItinerariosReservados(List<Itinerario> itinerariosReservados) {
+		this.itinerariosReservados = itinerariosReservados;
 	}
 }

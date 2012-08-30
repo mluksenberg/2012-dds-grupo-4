@@ -288,5 +288,4 @@ public class TestEntrega3 {
 			popularidadAnt=unItinerario.popularidad();
 		}
 	}
-	
 }
