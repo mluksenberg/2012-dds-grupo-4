@@ -1,5 +1,6 @@
 package ar.edu.frba.utn.dds.entrega_3;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.frba.utn.dds.entrega_2.Aerolinea;
@@ -15,13 +16,14 @@ public class FiltroMostrarAsientosReservadosDecorator extends DecoratorFiltro{
 	public List<Itinerario> filtrarItinerarios(List<Itinerario> itinerarios){
 		List<Itinerario> itinerariosFiltradosAnteriormente = super.filtrarItinerarios(itinerarios);
 		if( super.getFiltro() == null ) itinerariosFiltradosAnteriormente = itinerarios;
-		List<Itinerario> itinerariosFiltrados = itinerariosFiltradosAnteriormente;
+		List<Itinerario> itinerariosFiltrados = new ArrayList<Itinerario>();
 		for(Itinerario unItinerario: itinerariosFiltradosAnteriormente){
 			if( this.getMostrarReservados() ){
 				Aerolinea unaAerolinea = unItinerario.getAsientos().get(0).getAerolinea();
 				itinerariosFiltrados.addAll(unaAerolinea.getItinerariosReservados());
 			}
 		}
+		itinerariosFiltrados.addAll(itinerariosFiltradosAnteriormente);
 		return itinerariosFiltrados;
 	}
 	

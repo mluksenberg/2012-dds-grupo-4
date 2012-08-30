@@ -51,4 +51,14 @@ public class Itinerario {
 		return popu;
 	}
 	
+	public boolean estaReservado(){
+		
+		for(Asiento unAsiento: this.getAsientos()){
+			if(unAsiento.getEstado()!="R"){
+				return false;
+			}
+		}
+		return true;
+	}
+	
 }

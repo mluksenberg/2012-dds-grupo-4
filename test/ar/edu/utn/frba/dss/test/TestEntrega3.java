@@ -28,7 +28,9 @@ import ar.edu.frba.utn.dds.entrega_2.Vip;
 import ar.edu.frba.utn.dds.entrega_3.CriterioPrecioAscendente;
 import ar.edu.frba.utn.dds.entrega_3.CriterioPrecioDescendente;
 import ar.edu.frba.utn.dds.entrega_3.CriterioTiempoVuelo;
+import ar.edu.frba.utn.dds.entrega_3.Filtro;
 import ar.edu.frba.utn.dds.entrega_3.FiltroClase;
+import ar.edu.frba.utn.dds.entrega_3.FiltroMostrarAsientosReservadosDecorator;
 import ar.edu.frba.utn.dds.entrega_3.FiltroPrecioDecorator;
 import ar.edu.frba.utn.dds.entrega_3.FiltroUbicacionDecorator;
 import ar.edu.frba.utn.dds.entrega_3.LaReservaNoCorrespondeAlUsuarioExeption;
@@ -60,6 +62,8 @@ public class TestEntrega3 {
 	Fecha otraFechaParaOceanic;
 	Oceanic oceanic;
 	Fecha otraFecha;
+	Fecha unaFechaParaReservarItinerarios;
+	Itinerario unItinerario;
 	@Before
 	public void setUp() throws Exception {
 		parser=new Parser();
@@ -83,7 +87,7 @@ public class TestEntrega3 {
 				{ "01202022220008-3", "383.22", "T", "V", "D", "", "20:00","08:00","PER","UDA","20/12/2012","21/12/2012" },
 				{ "01202022256565-3", "282.19", "T", "C", "D", "", "20:00","08:00","PER","UDA","20/12/2012","21/12/2012" },
 				{ "01202022323423-5", "431.28", "T", "C", "D", "", "20:00","08:00","PER","UDA","20/12/2012","21/12/2012" },
-				{ "01202022220298-2", "528.81", "P", "V", "D", "", "07:00","08:00","USA","USH","21/12/2012","21/12/2012"} };
+				{ "01202022220298-2", "528.81", "P", "V", "D", "", "07:00","08:00","USA","USH","21/12/2012","21/12/2012" }, };
 		
 		
 		///////////////////////////////////////////////////////////////////
@@ -101,7 +105,7 @@ public class TestEntrega3 {
 		usuarioNoPago = new Usuario("Andres Francisco", "Lopez Luksenberg", "33783548", new NoPaga(),aterrizar);
 		unaFecha= parser.parsear("20/12/2012" + " " + "15:20");
 		otraFecha= parser.parsear("21/12/2012" + " " + "07:00");
-		
+		unaFechaParaReservarItinerarios = parser.parsear("21/12/2012 07:40");
 
 		lanchita.setMaximaDuracionDeReserva(10);
 		
@@ -129,7 +133,7 @@ public class TestEntrega3 {
 		when(oceanicPosta.comprarSiHayDisponibilidad(usuarioVip.getDni(), otroAsientoOceanic.getAsiento(), otroAsientoOceanic.getNumeroDeAsiento())).thenReturn(true);
 		when(oceanicPosta.comprarSiHayDisponibilidad(usuarioVip.getDni(), unAsientoOceanic.getAsiento(), unAsientoOceanic.getNumeroDeAsiento())).thenReturn(true);
 		when(oceanicPosta.comprarSiHayDisponibilidad(usuarioVip.getDni(), otroAsientoOceanicMas.getAsiento(), otroAsientoOceanicMas.getNumeroDeAsiento())).thenReturn(true);
-
+		unItinerario = usuarioVip.buscarItinerarios("EZE", "USH", unaFecha).get(0);
 	}
 	
 	@Test (expected=UsuarioInvalidoParaReservaExeption.class)
@@ -288,4 +292,27 @@ public class TestEntrega3 {
 			popularidadAnt=unItinerario.popularidad();
 		}
 	}
+	
+	@Test
+	public void testReservarItinerario(){
+		usuarioEstandar.reservarItinerario(unItinerario);
+		Assert.assertTrue(unItinerario.estaReservado());
+	}
+	
+	@Test
+	public void testComprarItinerario(){
+		usuarioVip.comprarItinerario(unItinerario);
+		for(Asiento unAsiento : unItinerario.getAsientos()){
+			verify(lanchitaPostaMock).comprar(unAsiento.getAsiento());
+		}
+	}
+	
+	@Test
+	public void testFiltroMostrarItinerariosReservados(){
+		Filtro filtroMostrarReservados = new FiltroMostrarAsientosReservadosDecorator(true);
+		usuarioEstandar.reservarItinerario(unItinerario);
+		int sizeOriginal = usuarioVip.buscarItinerarios("EZE", "USH", unaFecha).size();
+		int sizeDespues = usuarioVip.buscarItinerarios("EZE", "USH", unaFecha, filtroMostrarReservados).size();
+	}
 }
+

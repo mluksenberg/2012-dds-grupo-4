@@ -118,7 +118,7 @@ public class Usuario {
 		return asientosFiltrados;
 	}
 	
-	public void comprarAsiento(Itinerario unItinerario){
+	public void comprarItinerario(Itinerario unItinerario){
 		this.getAterrizar().comprar(unItinerario,this);
 	}
 	
