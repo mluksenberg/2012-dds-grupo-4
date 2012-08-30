@@ -87,6 +87,15 @@ public class Aterrizar {
 		return unAsiento.getReservaPosta().getDni().equals(unUsuario.getDni());
 	}
 
+	public void comprar(Itinerario unItinerario, Usuario unUsuario){
+		for( Asiento unAsiento : unItinerario.getAsientos() ){
+			if (unAsiento.getEstado().equals("R") && !this.esElUsuarioQueReservoOriginalmente(unAsiento, unUsuario)) {throw new LaReservaNoCorrespondeAlUsuarioExeption();}	
+		}
+		for( Asiento unAsiento : unItinerario.getAsientos() ){
+			this.comprar(unAsiento, unUsuario);
+		}
+	}
+	
 	public void comprar(Asiento unAsiento, Usuario user) {
 		if (unAsiento.getEstado().equals("R")
 				&& !this.esElUsuarioQueReservoOriginalmente(unAsiento, user)) {
@@ -96,6 +105,12 @@ public class Aterrizar {
 		unAsiento.getReservas().clear();
 	}
 
+	public void reservar(Itinerario unItinerario, Usuario unUsuario){
+		for( Asiento unAsiento : unItinerario.getAsientos()){
+			this.reservar(unAsiento, unUsuario);
+		}
+	}
+	
 	/*
 	 * Este metodo reserva un asiento que se le pasa por parametro, si no tiene
 	 * reservas le avisa a la aerolinea que lo reserve, de lo contrario registra

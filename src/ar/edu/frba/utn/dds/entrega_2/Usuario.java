@@ -118,8 +118,16 @@ public class Usuario {
 		return asientosFiltrados;
 	}
 	
+	public void comprarAsiento(Itinerario unItinerario){
+		this.getAterrizar().comprar(unItinerario,this);
+	}
+	
 	public void comprarAsiento(Asiento unAsiento){
 		this.getAterrizar().comprar(unAsiento,this);
+	}
+	
+	public void reservarItinerario(Itinerario unItinerario){
+		this.getAterrizar().reservar(unItinerario, this);
 	}
 	
 	public void reservarAsiento(Asiento unAsiento){
