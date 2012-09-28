@@ -1,4 +1,4 @@
-package ar.edu.frba.utn.dds.entrega_4;
+package ar.edu.frba.utn.dds.operaciones;
 
 import java.util.ArrayList;
 import java.util.List;

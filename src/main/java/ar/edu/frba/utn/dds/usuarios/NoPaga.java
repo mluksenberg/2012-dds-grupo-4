@@ -1,16 +1,18 @@
-package ar.edu.frba.utn.dds.entrega_4;
+package ar.edu.frba.utn.dds.usuarios;
 
-public class Vip implements TipoUsuario{
+
+public class NoPaga implements TipoUsuario{
 
 	private float recargo;
-	
-	public Vip(){
-		this.recargo=0;
+
+	public NoPaga(){
+		this.recargo = 20;
 	}
 	@Override
 	public float getRecargo() {
-		return this.recargo;
+		return recargo;
 	}
+
 	public void setRecargo(float recargo) {
 		this.recargo = recargo;
 	}

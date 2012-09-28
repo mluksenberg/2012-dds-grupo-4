@@ -1,18 +1,25 @@
-package ar.edu.frba.utn.dds.entrega_4;
+package ar.edu.frba.utn.dds.operaciones;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.frba.utn.dds.exeptions.LaReservaNoCorrespondeAlUsuarioExeption;
+import ar.edu.frba.utn.dds.exeptions.NoAdmiteReservaExeption;
+import ar.edu.frba.utn.dds.exeptions.ParametrosErroneosExeption;
+import ar.edu.frba.utn.dds.exeptions.UsuarioInvalidoParaReservaExeption;
+import ar.edu.frba.utn.dds.fechas.Fecha;
+import ar.edu.frba.utn.dds.usuarios.Estandar;
+import ar.edu.frba.utn.dds.usuarios.Usuario;
+import ar.edu.frba.utn.dds.usuarios.Vip;
 
-//import ar.edu.frba.utn.dds.entrega_1.Fecha;
-//import ar.edu.frba.utn.dds.entrega_3.LaReservaNoCorrespondeAlUsuarioExeption;
-//import ar.edu.frba.utn.dds.entrega_3.NoAdmiteReservaExeption;
-//import ar.edu.frba.utn.dds.entrega_3.Reserva;
-//import ar.edu.frba.utn.dds.entrega_3.UsuarioInvalidoParaReservaExeption;
 
-public class Aterrizar {
+
+
+public class Aterrizar{
 
 	private List<Aerolinea> aerolineas;
+	
+	
 
 	public Aterrizar(List<Aerolinea> aerolineas) {
 		this.setAerolineas(aerolineas);

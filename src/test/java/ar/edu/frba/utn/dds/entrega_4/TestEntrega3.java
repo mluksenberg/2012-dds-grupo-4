@@ -13,22 +13,23 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import ar.edu.frba.utn.dds.entrega_4.Fecha;
-import ar.edu.frba.utn.dds.entrega_4.Parser;
-import ar.edu.frba.utn.dds.entrega_4.Aerolinea;
-import ar.edu.frba.utn.dds.entrega_4.Asiento;
-import ar.edu.frba.utn.dds.entrega_4.Aterrizar;
-import ar.edu.frba.utn.dds.entrega_4.Estandar;
-import ar.edu.frba.utn.dds.entrega_4.FiltroAsientosReservados;
-import ar.edu.frba.utn.dds.entrega_4.FiltroPrecio;
-import ar.edu.frba.utn.dds.entrega_4.Lanchita;
-import ar.edu.frba.utn.dds.entrega_4.NoPaga;
-import ar.edu.frba.utn.dds.entrega_4.Usuario;
-import ar.edu.frba.utn.dds.entrega_4.Vip;
-import ar.edu.frba.utn.dds.entrega_4.LaReservaNoCorrespondeAlUsuarioExeption;
-import ar.edu.frba.utn.dds.entrega_4.UsuarioInvalidoParaReservaExeption;
+import ar.edu.frba.utn.dds.aerolineasAdapters.Lanchita;
+import ar.edu.frba.utn.dds.exeptions.FiltroAsientosReservados;
+import ar.edu.frba.utn.dds.exeptions.LaReservaNoCorrespondeAlUsuarioExeption;
+import ar.edu.frba.utn.dds.exeptions.UsuarioInvalidoParaReservaExeption;
+import ar.edu.frba.utn.dds.fechas.Fecha;
+import ar.edu.frba.utn.dds.fechas.Parser;
+import ar.edu.frba.utn.dds.operaciones.Aerolinea;
+import ar.edu.frba.utn.dds.operaciones.Asiento;
+import ar.edu.frba.utn.dds.operaciones.Aterrizar;
+import ar.edu.frba.utn.dds.operaciones.FiltroPrecio;
+import ar.edu.frba.utn.dds.usuarios.Estandar;
+import ar.edu.frba.utn.dds.usuarios.NoPaga;
+import ar.edu.frba.utn.dds.usuarios.Usuario;
+import ar.edu.frba.utn.dds.usuarios.Vip;
 
 import com.lanchita.AerolineaLanchita;
+
 
 public class TestEntrega3 {
 	Lanchita lanchita;

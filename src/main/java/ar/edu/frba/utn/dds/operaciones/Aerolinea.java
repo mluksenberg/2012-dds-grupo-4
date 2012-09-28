@@ -1,8 +1,15 @@
-package ar.edu.frba.utn.dds.entrega_4;
+package ar.edu.frba.utn.dds.operaciones;
 
 import java.util.List;
 
-public interface Aerolinea {
+import ar.edu.frba.utn.dds.exeptions.ConversionException;
+import ar.edu.frba.utn.dds.fechas.Fecha;
+import ar.edu.frba.utn.dds.usuarios.Usuario;
+
+
+
+
+public interface Aerolinea{
 	
 	/**
 	 * Busca asientos disponibles en una aerolinea determinada

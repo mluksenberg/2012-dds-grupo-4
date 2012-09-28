@@ -9,19 +9,20 @@ import org.junit.Test;
 
 import com.lanchita.AerolineaLanchita;
 
+
 import static org.mockito.Mockito.*;
 
-import ar.edu.frba.utn.dds.entrega_4.Fecha;
-import ar.edu.frba.utn.dds.entrega_4.Parser;
-import ar.edu.frba.utn.dds.entrega_4.Aerolinea;
-import ar.edu.frba.utn.dds.entrega_4.Asiento;
-import ar.edu.frba.utn.dds.entrega_4.Aterrizar;
-import ar.edu.frba.utn.dds.entrega_4.Estandar;
-import ar.edu.frba.utn.dds.entrega_4.Lanchita;
-import ar.edu.frba.utn.dds.entrega_4.NoPaga;
-import ar.edu.frba.utn.dds.entrega_4.ParametrosErroneosExeption;
-import ar.edu.frba.utn.dds.entrega_4.Usuario;
-import ar.edu.frba.utn.dds.entrega_4.Vip;
+import ar.edu.frba.utn.dds.aerolineasAdapters.Lanchita;
+import ar.edu.frba.utn.dds.exeptions.ParametrosErroneosExeption;
+import ar.edu.frba.utn.dds.fechas.Fecha;
+import ar.edu.frba.utn.dds.fechas.Parser;
+import ar.edu.frba.utn.dds.operaciones.Aerolinea;
+import ar.edu.frba.utn.dds.operaciones.Asiento;
+import ar.edu.frba.utn.dds.operaciones.Aterrizar;
+import ar.edu.frba.utn.dds.usuarios.Estandar;
+import ar.edu.frba.utn.dds.usuarios.NoPaga;
+import ar.edu.frba.utn.dds.usuarios.Usuario;
+import ar.edu.frba.utn.dds.usuarios.Vip;
 
 public class TestEntrega2 {
 	Lanchita lanchita;

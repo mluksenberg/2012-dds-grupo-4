@@ -1,4 +1,4 @@
-package ar.edu.frba.utn.dds.entrega_4;
+package ar.edu.frba.utn.dds.exeptions;
 
 public class ConversionException extends RuntimeException {
 

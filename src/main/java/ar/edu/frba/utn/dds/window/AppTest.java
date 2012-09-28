@@ -1,4 +1,4 @@
-package ar.edu.frba.utn.dds.entrega_4;
+package ar.edu.frba.utn.dds.window;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

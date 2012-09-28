@@ -1,6 +1,7 @@
-package ar.edu.frba.utn.dds.entrega_4;
+package ar.edu.frba.utn.dds.operaciones;
 
-//import ar.edu.frba.utn.dds.entrega_1.Fecha;
+import ar.edu.frba.utn.dds.fechas.Fecha;
+
 
 public class Busqueda {
 	private String origen;
