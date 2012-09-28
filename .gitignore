@@ -6,3 +6,6 @@ bin-release/
 .actionScriptProperties
 .flexProperties
 lib/.svn/
+.project
+.classpath
+target/
