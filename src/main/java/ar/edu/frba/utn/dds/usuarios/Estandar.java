@@ -1,7 +1,5 @@
 package ar.edu.frba.utn.dds.usuarios;
 
-
-
 public class Estandar implements TipoUsuario{
 
 	private float recargo;

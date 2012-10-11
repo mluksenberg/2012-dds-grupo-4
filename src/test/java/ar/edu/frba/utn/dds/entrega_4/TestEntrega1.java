@@ -1,14 +1,15 @@
 package ar.edu.frba.utn.dds.entrega_4;
 
-import org.junit.Assert;
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
-
-
 
 import ar.edu.frba.utn.dds.exeptions.ConversionException;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.fechas.Parser;
+
+
 
 public class TestEntrega1 {
 	Parser unParser;

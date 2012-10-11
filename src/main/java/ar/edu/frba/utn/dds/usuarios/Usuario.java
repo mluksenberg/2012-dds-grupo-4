@@ -1,17 +1,20 @@
 package ar.edu.frba.utn.dds.usuarios;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-import org.uqbar.commons.model.ObservableObject;
 
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.operaciones.Asiento;
 import ar.edu.frba.utn.dds.operaciones.Aterrizar;
 import ar.edu.frba.utn.dds.operaciones.Busqueda;
+import ar.edu.frba.utn.dds.operaciones.Filtro;
+import ar.edu.frba.utn.dds.operaciones.Itinerario;
 
 
-public class Usuario extends ObservableObject {
+
+public class Usuario {
 	private String nombre;
 	private String apellido;
 	private String dni;
@@ -58,6 +61,25 @@ public class Usuario extends ObservableObject {
 		this.tipo = tipo;
 	}
 	
+	public List<Itinerario> buscarItinerarios(String unOrigen, String unDestino, Fecha unaFecha){
+		return this.getAterrizar().itinerariosDisponibles(unOrigen, unDestino, unaFecha, this);
+	}
+	
+	public List<Itinerario> buscarItinerarios(String unOrigen, String unDestino, Fecha unaFecha, Filtro unFiltro){
+		return unFiltro.filtrarItinerarios(this.buscarItinerarios(unOrigen, unDestino, unaFecha));
+	}
+	
+	public List<Itinerario> buscarItinerarios(String unOrigen, String unDestino, Fecha unaFecha,Comparator<Itinerario> criterio){
+		return this.getAterrizar().itinerariosDisponibles(unOrigen, unDestino, unaFecha, this,criterio);
+	}
+	
+	public List<Itinerario> buscarItinerarios(String unOrigen, String unDestino, Fecha unaFecha, Filtro unFiltro,Comparator<Itinerario> criterio){
+		List<Itinerario> itinerarios=unFiltro.filtrarItinerarios(this.buscarItinerarios(unOrigen, unDestino, unaFecha));
+		this.getAterrizar().getOrdenador().setComparador(criterio);
+		this.getAterrizar().getOrdenador().ordenarSegunCriterio(itinerarios);
+		return itinerarios;
+	}
+	
 	/**
 	 * Busca asientos disponibles en una determinada aerolinea y 
 	 * añade la busqueda realizada al perfil del usuario.
@@ -69,7 +91,7 @@ public class Usuario extends ObservableObject {
 	 * @param unaAerolinea
 	 * @return List<Asiento> - Devuelve una lista de asientos
 	 */
-	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha, boolean conEscalas){
+	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha){
 		this.getBusqueda().add(new Busqueda(unOrigen, unDestino,unaFecha));
 		return this.getAterrizar().asientosDisponibles(unOrigen, unDestino, unaFecha, this);
 	}
@@ -88,8 +110,8 @@ public class Usuario extends ObservableObject {
 	 * @return List
 	 * 
 	 */
-	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha,String unaClase, String unaUbicacion, boolean conEscalas){
-		List<Asiento> asientosDisponibles = this.buscarAsientoDispobibles(unOrigen, unDestino, unaFecha, conEscalas);
+	public List<Asiento> buscarAsientoDispobibles(String unOrigen, String unDestino, Fecha unaFecha,String unaClase, String unaUbicacion){
+		List<Asiento> asientosDisponibles = this.buscarAsientoDispobibles(unOrigen, unDestino, unaFecha);
 		this.getBusqueda().get(this.getBusqueda().size()-1).setUbicacion(unaUbicacion);
 		this.getBusqueda().get(this.getBusqueda().size() -1).setClase(unaClase);
 		List<Asiento> asientosFiltrados = new ArrayList<Asiento>();
@@ -101,8 +123,16 @@ public class Usuario extends ObservableObject {
 		return asientosFiltrados;
 	}
 	
+	public void comprarItinerario(Itinerario unItinerario){
+		this.getAterrizar().comprar(unItinerario,this);
+	}
+	
 	public void comprarAsiento(Asiento unAsiento){
 		this.getAterrizar().comprar(unAsiento,this);
+	}
+	
+	public void reservarItinerario(Itinerario unItinerario){
+		this.getAterrizar().reservar(unItinerario, this);
 	}
 	
 	public void reservarAsiento(Asiento unAsiento){

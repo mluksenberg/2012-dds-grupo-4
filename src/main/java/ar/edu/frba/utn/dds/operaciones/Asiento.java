@@ -2,33 +2,36 @@ package ar.edu.frba.utn.dds.operaciones;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import ar.edu.frba.utn.dds.aerolineasAdapters.Aerolinea;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.fechas.Parser;
 
-//import ar.edu.frba.utn.dds.entrega_1.Fecha;
-//import ar.edu.frba.utn.dds.entrega_1.Parser;
-//import ar.edu.frba.utn.dds.entrega_3.Reserva;
 
-public class Asiento{
+public class Asiento {
 	private String origen;
 	private String destino;
 	private String asiento;
+	private Integer numeroDeAsiento;
 	private String precioOriginal;
 	private BigDecimal precio;
 	private String clase;
 	private String ubicacion;
-//	private Boolean estaReservado;
+	private Boolean estaReservado;
 	private Fecha fechaSalida;
 	private Fecha fechaLlegada;
 	private Parser parser = new Parser();
-	private Integer popularidad;
 	private String estado;
 	private Aerolinea aerolinea;
-	private List<Reserva> reservas=new ArrayList<Reserva>();
-	
-	public Asiento(String unOrigen, String unDestino, String unAsiento, String precioOriginal, String unaClase, String unaUbicacion, String unEstado, String unaFechaSalida, String unaHoraSalida, String unaFechaLlegada, String unaHoraLlegada,Integer popularidad, Aerolinea unaAerolinea){
+	private List<Reserva> reservas = new ArrayList<Reserva>();
+
+	public Asiento(String unOrigen, String unDestino, String unAsiento,
+			String precioOriginal, String unaClase, String unaUbicacion,
+			String unEstado, String unaFechaSalida, String unaHoraSalida,
+			String unaFechaLlegada, String unaHoraLlegada,
+			Aerolinea unaAerolinea) {
 		this.parser.agregarFormato("yyyy-MM-dd HH:mm");
 		this.parser.agregarFormato("MM-dd-yyyy HH:mm");
 		this.parser.agregarFormato("dd/MM/yyyy HH:mm");
@@ -39,41 +42,49 @@ public class Asiento{
 		this.clase = unaClase;
 		this.ubicacion = unaUbicacion;
 		this.setEstado(unEstado);
-//		if(unEstado.equals("D")) this.estaReservado = false;
-//		else this.estaReservado = true;
-		this.fechaSalida = this.parser.parsear(unaFechaSalida + " " + unaHoraSalida);
-		this.fechaLlegada = this.parser.parsear(unaFechaLlegada + " " + unaHoraLlegada);
-		this.popularidad=popularidad;
+		if (unEstado.equals("D"))
+			this.estaReservado = false;
+		else
+			this.estaReservado = true;
+		this.fechaSalida = this.parser.parsear(unaFechaSalida + " "
+				+ unaHoraSalida);
+		this.fechaLlegada = this.parser.parsear(unaFechaLlegada + " "
+				+ unaHoraLlegada);
 		this.setAerolinea(unaAerolinea);
 	}
-	
-	public String toString(){
-		return this.getAsiento() + " " + this.getOrigen() + " " + this.getDestino() + " " + this.getFechaSalida() + " " + this.getFechaLlegada() + " " + this.getClase() + " " + this.getUbicacion() + " " + this.getPrecio() + " " + this.getEstaReservado();  
+
+	public String toString() {
+		return this.getAsiento() + " " + this.getOrigen() + " "
+				+ this.getDestino() + " " + this.getFechaSalida() + " "
+				+ this.getFechaLlegada() + " " + this.getClase() + " "
+				+ this.getUbicacion() + " " + this.getPrecio() + " "
+				+ this.getEstaReservado();
 	}
+
 	public String getAsiento() {
 		return asiento;
 	}
-	
+
 	public void setAsiento(String asiento) {
 		this.asiento = asiento;
 	}
-	
+
 	public String getClase() {
 		return clase;
 	}
-	
+
 	public void setClase(String clase) {
 		this.clase = clase;
 	}
-	
+
 	public String getUbicacion() {
 		return ubicacion;
 	}
-	
+
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
 	}
-	
+
 	public BigDecimal getPrecio() {
 		return precio;
 	}
@@ -81,7 +92,7 @@ public class Asiento{
 	public void setPrecio(float unPrecio) {
 		this.precio = (new BigDecimal(Float.toString(unPrecio)));
 	}
-	
+
 	public Parser getParser() {
 		return parser;
 	}
@@ -107,13 +118,12 @@ public class Asiento{
 	}
 
 	public Boolean getEstaReservado() {
-		if(this.getEstado() == "R") return true;
-		else return false;
+		return estaReservado;
 	}
 
-//	public void setEstaReservado(Boolean estaReservado) {
-//		this.estaReservado = estaReservado;
-//	}
+	public void setEstaReservado(Boolean estaReservado) {
+		this.estaReservado = estaReservado;
+	}
 
 	public String getDestino() {
 		return destino;
@@ -132,27 +142,27 @@ public class Asiento{
 	}
 
 	public boolean tieneFechasEntre(Fecha otraFecha) {
-		
-		if(otraFecha==null) return true;
-		
-		return ( otraFecha.esPosteriorA(this.getFechaSalida()) && this.getFechaLlegada().esPosteriorA(otraFecha) ) || this.getFechaSalida().esLaMismaFechaQue(otraFecha) || this.getFechaLlegada().esLaMismaFechaQue(otraFecha);
+
+		if (otraFecha == null)
+			return true;
+
+		return (otraFecha.esPosteriorA(this.getFechaSalida()) && this
+				.getFechaLlegada().esPosteriorA(otraFecha))
+				|| this.getFechaSalida().esLaMismaFechaQue(otraFecha)
+				|| this.getFechaLlegada().esLaMismaFechaQue(otraFecha);
 	}
 
 	public boolean esSuperOferta() {
-		return (this.getClase().equals("P") && this.getPrecio().floatValue() <= 8000) || (this.getClase().equals("E") && this.getPrecio().floatValue() <= 4000);
-	}
-	//FIXME contemplar el tiempo de conexion si corresponde
-	public Long obtenerDuracion(){
-		return (this.getFechaLlegada().getFecha().getTime() - this.fechaSalida.getFecha().getTime());
+		return (this.getClase().equals("P") && this.getPrecio().floatValue() <= 8000)
+				|| (this.getClase().equals("E") && this.getPrecio()
+						.floatValue() <= 4000);
 	}
 
-	public Integer getPopularidad() {
-		return popularidad;
-	}
-
-	public void setPopularidad(Integer popularidad) {
-		this.popularidad = popularidad;
-	}
+	// FIXME1 contemplar el tiempo de conexion si corresponde
+	// public Long obtenerDuracion(){
+	// return (this.getFechaLlegada().getFecha().getTime() -
+	// this.fechaSalida.getFecha().getTime());
+	// }
 
 	public String getEstado() {
 		return estado;
@@ -189,9 +199,41 @@ public class Asiento{
 	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
-	
+
 	public Reserva getReservaPosta() {
 		return this.getReservas().get(0);
-		
+
+	}
+
+	public int getNumeroDeAsiento() {
+		return numeroDeAsiento;
+	}
+
+	public void setNumeroDeAsiento(int numeroDeAsiento) {
+		this.numeroDeAsiento = numeroDeAsiento;
+	}
+
+	public Integer obtenerPopularidadDelVuelo() {
+		return this.getAerolinea().popularidadDeUnVuelo(this.getAsiento());
+	}
+
+	public Asiento actualizarReservas() {
+		List<Reserva> reservasAEliminar= new ArrayList<Reserva>();
+		Asiento toReturn = null;
+		for(Reserva unaReserva:this.getReservas()){
+			if(this.expiroReserva(unaReserva.getFechaDeVencimiento())){
+				reservasAEliminar.add(unaReserva);
+				toReturn=this;
+			}
+		}
+		this.getReservas().removeAll(reservasAEliminar);
+		return toReturn;
+	}
+	
+	
+	protected boolean expiroReserva(Fecha unaFecha) {
+		Fecha fecha = new Fecha();
+		fecha.setFecha(new Date());
+		return fecha.esPosteriorA(unaFecha);
 	}
 }

@@ -1,6 +1,5 @@
 package ar.edu.frba.utn.dds.usuarios;
 
-
 public class NoPaga implements TipoUsuario{
 
 	private float recargo;

@@ -3,6 +3,7 @@ package ar.edu.frba.utn.dds.operaciones;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 
 
+
 public class Busqueda {
 	private String origen;
 	private String destino;

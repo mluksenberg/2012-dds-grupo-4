@@ -3,26 +3,29 @@ package ar.edu.frba.utn.dds.entrega_4;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import com.lanchita.AerolineaLanchita;
-
-
-import static org.mockito.Mockito.*;
-
+import ar.edu.frba.utn.dds.aerolineasAdapters.Aerolinea;
 import ar.edu.frba.utn.dds.aerolineasAdapters.Lanchita;
+import ar.edu.frba.utn.dds.aerolineasAdapters.Oceanic;
 import ar.edu.frba.utn.dds.exeptions.ParametrosErroneosExeption;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.fechas.Parser;
-import ar.edu.frba.utn.dds.operaciones.Aerolinea;
 import ar.edu.frba.utn.dds.operaciones.Asiento;
 import ar.edu.frba.utn.dds.operaciones.Aterrizar;
 import ar.edu.frba.utn.dds.usuarios.Estandar;
 import ar.edu.frba.utn.dds.usuarios.NoPaga;
 import ar.edu.frba.utn.dds.usuarios.Usuario;
 import ar.edu.frba.utn.dds.usuarios.Vip;
+
+import com.lanchita.AerolineaLanchita;
+
+import static org.mockito.Mockito.*;
+
+
 
 public class TestEntrega2 {
 	Lanchita lanchita;
@@ -33,6 +36,10 @@ public class TestEntrega2 {
 	Asiento unAsiento;
 	Parser parser;
 	Aterrizar aterrizar;
+	Fecha unaFecha;
+	Fecha otraFecha;
+	Oceanic oceanic;
+	
 	@Before
 	public void setUp() throws Exception {
 		////////////////////////////////////////////////////This is mock baby?////////////////////
@@ -54,7 +61,7 @@ public class TestEntrega2 {
 		
 		///////////////////////////////////////////////////////////////////
 		
-		lanchita = new Lanchita(asientos);
+		lanchita = new Lanchita();
 		lanchita.setLanchita(lanchitaPostaMock);
 		
 		parser=new Parser();
@@ -64,13 +71,16 @@ public class TestEntrega2 {
 		
 		List<Aerolinea> aerolineas=new ArrayList<Aerolinea>();
 		aerolineas.add(lanchita);
+		//FIXME poner oceanic rompe todo
+		//aerolineas.add(oceanic);
 		
 		aterrizar=new Aterrizar(aerolineas);
 		
 		usuarioVip = new Usuario("Federico Gabriel", "Lopez Luksenberg", "36747013", new Vip(),aterrizar);
 		usuarioEstandar = new Usuario("Marcelo Javier", "Lopez Luksenberg", "36747012", new Estandar(),aterrizar);
 		usuarioNoPago = new Usuario("Andres Francisco", "Lopez Luksenberg", "33783548", new NoPaga(),aterrizar);
-		Fecha unaFecha= parser.parsear("20/12/2012" + " " + "15:20");
+		unaFecha= parser.parsear("20/12/2012" + " " + "15:20");
+		otraFecha=parser.parsear("20/12/2012" + " " + "21:00");
 		unAsiento = lanchita.asientosDisponibles("EZE", "USA",unaFecha).get(0);
 	}
 
@@ -79,7 +89,7 @@ public class TestEntrega2 {
 	@Test (expected = ParametrosErroneosExeption.class)
 	public void testValidacionDeParametrosObligatoriosEnLaBusqueda(){
 		@SuppressWarnings("unused")
-		Asiento asiento = usuarioVip.buscarAsientoDispobibles(null,null, null, null,"E", false).get(0);
+		Asiento asiento = usuarioVip.buscarAsientoDispobibles(null,null, null, null,"E").get(0);
 
 	}
 	
@@ -120,23 +130,23 @@ public class TestEntrega2 {
 	
 	@Test
 	public void testUnAsientoEsSuperOferta(){
-		Asiento asiento = usuarioVip.buscarAsientoDispobibles("EZE","USA", null,"E","P", false).get(0);
+		Asiento asiento = usuarioVip.buscarAsientoDispobibles("EZE","USA", unaFecha,"E","P").get(0);
 		Assert.assertTrue(asiento.esSuperOferta() && asiento.getPrecio().floatValue() <= 4000);
 	}
 	
 	@Test
 	public void testBuscarAsientosDisponiblesParaElVip(){
-		List<Asiento> asientosDisponibles=usuarioVip.buscarAsientoDispobibles("EZE", "USA", null, false);
+		List<Asiento> asientosDisponibles=usuarioVip.buscarAsientoDispobibles("EZE", "USA", unaFecha);
 		Assert.assertEquals(asientosDisponibles.size(),3);
 	}
 	@Test
 	public void testBuscarAsientosDisponiblesParaElEstandar(){
-		List<Asiento> asientosDisponibles=usuarioEstandar.buscarAsientoDispobibles("PER", "USA",null, false);
+		List<Asiento> asientosDisponibles=usuarioEstandar.buscarAsientoDispobibles("PER", "USA", otraFecha);
 		Assert.assertEquals(asientosDisponibles.size(),3);
 	}
 	@Test
 	public void testBuscarAsientosDisponiblesParaElQueNoGarpa(){
-		List<Asiento> asientosDisponibles=usuarioNoPago.buscarAsientoDispobibles("PER", "USA", null, false);
+		List<Asiento> asientosDisponibles=usuarioNoPago.buscarAsientoDispobibles("PER", "USA", otraFecha);
 		Assert.assertEquals(asientosDisponibles.size(),3);
 	}
 	
@@ -158,10 +168,5 @@ public class TestEntrega2 {
 		Assert.assertTrue(asientos.size()==3);
 	}
 	
-//	@Test
-//	public void testQueDeciaCualquierCosaYPorEsoComenteFEDE(){
-//		DateFormat dateF=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-//		Date date=new Date();
-//		System.out.println(dateF.format(date));
-//	}
+	
 }

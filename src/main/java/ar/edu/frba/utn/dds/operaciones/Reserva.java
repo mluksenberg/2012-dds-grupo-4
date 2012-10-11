@@ -4,8 +4,6 @@ import java.util.Calendar;
 
 import ar.edu.frba.utn.dds.fechas.Fecha;
 
-//import ar.edu.frba.utn.dds.entrega_1.Fecha;
-//import ar.edu.frba.utn.dds.entrega_2.Asiento;
 
 public class Reserva {
 	

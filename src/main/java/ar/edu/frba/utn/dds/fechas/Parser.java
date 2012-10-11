@@ -8,7 +8,6 @@ import java.util.Collection;
 import ar.edu.frba.utn.dds.exeptions.ConversionException;
 
 
-
 public class Parser{
 	private Collection<String> formatos = new ArrayList<String>();
 
@@ -48,6 +47,7 @@ public class Parser{
 				if(!formatoFecha.format(unaFecha.getFecha()).equals(unString)){
 					continue;
 				}
+				unaFecha.setFechaString(unString);
 				return unaFecha;
 			}
 			catch(ParseException exception){
