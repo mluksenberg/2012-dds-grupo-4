@@ -14,9 +14,9 @@ import org.uqbar.arena.windows.WindowOwner;
 import ar.edu.frba.utn.dds.operaciones.Asiento;
 
 @SuppressWarnings("serial")
-public class ComprasWindow extends SimpleWindow<Compra> {
+public class ComprasWindow extends SimpleWindow<AsientoApplication> {
 
-	public ComprasWindow(WindowOwner parent, Compra model) {
+	public ComprasWindow(WindowOwner parent, AsientoApplication model) {
 		super(parent, model);
 		this.getModelObject().search();
 		
@@ -34,21 +34,26 @@ public class ComprasWindow extends SimpleWindow<Compra> {
 		panel.setLayout(new VerticalLayout());
 		Panel panelCompras = new Panel(panel)
 				.setLayout(new HorizontalLayout());
-		new Label(panelCompras).setText("Compras de");
+		this.setTitleLabel(panelCompras);
 		new Label(panelCompras).bindValueToProperty("nombre");
 		Panel panelGrid = new Panel(panel)
 				.setLayout(new VerticalLayout());
 		Table<Asiento> table = new Table<Asiento>(panelGrid, Asiento.class);
 		table.setHeigth(300);
 		table.setWidth(550);
-		table.bindItemsToProperty("asientosComprados");
+		table.bindItemsToProperty("asientos");
 		table.bindValueToProperty("asientoSeleccionado");
 		this.setearColumnas(table);
 		
 		
 	}
+	
+	protected void setTitleLabel(Panel panel){
+		new Label(panel).setText("Compras de");
 
-	private void setearColumnas(Table<Asiento> table) {
+	}
+
+	protected void setearColumnas(Table<Asiento> table) {
 		new Column<Asiento>(table).setTitle("Salida").setFixedSize(120).bindContentsToProperty("fechaSalida");
 		new Column<Asiento>(table).setTitle("Aerolinea").setFixedSize(120).bindContentsToProperty("nombreAerolinea");
 		new Column<Asiento>(table).setTitle("Vuelo").setFixedSize(120).bindContentsToProperty("nroVuelo");

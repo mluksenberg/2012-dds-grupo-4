@@ -18,7 +18,7 @@ public class Oceanic implements Aerolinea {
 
 	private AerolineaOceanic oceanicPosta= AerolineaOceanic.getInstance();
 	private Boolean admiteReserva = true;
-	private Integer maximaDuracionDeReserva;
+	private Integer maximaDuracionDeReserva=10;
 	private List<Vuelo> vuelos=new ArrayList<Vuelo>();
 	private List<Asiento> asientosReservados = new ArrayList<Asiento>();
 	private List<Itinerario> itinerariosReservados = new ArrayList<Itinerario>();

@@ -17,7 +17,7 @@ public class Lanchita implements Aerolinea {
 	private static final boolean admiteReserva = true;
 	private AerolineaLanchita lanchita = AerolineaLanchita.getInstance();
 	private static float impuesto = 15;
-	private Integer maximaDuracionDeReserva;
+	private Integer maximaDuracionDeReserva=10;
 	private List<Vuelo> vuelos = new ArrayList<Vuelo>();
 	private List<Itinerario> itinerariosReservados = new ArrayList<Itinerario>();
 	private List<Asiento> asientosReservados = new ArrayList<Asiento>();

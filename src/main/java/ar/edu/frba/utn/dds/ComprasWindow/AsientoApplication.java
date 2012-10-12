@@ -13,13 +13,13 @@ import ar.edu.frba.utn.dds.usuarios.Usuario;
  * APPLICATION MODEL DE LA PANTALLA COMPRAS
  */
 @Observable
-public class Compra {
+public class AsientoApplication {
 	
 	private Asiento asientoSeleccionado;
-	private List<Asiento> asientosComprados=new ArrayList<Asiento>();
+	private List<Asiento> asientos=new ArrayList<Asiento>();
 	private Usuario user;
 	
-	public Compra(Usuario usr){
+	public AsientoApplication(Usuario usr){
 		this.setUser(usr);
 	}
 	
@@ -31,16 +31,16 @@ public class Compra {
 		this.asientoSeleccionado = asientoSeleccionado;
 	}
 
-	public List<Asiento> getAsientosComprados() {
-		return asientosComprados;
+	public List<Asiento> getAsientos() {
+		return asientos;
 	}
 
-	public void setAsientosComprados(List<Asiento> asientosComprados) {
-		this.asientosComprados = asientosComprados;
+	public void setAsientos(List<Asiento> asientos) {
+		this.asientos = asientos;
 	}
 	
 	public void search(){
-		this.asientosComprados=getUser().getAsientosComprados();
+		this.asientos=getUser().getAsientosComprados();
 	}
 
 	public Usuario getUser() {

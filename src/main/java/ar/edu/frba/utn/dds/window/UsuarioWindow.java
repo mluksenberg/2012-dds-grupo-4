@@ -13,7 +13,7 @@ import org.uqbar.arena.widgets.Panel;
 import org.uqbar.arena.windows.MainWindow;
 import org.uqbar.arena.windows.SimpleWindow;
 
-import ar.edu.frba.utn.dds.ComprasWindow.Compra;
+import ar.edu.frba.utn.dds.ComprasWindow.AsientoApplication;
 import ar.edu.frba.utn.dds.ComprasWindow.ComprasWindow;
 import ar.edu.frba.utn.dds.aerolineasAdapters.Aerolinea;
 import ar.edu.frba.utn.dds.aerolineasAdapters.Lanchita;
@@ -24,6 +24,8 @@ import ar.edu.frba.utn.dds.operaciones.Asiento;
 import ar.edu.frba.utn.dds.operaciones.Aterrizar;
 import ar.edu.frba.utn.dds.usuarios.Estandar;
 import ar.edu.frba.utn.dds.usuarios.Usuario;
+import ar.edu.frba.utn.edu.dds.ReservaWindow.ReservaApplication;
+import ar.edu.frba.utn.edu.dds.ReservaWindow.ReservaWindow;
 
 @SuppressWarnings("serial")
 public class UsuarioWindow extends MainWindow<Usuario> {
@@ -44,6 +46,9 @@ public class UsuarioWindow extends MainWindow<Usuario> {
 		Fecha unaFecha= parser.parsear("20/12/2012" + " " + "15:20");
 		Asiento unAsiento = getMarcelo().buscarAsientoDispobibles("EZE", "PER",unaFecha).get(0);
 		getMarcelo().comprarAsiento(unAsiento);
+		Asiento otroAsiento = getMarcelo().buscarAsientoDispobibles("PER", "USA",unaFecha).get(0);
+		getMarcelo().reservarAsiento(otroAsiento);
+
 		///////////////////////////////////////////
 	}
 	
@@ -69,7 +74,7 @@ public class UsuarioWindow extends MainWindow<Usuario> {
 		Panel panelBotones = new Panel(panelPrincipal)
 				.setLayout(new ColumnLayout(3));
 		new Button(panelBotones).setCaption("Ver Compras").onClick(new MessageSend(this, "abrirCompras"));
-		new Button(panelBotones).setCaption("Ver Reservas").onClick(null);
+		new Button(panelBotones).setCaption("Ver Reservas").onClick(new MessageSend(this, "abrirReservas"));
 		new Button(panelBotones).setCaption("Buscar Asientos").onClick(null);
 	}
 
@@ -82,9 +87,13 @@ public class UsuarioWindow extends MainWindow<Usuario> {
 	}
 	
 	public void abrirCompras(){
-		SimpleWindow<Compra> comprasWindows=new ComprasWindow(this,new Compra(getMarcelo()));
+		SimpleWindow<AsientoApplication> comprasWindows=new ComprasWindow(this,new AsientoApplication(getMarcelo()));
 		comprasWindows.open();
 	}
-
+	
+	public void abrirReservas(){
+		SimpleWindow<AsientoApplication> reservasWindows=new ReservaWindow(this,new ReservaApplication(getMarcelo()));
+		reservasWindows.open();
+	}
 
 }
