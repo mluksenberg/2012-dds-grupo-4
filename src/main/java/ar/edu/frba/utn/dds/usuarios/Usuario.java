@@ -3,8 +3,7 @@ package ar.edu.frba.utn.dds.usuarios;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-
+import org.uqbar.commons.model.ObservableObject;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.operaciones.Asiento;
 import ar.edu.frba.utn.dds.operaciones.Aterrizar;
@@ -14,7 +13,7 @@ import ar.edu.frba.utn.dds.operaciones.Itinerario;
 
 
 
-public class Usuario {
+public class Usuario extends ObservableObject{
 	private String nombre;
 	private String apellido;
 	private String dni;
