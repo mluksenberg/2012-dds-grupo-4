@@ -6,16 +6,12 @@ import org.uqbar.arena.layout.VerticalLayout;
 import org.uqbar.arena.widgets.Button;
 import org.uqbar.arena.widgets.Label;
 import org.uqbar.arena.widgets.Panel;
-import org.uqbar.arena.widgets.TextBox;
 import org.uqbar.arena.windows.MainWindow;
-import org.uqbar.arena.windows.SimpleWindow;
-import org.uqbar.arena.windows.WindowOwner;
-
-import ar.edu.frba.utn.dds.aerolineasAdapters.Lanchita;
 import ar.edu.frba.utn.dds.operaciones.Aterrizar;
 import ar.edu.frba.utn.dds.usuarios.Estandar;
 import ar.edu.frba.utn.dds.usuarios.Usuario;
 
+@SuppressWarnings("serial")
 public class UsuarioWindow extends MainWindow<Usuario> {
 
 	public UsuarioWindow() {
