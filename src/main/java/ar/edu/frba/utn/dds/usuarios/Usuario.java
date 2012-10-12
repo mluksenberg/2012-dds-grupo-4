@@ -20,6 +20,7 @@ public class Usuario extends ObservableObject{
 	private List<Busqueda> busqueda = new ArrayList<Busqueda>();
 	private TipoUsuario tipo;
 	private Aterrizar aterrizar;
+	private List<Asiento> asientosComprados=new ArrayList<Asiento>();
 	
 	public Usuario(String unNombre, String unApellido, String unDni, TipoUsuario unTipo, Aterrizar aterrizar){
 		this.nombre = unNombre;
@@ -124,10 +125,12 @@ public class Usuario extends ObservableObject{
 	
 	public void comprarItinerario(Itinerario unItinerario){
 		this.getAterrizar().comprar(unItinerario,this);
+		this.getAsientosComprados().addAll(unItinerario.getAsientos());
 	}
 	
 	public void comprarAsiento(Asiento unAsiento){
 		this.getAterrizar().comprar(unAsiento,this);
+		this.getAsientosComprados().add(unAsiento);
 	}
 	
 	public void reservarItinerario(Itinerario unItinerario){
@@ -144,5 +147,13 @@ public class Usuario extends ObservableObject{
 
 	public void setAterrizar(Aterrizar aterrizar) {
 		this.aterrizar = aterrizar;
+	}
+
+	public List<Asiento> getAsientosComprados() {
+		return asientosComprados;
+	}
+
+	public void setAsientosComprados(List<Asiento> asientosComprados) {
+		this.asientosComprados = asientosComprados;
 	}
 }

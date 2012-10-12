@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>uqbar</groupId>
 			<artifactId>arena</artifactId>
-			<version>3.0.1-SNAPSHOT</version>
+			<version>${arena-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.uqbar</groupId>

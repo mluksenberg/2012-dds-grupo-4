@@ -21,7 +21,7 @@ public class Lanchita implements Aerolinea {
 	private List<Vuelo> vuelos = new ArrayList<Vuelo>();
 	private List<Itinerario> itinerariosReservados = new ArrayList<Itinerario>();
 	private List<Asiento> asientosReservados = new ArrayList<Asiento>();
-	
+	private String nombreAerolinea="Lanchita";
 	public Lanchita() {
 		
 	}
@@ -164,4 +164,14 @@ public class Lanchita implements Aerolinea {
 	public void setAsientosReservados(List<Asiento> asientosReservados) {
 		this.asientosReservados = asientosReservados;
 	}
+
+	public String getNombreAerolinea() {
+		return nombreAerolinea;
+	}
+
+	public void setNombreAerolinea(String nombreAerolinea) {
+		this.nombreAerolinea = nombreAerolinea;
+	}
+	
+	
 }

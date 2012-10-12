@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.uqbar.commons.model.ObservableObject;
+
 import ar.edu.frba.utn.dds.aerolineasAdapters.Aerolinea;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.fechas.Parser;
 
-
-public class Asiento {
+public class Asiento extends ObservableObject {
 	private String origen;
 	private String destino;
 	private String asiento;
@@ -218,22 +219,32 @@ public class Asiento {
 	}
 
 	public Asiento actualizarReservas() {
-		List<Reserva> reservasAEliminar= new ArrayList<Reserva>();
+		List<Reserva> reservasAEliminar = new ArrayList<Reserva>();
 		Asiento toReturn = null;
-		for(Reserva unaReserva:this.getReservas()){
-			if(this.expiroReserva(unaReserva.getFechaDeVencimiento())){
+		for (Reserva unaReserva : this.getReservas()) {
+			if (this.expiroReserva(unaReserva.getFechaDeVencimiento())) {
 				reservasAEliminar.add(unaReserva);
-				toReturn=this;
+				toReturn = this;
 			}
 		}
 		this.getReservas().removeAll(reservasAEliminar);
 		return toReturn;
 	}
-	
-	
+
 	protected boolean expiroReserva(Fecha unaFecha) {
 		Fecha fecha = new Fecha();
 		fecha.setFecha(new Date());
 		return fecha.esPosteriorA(unaFecha);
+	}
+
+	public String getNombreAerolinea() {
+		return this.getAerolinea().getNombreAerolinea();
+	}
+
+	public String getNroVuelo() {
+		return this.getAsiento().split("-")[0];
+	}
+	public String getNroAsiento(){
+		return this.getAsiento().split("-")[1];
 	}
 }

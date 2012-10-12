@@ -22,7 +22,8 @@ public class Oceanic implements Aerolinea {
 	private List<Vuelo> vuelos=new ArrayList<Vuelo>();
 	private List<Asiento> asientosReservados = new ArrayList<Asiento>();
 	private List<Itinerario> itinerariosReservados = new ArrayList<Itinerario>();
-	
+	@SuppressWarnings("unused")
+	private String nombreAerolinea="Oceanic";
 	@Override
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino, Fecha fecha) {
 		List<AsientoDTO> asientosDTO;
@@ -165,6 +166,16 @@ public class Oceanic implements Aerolinea {
 			asientosAEliminar.add(unAsiento.actualizarReservas());
 		}
 		this.getAsientosReservados().removeAll(asientosAEliminar);
+	}
+
+	@Override
+	public String getNombreAerolinea() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setNombreAerolinea(String nombreAerolinea) {
+		this.nombreAerolinea = nombreAerolinea;
 	}
 
 }

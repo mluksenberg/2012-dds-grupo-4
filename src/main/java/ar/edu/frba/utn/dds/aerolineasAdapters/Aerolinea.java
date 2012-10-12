@@ -29,4 +29,5 @@ public interface Aerolinea {
 	public List<Itinerario> getItinerariosReservados();
 	public void chequearExpiracionAsientos();
 	public List<Asiento> getAsientosReservados();
+	public String getNombreAerolinea();
 }
