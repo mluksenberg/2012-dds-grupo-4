@@ -1,7 +1,5 @@
 package ar.edu.frba.utn.dds.window;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.uqbar.arena.actions.MessageSend;
 import org.uqbar.arena.layout.ColumnLayout;
@@ -15,50 +13,19 @@ import org.uqbar.arena.windows.SimpleWindow;
 
 import ar.edu.frba.utn.dds.ComprasWindow.AsientoApplication;
 import ar.edu.frba.utn.dds.ComprasWindow.ComprasWindow;
-import ar.edu.frba.utn.dds.aerolineasAdapters.Aerolinea;
-import ar.edu.frba.utn.dds.aerolineasAdapters.Lanchita;
-import ar.edu.frba.utn.dds.aerolineasAdapters.Oceanic;
-import ar.edu.frba.utn.dds.fechas.Fecha;
-import ar.edu.frba.utn.dds.fechas.Parser;
-import ar.edu.frba.utn.dds.operaciones.Asiento;
-import ar.edu.frba.utn.dds.operaciones.Aterrizar;
-import ar.edu.frba.utn.dds.usuarios.Estandar;
-import ar.edu.frba.utn.dds.usuarios.Usuario;
 import ar.edu.frba.utn.edu.dds.ReservaWindow.ReservaApplication;
 import ar.edu.frba.utn.edu.dds.ReservaWindow.ReservaWindow;
 
 @SuppressWarnings("serial")
-public class UsuarioWindow extends MainWindow<Usuario> {
+public class UsuarioWindow extends MainWindow<UsuarioApplication> {
 
 
 	public UsuarioWindow() {
-		super(getMarcelo());
-		//FIXME hacer un home de algunas compras para este usuario ya que
-		//por limitaciones del framework si el usuario no tiene compras 
-		//no se carga la pantalla tirando un error de que no hay datos para
-		//mostrar en la tabla
-		///////////////////////////////
-		Parser parser=new Parser();
-		parser.agregarFormato("yyyy-MM-dd HH:mm");
-		parser.agregarFormato("MM-dd-yyyy HH:mm");
-		parser.agregarFormato("dd/MM/yyyy HH:mm");
-		parser.agregarFormato("dd/MM/yyyy");
-		Fecha unaFecha= parser.parsear("20/12/2012" + " " + "15:20");
-		Asiento unAsiento = getMarcelo().buscarAsientoDispobibles("EZE", "PER",unaFecha).get(0);
-		getMarcelo().comprarAsiento(unAsiento);
-		Asiento otroAsiento = getMarcelo().buscarAsientoDispobibles("PER", "USA",unaFecha).get(0);
-		getMarcelo().reservarAsiento(otroAsiento);
-
-		///////////////////////////////////////////
+		super(new UsuarioApplication());
+		
 	}
 	
-	private static List<Aerolinea> aerolineas=new ArrayList<Aerolinea>();
-	private static List<Aerolinea> setAerolineas() {
-		aerolineas.add(new Lanchita());
-		aerolineas.add(new Oceanic());
-		return aerolineas;
-	}
-	private static Usuario marcelo =new Usuario("Marcelo", "Lopez", "36747012", new Estandar(),new Aterrizar(setAerolineas()));
+	
 	
 	@Override
 	public void createContents(Panel panelPrincipal) {
@@ -78,21 +45,14 @@ public class UsuarioWindow extends MainWindow<Usuario> {
 		new Button(panelBotones).setCaption("Buscar Asientos").onClick(null);
 	}
 
-	public static Usuario getMarcelo() {
-		return marcelo;
-	}
-
-	public static void setMarcelo(Usuario marcelo) {
-		UsuarioWindow.marcelo = marcelo;
-	}
 	
 	public void abrirCompras(){
-		SimpleWindow<AsientoApplication> comprasWindows=new ComprasWindow(this,new AsientoApplication(getMarcelo()));
+		SimpleWindow<AsientoApplication> comprasWindows=new ComprasWindow(this,new AsientoApplication(this.getModelObject().getUsuario()));
 		comprasWindows.open();
 	}
 	
 	public void abrirReservas(){
-		SimpleWindow<AsientoApplication> reservasWindows=new ReservaWindow(this,new ReservaApplication(getMarcelo()));
+		SimpleWindow<AsientoApplication> reservasWindows=new ReservaWindow(this,new ReservaApplication(this.getModelObject().getUsuario()));
 		reservasWindows.open();
 	}
 
