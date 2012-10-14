@@ -11,6 +11,8 @@ import org.uqbar.arena.widgets.Panel;
 import org.uqbar.arena.windows.MainWindow;
 import org.uqbar.arena.windows.SimpleWindow;
 
+import ar.edu.frba.utn.dds.BuscadorWindow.BuscadorApplication;
+import ar.edu.frba.utn.dds.BuscadorWindow.BuscadorWindow;
 import ar.edu.frba.utn.dds.ComprasWindow.AsientoApplication;
 import ar.edu.frba.utn.dds.ComprasWindow.ComprasWindow;
 import ar.edu.frba.utn.edu.dds.ReservaWindow.ReservaApplication;
@@ -42,7 +44,7 @@ public class UsuarioWindow extends MainWindow<UsuarioApplication> {
 				.setLayout(new ColumnLayout(3));
 		new Button(panelBotones).setCaption("Ver Compras").onClick(new MessageSend(this, "abrirCompras"));
 		new Button(panelBotones).setCaption("Ver Reservas").onClick(new MessageSend(this, "abrirReservas"));
-		new Button(panelBotones).setCaption("Buscar Asientos").onClick(null);
+		new Button(panelBotones).setCaption("Buscar Asientos").onClick(new MessageSend(this, "abrirBuscador"));
 	}
 
 	
@@ -54,6 +56,10 @@ public class UsuarioWindow extends MainWindow<UsuarioApplication> {
 	public void abrirReservas(){
 		SimpleWindow<AsientoApplication> reservasWindows=new ReservaWindow(this,new ReservaApplication(this.getModelObject().getUsuario()));
 		reservasWindows.open();
+	}
+	
+	public void abrirBuscador(){
+		new BuscadorWindow(this, new BuscadorApplication(this.getModelObject().getUsuario())).open();
 	}
 
 }

@@ -27,13 +27,7 @@ public class Oceanic implements Aerolinea {
 	@Override
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino, Fecha fecha) {
 		List<AsientoDTO> asientosDTO;
-		//FIXME
-		/*
-		 * si no existe un vuelo con ese origen y destino el jar de oceanic arroja NullPointerExeption
-		 * por ahora la catcheo xq no se me ocurre otra solucion, la idea seria q si el vuelo no existe
-		 * este metodo devuelva una coleccion vacia
-		 */
-		try {
+		
 			if(unDestino!=null){
 				asientosDTO=this.getOceanicPosta().asientosDisponiblesParaOrigenYDestino(unOrigen, unDestino, fecha.getFechaString());
 			}else{
@@ -46,9 +40,7 @@ public class Oceanic implements Aerolinea {
 				asientosDisponibles.add(unAsiento);
 			}
 			return asientosDisponibles;
-		} catch (NullPointerException e) {
-			return new ArrayList<Asiento>();
-		}
+
 				
 	}
 

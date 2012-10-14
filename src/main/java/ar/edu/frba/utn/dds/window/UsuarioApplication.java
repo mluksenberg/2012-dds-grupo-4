@@ -23,7 +23,7 @@ public class UsuarioApplication {
 	
 	private Usuario usuario;
 	private List<Aerolinea> aerolineas=new ArrayList<Aerolinea>();
-
+	
 	public String getNombre(){
 		return this.getUsuario().getNombre();
 	}
