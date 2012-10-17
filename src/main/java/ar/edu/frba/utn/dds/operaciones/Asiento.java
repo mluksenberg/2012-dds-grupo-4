@@ -30,7 +30,7 @@ public class Asiento extends ObservableObject {
 
 	public Asiento(String unOrigen, String unDestino, String unAsiento,
 			String precioOriginal, String unaClase, String unaUbicacion,
-			String unEstado, String unaFechaSalida, String unaHoraSalida,
+			Boolean unEstado, String unaFechaSalida, String unaHoraSalida,
 			String unaFechaLlegada, String unaHoraLlegada,
 			Aerolinea unaAerolinea) {
 		this.parser.agregarFormato("yyyy-MM-dd HH:mm");
@@ -42,11 +42,11 @@ public class Asiento extends ObservableObject {
 		this.precioOriginal = precioOriginal;
 		this.clase = unaClase;
 		this.ubicacion = unaUbicacion;
-		this.setEstado(unEstado);
-		if (unEstado.equals("D"))
-			this.estaReservado = false;
+		this.estaReservado = !unEstado;
+		if (unEstado)
+			this.setEstado("D");
 		else
-			this.estaReservado = true;
+			this.setEstado("R");
 		this.fechaSalida = this.parser.parsear(unaFechaSalida + " "
 				+ unaHoraSalida);
 		this.fechaLlegada = this.parser.parsear(unaFechaLlegada + " "
@@ -202,8 +202,10 @@ public class Asiento extends ObservableObject {
 	}
 
 	public Reserva getReservaPosta() {
+		if (this.getReservas().isEmpty()){
+			return null;
+		}
 		return this.getReservas().get(0);
-
 	}
 
 	public int getNumeroDeAsiento() {

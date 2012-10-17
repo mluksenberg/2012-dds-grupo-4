@@ -11,6 +11,7 @@ import ar.edu.frba.utn.dds.aerolineasAdapters.Oceanic;
 import ar.edu.frba.utn.dds.operaciones.Aterrizar;
 import ar.edu.frba.utn.dds.usuarios.Estandar;
 import ar.edu.frba.utn.dds.usuarios.Usuario;
+import ar.edu.frba.utn.dds.usuarios.Vip;
 
 @Observable
 public class UsuarioApplication {
@@ -18,7 +19,7 @@ public class UsuarioApplication {
 	public UsuarioApplication(){
 		this.getAerolineas().add(new Lanchita());
 		this.getAerolineas().add(new Oceanic());
-		this.setUsuario(new Usuario("Marcelo", "Lopez", "36747012", new Estandar(),new Aterrizar(this.getAerolineas())));
+		this.setUsuario(new Usuario("Marcelo", "Lopez", "36747012", new Vip(),new Aterrizar(this.getAerolineas())));
 	}
 	
 	private Usuario usuario;

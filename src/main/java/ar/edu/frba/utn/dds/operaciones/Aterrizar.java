@@ -57,17 +57,19 @@ public class Aterrizar {
 	public List<Asiento> asientosDisponiblesDeUnaAerolinea(String unOrigen,
 			String unDestino, Fecha fecha, Usuario user, Aerolinea unaAerolinea) {
 		List<Asiento> asientos = new ArrayList<Asiento>();
+		List<Asiento> asientosReturn = new ArrayList<Asiento>();
 		asientos.addAll(unaAerolinea.asientosDisponibles(unOrigen, unDestino,
 				fecha));
 		for (Asiento unAsiento : asientos) {
 			unAsiento.setPrecio(this.calcularPrecioDeUnAsiento(
 					unAsiento.getPrecioOriginal(), user,
 					unAsiento.getAerolinea()));
+			asientosReturn.add(unAsiento);
 			if (unAsiento.esSuperOferta() && !(user.getTipo() instanceof Vip)) {
-				asientos.remove(unAsiento);
+				asientosReturn.remove(unAsiento);
 			}
 		}
-		return asientos;
+		return asientosReturn;
 	}
 
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino,
@@ -88,7 +90,11 @@ public class Aterrizar {
 	 */
 	protected boolean esElUsuarioQueReservoOriginalmente(Asiento unAsiento,
 			Usuario unUsuario) {
-		return unAsiento.getReservaPosta().getDni().equals(unUsuario.getDni());
+		if (unAsiento.getReservaPosta() != null){
+			return unAsiento.getReservaPosta().getDni().equals(unUsuario.getDni());
+		}else{
+			return true;
+		}
 	}
 
 	public void comprar(Itinerario unItinerario, Usuario unUsuario){
@@ -101,7 +107,7 @@ public class Aterrizar {
 	}
 	
 	public void comprar(Asiento unAsiento, Usuario user) {
-		if (unAsiento.getEstado().equals("R")
+		if (unAsiento.getEstaReservado()
 				&& !this.esElUsuarioQueReservoOriginalmente(unAsiento, user)) {
 			throw new LaReservaNoCorrespondeAlUsuarioExeption();
 		}

@@ -6,6 +6,7 @@ import java.util.List;
 import org.uqbar.commons.model.UserException;
 import org.uqbar.commons.utils.Observable;
 
+import ar.edu.frba.utn.dds.exeptions.LaReservaNoCorrespondeAlUsuarioExeption;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.fechas.Parser;
 import ar.edu.frba.utn.dds.operaciones.Asiento;
@@ -50,6 +51,26 @@ public class BuscadorApplication {
 		Fecha unaFecha=parser.parsear(getFecha());
 		this.setAsientos(this.getUser().buscarAsientoDispobibles(origen, destino, unaFecha));
 		
+	}
+	
+	public void buy(){
+		try{
+			if (asientoSeleccionado != null){
+				this.getUser().comprarAsiento(asientoSeleccionado);
+			}
+		}catch(LaReservaNoCorrespondeAlUsuarioExeption e){
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public void book(){
+		try{
+			if (asientoSeleccionado != null){
+				this.getUser().reservarAsiento(asientoSeleccionado);
+			}
+		}catch(LaReservaNoCorrespondeAlUsuarioExeption e){
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	

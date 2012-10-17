@@ -31,17 +31,19 @@ public class Lanchita implements Aerolinea {
 		for (String[] unStringAsiento : this.getLanchita().asientosDisponibles(
 				unOrigen, unDestino, null, null, null, null)) {
 			//FIXME ¿como hacer este if mas feliz?
-			if ((unStringAsiento[8] == unOrigen
-					&& unStringAsiento[9] == unDestino) || (unOrigen==null && unDestino==null)
-					|| (unStringAsiento[8] == unOrigen && unDestino == null)
-					|| (unStringAsiento[9] == unDestino && unOrigen == null)) {
+			if ((unStringAsiento[8].equalsIgnoreCase(unOrigen)
+					&& unStringAsiento[9].equalsIgnoreCase(unDestino)) || (unOrigen==null && unDestino==null)
+					|| (unStringAsiento[8].equalsIgnoreCase(unOrigen) && unDestino == null)
+					|| (unStringAsiento[9].equalsIgnoreCase(unDestino) && unOrigen == null)) {
 				Asiento unAsiento = new Asiento(unStringAsiento[8],
 						unStringAsiento[9], unStringAsiento[0],
 						unStringAsiento[1], 
 						unStringAsiento[2], unStringAsiento[3],
-						unStringAsiento[4], unStringAsiento[10],
+						estadoDisponible(unStringAsiento[4]), unStringAsiento[10],
 						unStringAsiento[6], unStringAsiento[11],
 						unStringAsiento[7],this);
+				String[] textoUnAsiento = unAsiento.getAsiento().split("-");
+				unAsiento.setNumeroDeAsiento(Integer.valueOf(textoUnAsiento[textoUnAsiento.length-1]));
 //				if (unAsiento.tieneFechasEntre(fecha)) {
 					asientosDisponibles.add(unAsiento);
 //				}
@@ -51,6 +53,10 @@ public class Lanchita implements Aerolinea {
 		return asientosDisponibles;
 	}
 
+	private Boolean estadoDisponible(String estado){
+		return estado.equalsIgnoreCase("D");
+	}
+	
 	public AerolineaLanchita getLanchita() {
 		return lanchita;
 	}

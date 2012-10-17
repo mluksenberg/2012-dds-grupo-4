@@ -30,8 +30,8 @@ public class BuscadorWindow extends SimpleWindow<BuscadorApplication> {
 	
 	@Override
 	protected void addActions(Panel panel) {
-		new Button(panel).setCaption("Comprar").onClick(null);
-		new Button(panel).setCaption("Reservar").onClick(null);
+		new Button(panel).setCaption("Comprar").onClick(new MessageSend(this.getModelObject(), "buy"));
+		new Button(panel).setCaption("Reservar").onClick(new MessageSend(this.getModelObject(), "book"));
 		new Button(panel).setCaption("Cerrar").onClick(new MessageSend(this, "close"));
 	}
 
@@ -77,7 +77,7 @@ public class BuscadorWindow extends SimpleWindow<BuscadorApplication> {
 		new Column<Asiento>(table) //
 		.setTitle("Asiento")
 		.setFixedSize(100)
-		.bindContentsToProperty("nroAsiento");
+		.bindContentsToProperty("numeroDeAsiento");
 		
 		new Column<Asiento>(table) //
 		.setTitle("Precio")

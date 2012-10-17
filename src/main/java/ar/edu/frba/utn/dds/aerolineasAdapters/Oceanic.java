@@ -22,7 +22,6 @@ public class Oceanic implements Aerolinea {
 	private List<Vuelo> vuelos=new ArrayList<Vuelo>();
 	private List<Asiento> asientosReservados = new ArrayList<Asiento>();
 	private List<Itinerario> itinerariosReservados = new ArrayList<Itinerario>();
-	@SuppressWarnings("unused")
 	private String nombreAerolinea="Oceanic";
 	@Override
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino, Fecha fecha) {
@@ -35,7 +34,7 @@ public class Oceanic implements Aerolinea {
 			}
 			List<Asiento> asientosDisponibles=new ArrayList<Asiento>();
 			for(AsientoDTO unAsientoDTO: asientosDTO){
-				Asiento unAsiento=new Asiento(unAsientoDTO.getOrigen(),unAsientoDTO.getDestino(),unAsientoDTO.getCodigoDeVuelo(),unAsientoDTO.getPrecio().toString(),unAsientoDTO.getClase(),unAsientoDTO.getUbicacion(),"D", unAsientoDTO.getFechaDeSalida(), unAsientoDTO.getHoraDeSalida(), unAsientoDTO.getFechaDeLlegada(), unAsientoDTO.getHoraDeLlegada(),this);
+				Asiento unAsiento=new Asiento(unAsientoDTO.getOrigen(),unAsientoDTO.getDestino(),unAsientoDTO.getCodigoDeVuelo(),unAsientoDTO.getPrecio().toString(),unAsientoDTO.getClase(),unAsientoDTO.getUbicacion(),oceanicPosta.estaReservado(unAsientoDTO.getCodigoDeVuelo(), unAsientoDTO.getNumeroDeAsiento()), unAsientoDTO.getFechaDeSalida(), unAsientoDTO.getHoraDeSalida(), unAsientoDTO.getFechaDeLlegada(), unAsientoDTO.getHoraDeLlegada(),this);
 				unAsiento.setNumeroDeAsiento(unAsientoDTO.getNumeroDeAsiento());
 				asientosDisponibles.add(unAsiento);
 			}
@@ -160,10 +159,8 @@ public class Oceanic implements Aerolinea {
 		this.getAsientosReservados().removeAll(asientosAEliminar);
 	}
 
-	@Override
 	public String getNombreAerolinea() {
-		// TODO Auto-generated method stub
-		return null;
+		return nombreAerolinea;
 	}
 
 	public void setNombreAerolinea(String nombreAerolinea) {

@@ -57,7 +57,7 @@ public class ComprasWindow extends SimpleWindow<AsientoApplication> {
 		new Column<Asiento>(table).setTitle("Salida").setFixedSize(120).bindContentsToProperty("fechaSalida");
 		new Column<Asiento>(table).setTitle("Aerolinea").setFixedSize(120).bindContentsToProperty("nombreAerolinea");
 		new Column<Asiento>(table).setTitle("Vuelo").setFixedSize(120).bindContentsToProperty("nroVuelo");
-		new Column<Asiento>(table).setTitle("Asiento").setFixedSize(120).bindContentsToProperty("nroAsiento");
+		new Column<Asiento>(table).setTitle("Asiento").setFixedSize(120).bindContentsToProperty("numeroDeAsiento");
 		new Column<Asiento>(table).setTitle("Precio").setFixedSize(120).bindContentsToProperty("precio");
 
 	}

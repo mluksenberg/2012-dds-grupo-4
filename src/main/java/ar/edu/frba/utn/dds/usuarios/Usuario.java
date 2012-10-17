@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import org.uqbar.commons.model.ObservableObject;
+
+import ar.edu.frba.utn.dds.exeptions.LaReservaNoCorrespondeAlUsuarioExeption;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.operaciones.Asiento;
 import ar.edu.frba.utn.dds.operaciones.Aterrizar;
@@ -129,7 +131,7 @@ public class Usuario extends ObservableObject{
 		this.getAsientosComprados().addAll(unItinerario.getAsientos());
 	}
 	
-	public void comprarAsiento(Asiento unAsiento){
+	public void comprarAsiento(Asiento unAsiento) throws LaReservaNoCorrespondeAlUsuarioExeption{
 		this.getAterrizar().comprar(unAsiento,this);
 		this.getAsientosComprados().add(unAsiento);
 	}
