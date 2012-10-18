@@ -11,6 +11,8 @@ import org.junit.Test;
 import ar.edu.frba.utn.dds.aerolineasAdapters.Aerolinea;
 import ar.edu.frba.utn.dds.aerolineasAdapters.Lanchita;
 import ar.edu.frba.utn.dds.aerolineasAdapters.Oceanic;
+import ar.edu.frba.utn.dds.exeptions.LaReservaNoCorrespondeAlUsuarioExeption;
+import ar.edu.frba.utn.dds.exeptions.NoSePudoComprarExeption;
 import ar.edu.frba.utn.dds.exeptions.ParametrosErroneosExeption;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.fechas.Parser;
@@ -123,7 +125,7 @@ public class TestEntrega2 {
 	 * el veryfy funciona de assert segun la especificacion
 	 */
 	@Test
-	public void testComprarUnAsiento(){
+	public void testComprarUnAsiento() throws LaReservaNoCorrespondeAlUsuarioExeption, NoSePudoComprarExeption{
 		usuarioVip.comprarAsiento(unAsiento);
 		verify(lanchitaPostaMock).comprar(unAsiento.getAsiento());
 	}

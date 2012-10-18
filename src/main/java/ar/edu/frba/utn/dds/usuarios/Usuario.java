@@ -6,6 +6,9 @@ import java.util.List;
 import org.uqbar.commons.model.ObservableObject;
 
 import ar.edu.frba.utn.dds.exeptions.LaReservaNoCorrespondeAlUsuarioExeption;
+import ar.edu.frba.utn.dds.exeptions.NoAdmiteReservaExeption;
+import ar.edu.frba.utn.dds.exeptions.NoSePudoComprarExeption;
+import ar.edu.frba.utn.dds.exeptions.UsuarioInvalidoParaReservaExeption;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.operaciones.Asiento;
 import ar.edu.frba.utn.dds.operaciones.Aterrizar;
@@ -126,22 +129,22 @@ public class Usuario extends ObservableObject{
 		return asientosFiltrados;
 	}
 	
-	public void comprarItinerario(Itinerario unItinerario){
+	public void comprarItinerario(Itinerario unItinerario) throws NoSePudoComprarExeption, LaReservaNoCorrespondeAlUsuarioExeption{
 		this.getAterrizar().comprar(unItinerario,this);
 		this.getAsientosComprados().addAll(unItinerario.getAsientos());
 	}
 	
-	public void comprarAsiento(Asiento unAsiento) throws LaReservaNoCorrespondeAlUsuarioExeption{
+	public void comprarAsiento(Asiento unAsiento) throws LaReservaNoCorrespondeAlUsuarioExeption, NoSePudoComprarExeption{
 		this.getAterrizar().comprar(unAsiento,this);
 		this.getAsientosComprados().add(unAsiento);
 	}
 	
-	public void reservarItinerario(Itinerario unItinerario){
+	public void reservarItinerario(Itinerario unItinerario) throws UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption{
 		this.getAterrizar().reservar(unItinerario, this);
 		this.getAsientosReservados().addAll(unItinerario.getAsientos());
 	}
 	
-	public void reservarAsiento(Asiento unAsiento){
+	public void reservarAsiento(Asiento unAsiento) throws UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption{
 		this.getAterrizar().reservar(unAsiento, this);
 		this.getAsientosReservados().add(unAsiento);
 	}

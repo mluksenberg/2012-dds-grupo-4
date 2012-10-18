@@ -20,6 +20,8 @@ import ar.edu.frba.utn.dds.aerolineasAdapters.Aerolinea;
 import ar.edu.frba.utn.dds.aerolineasAdapters.Lanchita;
 import ar.edu.frba.utn.dds.aerolineasAdapters.Oceanic;
 import ar.edu.frba.utn.dds.exeptions.LaReservaNoCorrespondeAlUsuarioExeption;
+import ar.edu.frba.utn.dds.exeptions.NoAdmiteReservaExeption;
+import ar.edu.frba.utn.dds.exeptions.NoSePudoComprarExeption;
 import ar.edu.frba.utn.dds.exeptions.UsuarioInvalidoParaReservaExeption;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.fechas.Parser;
@@ -142,19 +144,19 @@ public class TestEntrega3 {
 	}
 	
 	@Test (expected=UsuarioInvalidoParaReservaExeption.class)
-	public void testReservarConUnUsuarioVIP(){
+	public void testReservarConUnUsuarioVIP() throws UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption{
 		usuarioVip.reservarAsiento(unAsiento);
 	}
 	
 
 	@Test (expected = LaReservaNoCorrespondeAlUsuarioExeption.class)
-	public void testUsuarioCompreUnAsientoYaReservadoPorOtro(){
+	public void testUsuarioCompreUnAsientoYaReservadoPorOtro() throws LaReservaNoCorrespondeAlUsuarioExeption, NoSePudoComprarExeption, UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption{
 		usuarioEstandar.reservarAsiento(unAsiento);
 		otroUsuarioEstandar.comprarAsiento(unAsiento);
 	}
 	
 	@Test
-	public void testUsuarioQueReservoPuedeComprarAsientoYLasSobreReservasSeEliminan(){
+	public void testUsuarioQueReservoPuedeComprarAsientoYLasSobreReservasSeEliminan() throws LaReservaNoCorrespondeAlUsuarioExeption, NoSePudoComprarExeption, UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption{
 		usuarioEstandar.reservarAsiento(unAsiento);
 		otroUsuarioEstandar.reservarAsiento(unAsiento);
 		usuarioEstandar.comprarAsiento(unAsiento);
@@ -213,40 +215,40 @@ public class TestEntrega3 {
 	}
 	
 	@Test
-	public void testComprarUnAsientoDeOceanic(){
+	public void testComprarUnAsientoDeOceanic() throws LaReservaNoCorrespondeAlUsuarioExeption, NoSePudoComprarExeption{
 		usuarioVip.comprarAsiento(otroAsientoOceanic);
 		verify(oceanicPosta).comprarSiHayDisponibilidad(usuarioVip.getDni(), otroAsientoOceanic.getAsiento(), otroAsientoOceanic.getNumeroDeAsiento());
 	}
 	
 	@Test
-	public void testReservarUnAsientoDeOceanic(){
+	public void testReservarUnAsientoDeOceanic() throws UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption{
 		usuarioEstandar.reservarAsiento(otroAsientoOceanic);
 		verify(oceanicPosta).reservar(usuarioEstandar.getDni(), otroAsientoOceanic.getAsiento(),otroAsientoOceanic.getNumeroDeAsiento());
 	}
 	
 	@Test
-	public void testSobreReservaEnLanchita(){
+	public void testSobreReservaEnLanchita() throws UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption{
 		usuarioEstandar.reservarAsiento(unAsiento);
 		otroUsuarioEstandar.reservarAsiento(unAsiento);
 		Assert.assertEquals(unAsiento.getReservas().size(), 2);
 	}
 	
 	@Test
-	public void testSobreReservaEnOceanic(){
+	public void testSobreReservaEnOceanic() throws UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption{
 		usuarioEstandar.reservarAsiento(otroAsientoOceanic);
 		otroUsuarioEstandar.reservarAsiento(otroAsientoOceanic);
 		Assert.assertEquals(otroAsientoOceanic.getReservas().size(), 2);
 	}
 	
 	@Test
-	public void testPopularidadDeUnVueloDeLanchita(){
+	public void testPopularidadDeUnVueloDeLanchita() throws LaReservaNoCorrespondeAlUsuarioExeption, NoSePudoComprarExeption{
 		usuarioVip.comprarAsiento(unAsiento);
 		usuarioVip.comprarAsiento(otroAsiento);
 		Assert.assertTrue(lanchita.popularidadDeUnVuelo(unAsiento.getAsiento()).equals(2));
 	}
 	
 	@Test
-	public void testPopularidadDeUnVueloDeOceanic(){
+	public void testPopularidadDeUnVueloDeOceanic() throws LaReservaNoCorrespondeAlUsuarioExeption, NoSePudoComprarExeption{
 		usuarioVip.comprarAsiento(unAsientoOceanic);
 		usuarioVip.comprarAsiento(otroAsientoOceanic);
 		usuarioVip.comprarAsiento(otroAsientoOceanicMas);
@@ -286,7 +288,7 @@ public class TestEntrega3 {
 	}
 	
 	@Test
-	public void testBuscarItinerariosOrdenadosPorPopularidad(){
+	public void testBuscarItinerariosOrdenadosPorPopularidad() throws LaReservaNoCorrespondeAlUsuarioExeption, NoSePudoComprarExeption{
 		usuarioVip.comprarAsiento(unAsiento);
 		usuarioVip.comprarAsiento(otroAsiento);
 		usuarioVip.comprarAsiento(otroAsientoMas);
@@ -299,13 +301,13 @@ public class TestEntrega3 {
 	}
 	
 	@Test
-	public void testReservarItinerario(){
+	public void testReservarItinerario() throws UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption{
 		usuarioEstandar.reservarItinerario(unItinerario);
 		Assert.assertTrue(unItinerario.estaReservado());
 	}
 	
 	@Test
-	public void testComprarItinerario(){
+	public void testComprarItinerario() throws NoSePudoComprarExeption, LaReservaNoCorrespondeAlUsuarioExeption{
 		usuarioVip.comprarItinerario(unItinerario);
 		for(Asiento unAsiento : unItinerario.getAsientos()){
 			verify(lanchitaPostaMock).comprar(unAsiento.getAsiento());
@@ -313,7 +315,7 @@ public class TestEntrega3 {
 	}
 	
 	@Test
-	public void testFiltroMostrarItinerariosReservados(){
+	public void testFiltroMostrarItinerariosReservados() throws UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption{
 		Filtro filtroMostrarReservados = new FiltroMostrarAsientosReservadosDecorator(true);
 		usuarioEstandar.reservarItinerario(unItinerario);
 		int sizeOriginal = usuarioVip.buscarItinerarios("EZE", "USH", unaFecha).size();
@@ -322,7 +324,7 @@ public class TestEntrega3 {
 	}
 	
 	@Test
-	public void testEliminarReservasExpiradas(){
+	public void testEliminarReservasExpiradas() throws UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption{
 		usuarioEstandar.reservarAsiento(unAsiento);
 		unAsiento.getReservas().get(0).setFechaDeVencimiento(fechaParaReservar);
 		int asientosReservadosOriginal = lanchita.getAsientosReservados().size();

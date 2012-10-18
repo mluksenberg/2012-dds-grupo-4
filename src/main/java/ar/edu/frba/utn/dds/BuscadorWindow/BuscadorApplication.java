@@ -7,6 +7,9 @@ import org.uqbar.commons.model.UserException;
 import org.uqbar.commons.utils.Observable;
 
 import ar.edu.frba.utn.dds.exeptions.LaReservaNoCorrespondeAlUsuarioExeption;
+import ar.edu.frba.utn.dds.exeptions.NoAdmiteReservaExeption;
+import ar.edu.frba.utn.dds.exeptions.NoSePudoComprarExeption;
+import ar.edu.frba.utn.dds.exeptions.UsuarioInvalidoParaReservaExeption;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.fechas.Parser;
 import ar.edu.frba.utn.dds.operaciones.Asiento;
@@ -24,6 +27,7 @@ public class BuscadorApplication {
 	private Usuario user;
 	private List<Asiento> asientos=new ArrayList<Asiento>();
 	private Asiento asientoSeleccionado;
+	private String mensaje;
 	
 	public void validar(){
 		//TODO validacion del formato de la fecha
@@ -54,23 +58,11 @@ public class BuscadorApplication {
 	}
 	
 	public void buy(){
-		try{
-			if (asientoSeleccionado != null){
-				this.getUser().comprarAsiento(asientoSeleccionado);
-			}
-		}catch(LaReservaNoCorrespondeAlUsuarioExeption e){
-			System.out.println(e.getMessage());
-		}
+		this.search();
 	}
 	
 	public void book(){
-		try{
-			if (asientoSeleccionado != null){
-				this.getUser().reservarAsiento(asientoSeleccionado);
-			}
-		}catch(LaReservaNoCorrespondeAlUsuarioExeption e){
-			System.out.println(e.getMessage());
-		}
+		this.search();
 	}
 	
 	
@@ -125,6 +117,14 @@ public class BuscadorApplication {
 
 	public void setAsientoSeleccionado(Asiento asientoSeleccionado) {
 		this.asientoSeleccionado = asientoSeleccionado;
+	}
+
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+
+	public String getMensaje() {
+		return mensaje;
 	}
 
 

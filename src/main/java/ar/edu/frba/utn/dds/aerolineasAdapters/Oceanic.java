@@ -70,12 +70,12 @@ public class Oceanic implements Aerolinea {
 	}
 	
 	@Override
-	public void comprar(Asiento unAsiento, String unDni) {
+	public void comprar(Asiento unAsiento, String unDni) throws NoSePudoComprarExeption {
 		Boolean resultado=this.getOceanicPosta().comprarSiHayDisponibilidad(unDni, unAsiento.getAsiento(), unAsiento.getNumeroDeAsiento());
 		if(resultado){
 			this.incremetarPopularidad(unAsiento.getAsiento());
 		}else{
-			throw new NoSePudoComprarExeption();
+			throw new NoSePudoComprarExeption("El asiento no se encuentra disponible");
 		}
 	}
 

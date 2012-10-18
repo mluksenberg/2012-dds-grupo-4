@@ -9,6 +9,7 @@ import ar.edu.frba.utn.dds.aerolineasAdapters.Aerolinea;
 
 import ar.edu.frba.utn.dds.exeptions.LaReservaNoCorrespondeAlUsuarioExeption;
 import ar.edu.frba.utn.dds.exeptions.NoAdmiteReservaExeption;
+import ar.edu.frba.utn.dds.exeptions.NoSePudoComprarExeption;
 import ar.edu.frba.utn.dds.exeptions.ParametrosErroneosExeption;
 import ar.edu.frba.utn.dds.exeptions.UsuarioInvalidoParaReservaExeption;
 import ar.edu.frba.utn.dds.fechas.Fecha;
@@ -97,7 +98,7 @@ public class Aterrizar {
 		}
 	}
 
-	public void comprar(Itinerario unItinerario, Usuario unUsuario){
+	public void comprar(Itinerario unItinerario, Usuario unUsuario) throws NoSePudoComprarExeption, LaReservaNoCorrespondeAlUsuarioExeption{
 		for( Asiento unAsiento : unItinerario.getAsientos() ){
 			if (unAsiento.getEstado().equals("R") && !this.esElUsuarioQueReservoOriginalmente(unAsiento, unUsuario)) {throw new LaReservaNoCorrespondeAlUsuarioExeption();}	
 		}
@@ -106,7 +107,7 @@ public class Aterrizar {
 		}
 	}
 	
-	public void comprar(Asiento unAsiento, Usuario user) {
+	public void comprar(Asiento unAsiento, Usuario user) throws NoSePudoComprarExeption, LaReservaNoCorrespondeAlUsuarioExeption {
 		if (unAsiento.getEstaReservado()
 				&& !this.esElUsuarioQueReservoOriginalmente(unAsiento, user)) {
 			throw new LaReservaNoCorrespondeAlUsuarioExeption();
@@ -115,7 +116,7 @@ public class Aterrizar {
 		unAsiento.getReservas().clear();
 	}
 
-	public void reservar(Itinerario unItinerario, Usuario unUsuario){
+	public void reservar(Itinerario unItinerario, Usuario unUsuario) throws UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption{
 		for( Asiento unAsiento : unItinerario.getAsientos()){
 			this.reservar(unAsiento, unUsuario);
 		}
@@ -130,12 +131,12 @@ public class Aterrizar {
 	 * index 0 corresponde a la reserva posta (la oriyinal)
 	 */
 
-	public void reservar(Asiento unAsiento, Usuario usuario) {
-		if (!(usuario.getTipo() instanceof Estandar)) {
-			throw new UsuarioInvalidoParaReservaExeption();
+	public void reservar(Asiento unAsiento, Usuario usuario) throws UsuarioInvalidoParaReservaExeption, NoAdmiteReservaExeption {
+		if (!(usuario.getTipo() instanceof Vip)) {
+			throw new UsuarioInvalidoParaReservaExeption("El usuario es invalido para reservar");
 		}
 		if (!unAsiento.getAerolinea().admiteReserva()) {
-			throw new NoAdmiteReservaExeption();
+			throw new NoAdmiteReservaExeption("La compania no admite reservas");
 		}
 		// discutimos 2 opciones de diseño.. 1.Usando exepcion que tira el
 		// metodo reserva de lanchitaPosta

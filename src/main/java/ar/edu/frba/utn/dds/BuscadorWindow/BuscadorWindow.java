@@ -9,8 +9,14 @@ import org.uqbar.arena.widgets.TextBox;
 import org.uqbar.arena.widgets.tables.Column;
 import org.uqbar.arena.widgets.tables.Table;
 import org.uqbar.arena.windows.SimpleWindow;
+import org.uqbar.arena.windows.Window;
 import org.uqbar.arena.windows.WindowOwner;
 
+import ar.edu.frba.utn.dds.ComprarReservarWindow.ComprarAsientoApplication;
+import ar.edu.frba.utn.dds.ComprarReservarWindow.ComprarAsientoWindow;
+import ar.edu.frba.utn.dds.ComprarReservarWindow.ComprarReservarApplication;
+import ar.edu.frba.utn.dds.ComprarReservarWindow.ReservarAsientoApplication;
+import ar.edu.frba.utn.dds.ComprarReservarWindow.ReservarAsientoWindow;
 import ar.edu.frba.utn.dds.operaciones.Asiento;
 
 @SuppressWarnings("serial")
@@ -30,8 +36,8 @@ public class BuscadorWindow extends SimpleWindow<BuscadorApplication> {
 	
 	@Override
 	protected void addActions(Panel panel) {
-		new Button(panel).setCaption("Comprar").onClick(new MessageSend(this.getModelObject(), "buy"));
-		new Button(panel).setCaption("Reservar").onClick(new MessageSend(this.getModelObject(), "book"));
+		new Button(panel).setCaption("Comprar").onClick(new MessageSend(this, "buy"));
+		new Button(panel).setCaption("Reservar").onClick(new MessageSend(this, "book"));
 		new Button(panel).setCaption("Cerrar").onClick(new MessageSend(this, "close"));
 	}
 
@@ -96,4 +102,19 @@ public class BuscadorWindow extends SimpleWindow<BuscadorApplication> {
 		
 	}
 	
+	public void buy(){
+		Window<ComprarReservarApplication> mensajeWindow=new ComprarAsientoWindow(this,new ComprarAsientoApplication(this.getModelObject().getAsientoSeleccionado(), this.getModelObject().getUser()));
+		mensajeWindow.open();
+		this.getModelObject().search();
+	}
+	
+	public void book(){
+		Window<ComprarReservarApplication> mensajeWindow=new ReservarAsientoWindow(this,new ReservarAsientoApplication(this.getModelObject().getAsientoSeleccionado(), this.getModelObject().getUser()));
+		mensajeWindow.open();
+		this.getModelObject().search();
+	}
+	
+	public void ventanaDeMensaje(){
+		
+	}
 }

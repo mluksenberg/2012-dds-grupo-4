@@ -2,6 +2,7 @@ package ar.edu.frba.utn.dds.aerolineasAdapters;
 
 import java.util.List;
 
+import ar.edu.frba.utn.dds.exeptions.NoSePudoComprarExeption;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.operaciones.Asiento;
 import ar.edu.frba.utn.dds.operaciones.Itinerario;
@@ -21,7 +22,7 @@ public interface Aerolinea {
 	 */
 	public List<Asiento> asientosDisponibles(String unOrigen, String unDestino,Fecha fecha);
 	public float getImpuesto();
-	public void comprar(Asiento unAsiento, String unDni);
+	public void comprar(Asiento unAsiento, String unDni) throws NoSePudoComprarExeption;
 	public void reservarAsiento(Asiento asiento,Usuario usuario);
 	public Integer getMaximaDuracionDeReserva();
 	public boolean admiteReserva();

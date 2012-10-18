@@ -5,6 +5,8 @@ import java.util.List;
 
 
 
+import ar.edu.frba.utn.dds.exeptions.LaReservaNoCorrespondeAlUsuarioExeption;
+import ar.edu.frba.utn.dds.exeptions.NoSePudoComprarExeption;
 import ar.edu.frba.utn.dds.fechas.Fecha;
 import ar.edu.frba.utn.dds.operaciones.Asiento;
 import ar.edu.frba.utn.dds.operaciones.Itinerario;
@@ -12,6 +14,7 @@ import ar.edu.frba.utn.dds.operaciones.Vuelo;
 import ar.edu.frba.utn.dds.usuarios.Usuario;
 
 import com.lanchita.AerolineaLanchita;
+import com.lanchita.excepciones.EstadoErroneoException;
 
 public class Lanchita implements Aerolinea {
 	private static final boolean admiteReserva = true;
@@ -98,9 +101,14 @@ public class Lanchita implements Aerolinea {
 	}
 	
 	@Override
-	public void comprar(Asiento unAsiento, String unDni) {
-		this.getLanchita().comprar(unAsiento.getAsiento());
-		unAsiento.setEstado("C");
+	public void comprar(Asiento unAsiento, String unDni) throws NoSePudoComprarExeption{
+		try{
+			this.getLanchita().comprar(unAsiento.getAsiento());
+			unAsiento.setEstado("C");
+		}catch (EstadoErroneoException e){
+			throw new NoSePudoComprarExeption("El asiento no se encuentra disponible");
+		}
+		
 		this.incremetarPopularidad(unAsiento.getAsiento());
 	}
 	

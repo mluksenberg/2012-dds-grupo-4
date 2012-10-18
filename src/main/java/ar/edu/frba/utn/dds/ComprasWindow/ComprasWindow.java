@@ -19,7 +19,6 @@ public class ComprasWindow extends SimpleWindow<AsientoApplication> {
 	public ComprasWindow(WindowOwner parent, AsientoApplication model) {
 		super(parent, model);
 		this.getModelObject().search();
-		
 	}
 
 	@Override
