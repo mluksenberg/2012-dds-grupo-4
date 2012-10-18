@@ -32,4 +32,8 @@ public class ComprarReservarWindow extends Window <ComprarReservarApplication> {
 		new Label(messagePanel).bindValueToProperty("mensaje");
 		new Button(panel).setCaption("seguir buscando").onClick(new MessageSend(this, "close"));
 	}
+	
+	public void cerrarVentana(){
+		new MessageSend(this, "close");
+	}
 }

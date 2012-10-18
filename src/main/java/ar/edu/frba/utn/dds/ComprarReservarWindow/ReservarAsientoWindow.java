@@ -15,13 +15,11 @@ public class ReservarAsientoWindow extends ComprarReservarWindow{
 	@Override
 	public void createContents(Panel panel) {
 		super.createContents(panel);
-		if (this.getModelObject().getAsientoSeleccionado().getEstaReservado()){
-			this.getModelObject().setMensaje("El asiento ya se encuentra reservado, Que desea hacer?");
-			new Button(panel).setCaption("sobre reservar").onClick(new MessageSend(this, "overBook"));
-		}
+		this.getModelObject().botonSobreReservar(this, panel);
 	}
 	
 	public void overBook(){
 		this.getModelObject().reservar();
+		new MessageSend(this, "close").execute();
 	}
 }
