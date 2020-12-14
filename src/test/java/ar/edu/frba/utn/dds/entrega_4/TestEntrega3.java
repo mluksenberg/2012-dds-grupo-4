@@ -105,10 +105,6 @@ public class TestEntrega3 {
 		
 		aterrizar=new Aterrizar(aerolineas);
 	
-		usuarioVip = new Usuario("Federico Gabriel", "Lopez Luksenberg", "36747013", new Vip(),aterrizar);
-		usuarioEstandar = new Usuario("Marcelo Javier", "Lopez Luksenberg", "36747012", new Estandar(),aterrizar);
-		otroUsuarioEstandar = new Usuario("Eugenio", "Lopez Luksenberg", "28543567", new Estandar(), aterrizar);
-		usuarioNoPago = new Usuario("Andres Francisco", "Lopez Luksenberg", "33783548", new NoPaga(),aterrizar);
 		unaFecha= parser.parsear("20/12/2012" + " " + "15:20");
 		otraFecha= parser.parsear("21/12/2012" + " " + "07:00");
 		unaFechaParaReservarItinerarios = parser.parsear("21/12/2012 07:40");
